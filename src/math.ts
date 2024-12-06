@@ -1,10 +1,14 @@
 import BN from "bn.js";
 
-// 24 SECONDS PER LIQUIDITY + 6 LIQUIDITY
-export const SCALE_TO_REMOVE = new BN(10).pow(new BN(30));
-export const SECONDS_PER_LIQUIDITY_SCALE = new BN(10).pow(new BN(24));
-export const POINTS_PER_SECONDS = new BN(1000);
 const MAX_U128 = new BN("340282366920938463463374607431768211455");
+const SECONDS_PER_LIQUIDITY_DECIMAL = 24;
+const LIQUIDITY_DECIMAL = 6;
+const LIQUIDITY_DENOMINATOR = new BN(10).pow(new BN(LIQUIDITY_DECIMAL));
+const SECONDS_PER_LIQUIDITY_DENOMINATOR = new BN(10).pow(
+  new BN(SECONDS_PER_LIQUIDITY_DECIMAL)
+);
+
+export const POINTS_PER_SECONDS = new BN(1000);
 
 export const calculateReward = (
   liquidity: BN,
@@ -16,7 +20,8 @@ export const calculateReward = (
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
-    .div(SCALE_TO_REMOVE);
+    .div(SECONDS_PER_LIQUIDITY_DENOMINATOR)
+    .div(LIQUIDITY_DENOMINATOR);
 
   const points = POINTS_PER_SECONDS.mul(secondsInside);
 
@@ -29,7 +34,9 @@ export const calculateSecondsPerLiquidityGlobal = (
   lastTimestamp: BN
 ): BN => {
   const now = getTimestampInSeconds();
-  const deltaTime = now.sub(lastTimestamp).mul(SECONDS_PER_LIQUIDITY_SCALE);
+  const deltaTime = now
+    .sub(lastTimestamp)
+    .mul(SECONDS_PER_LIQUIDITY_DENOMINATOR);
   const newSecondsPerLiquidityGlobal = wrappingAdd(
     currentSecondsPerLiquidityGlobal,
     deltaTime.div(liquidity)
