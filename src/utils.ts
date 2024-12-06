@@ -11,7 +11,8 @@ import {
   ConfirmedSignatureInfo,
   ParsedTransactionWithMeta,
 } from "@solana/web3.js";
-import { PROMOTED_POOL } from "./consts";
+import { PROMOTED_POOLS } from "./consts";
+import { BN } from "@coral-xyz/anchor";
 
 export const fetchAllSignatures = async (
   connection: Connection,
@@ -82,12 +83,42 @@ export const fetchTransactionLogs = async (
   ).flat();
 };
 
+export const convertJson = (previousData: any) => {
+  const updatedData = {};
+
+  for (const userId in previousData) {
+    const userPools = previousData[userId];
+
+    const updatedActive = userPools.active.map((activeEntry: any) => {
+      const updatedEvent = {
+        ...activeEntry.event,
+        id: new BN(activeEntry.event.id, "hex"),
+      };
+      return { event: updatedEvent };
+    });
+
+    const updatedClosed = userPools.closed.map((closedEntry: any) => {
+      const updatedEvents = closedEntry.events.map((event: any) => ({
+        ...event,
+        id: new BN(event.id, "hex"),
+      }));
+      return { events: updatedEvents };
+    });
+
+    updatedData[userId] = {
+      active: updatedActive,
+      closed: updatedClosed,
+    };
+  }
+  return updatedData;
+};
+
 export const extractEvents = (
   previousData: any,
   market: Market,
   transactionLog: string[]
 ) => {
-  const eventsObject: any = previousData;
+  const eventsObject: any = convertJson(previousData);
   const eventLogs = transactionLog.filter((log) =>
     log.startsWith("Program data:")
   );
@@ -102,22 +133,22 @@ export const extractEvents = (
     switch (decodedEvent.name) {
       case InvariantEventNames.CreatePositionEvent:
         const parsedCreateEvent: CreatePositionEvent = parseEvent(decodedEvent);
-        if (parsedCreateEvent.pool.toString() !== PROMOTED_POOL.toString()) {
+        if (
+          PROMOTED_POOLS.every(
+            (pool) => pool.toString() !== parsedCreateEvent.pool.toString()
+          )
+        )
           return;
-        }
+
         if (!!eventsObject[parsedCreateEvent.owner.toString()]) {
           const correspondingItem = eventsObject[
             parsedCreateEvent.owner.toString()
-          ].closed.find(
-            (item) =>
-              item.events[1].id.toString() === parsedCreateEvent.id.toString()
-          );
+          ].closed.find((item) => item.events[1].id.eq(parsedCreateEvent.id));
           if (correspondingItem) {
             const correspondingIndex = eventsObject[
               parsedCreateEvent.owner.toString()
-            ].closed.findIndex(
-              (item) =>
-                item.events[1].id.toString() === parsedCreateEvent.id.toString()
+            ].closed.findIndex((item) =>
+              item.events[1].id.eq(parsedCreateEvent.id)
             );
             eventsObject[parsedCreateEvent.owner.toString()].closed.splice(
               correspondingIndex,
@@ -145,38 +176,27 @@ export const extractEvents = (
       case InvariantEventNames.RemovePositionEvent:
         //@ts-expect-error
         const parsedRemoveEvent: RemovePositionEvent = parseEvent(decodedEvent);
-        if (parsedRemoveEvent.pool.toString() !== PROMOTED_POOL.toString()) {
+        if (
+          PROMOTED_POOLS.every(
+            (pool) => pool.toString() !== parsedRemoveEvent.pool.toString()
+          )
+        )
           return;
-        }
         if (!!eventsObject[parsedRemoveEvent.owner.toString()]) {
           const correspondingItem = eventsObject[
             parsedRemoveEvent.owner.toString()
-          ].active.find(
-            (item) =>
-              item.event.id.toString() === parsedRemoveEvent.id.toString()
-          );
-          console.log(parsedRemoveEvent);
-          console.log(parsedRemoveEvent.id.toString());
+          ].active.find((item) => item.event.id.eq(parsedRemoveEvent.id));
 
-          console.log(
-            eventsObject[parsedRemoveEvent.owner.toString()].active.forEach(
-              (item) =>
-                console.log(
-                  item.event.id.toString() === parsedRemoveEvent.id.toString()
-                )
-            )
-          );
           eventsObject[parsedRemoveEvent.owner.toString()].closed.push({
             events: [correspondingItem?.event || null, parsedRemoveEvent],
           });
           if (correspondingItem) {
             const correspondingIndex = eventsObject[
               parsedRemoveEvent.owner.toString()
-            ].active.findIndex(
-              (item) =>
-                item.event.id.toString() === parsedRemoveEvent.id.toString()
+            ].active.findIndex((item) =>
+              item.event.id.eq(parsedRemoveEvent.id)
             );
-            eventsObject[parsedRemoveEvent.owner.toString()].closed.splice(
+            eventsObject[parsedRemoveEvent.owner.toString()].active.splice(
               correspondingIndex,
               1
             );
