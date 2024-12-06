@@ -1,1 +1,12 @@
-{}
+{
+  "CreatePositionEvent": [
+    {
+      "owner": "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu",
+      "pool": "BeBSTyo7BnVcQ3KP7DyDwiFtkbUFRnmnp2KvDnYmjBWY",
+      "id": "2f",
+      "liquidity": "02643257e55a77b7",
+      "currentTimestamp": "6752b545"
+    }
+  ],
+  "RemovePositionEvent": []
+}

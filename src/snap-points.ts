@@ -7,7 +7,10 @@ import {
   InvariantEventNames,
   parseEvent,
 } from "@invariant-labs/sdk-eclipse";
-import { PoolStructure } from "@invariant-labs/sdk-eclipse/lib/market";
+import {
+  CreatePositionEvent,
+  PoolStructure,
+} from "@invariant-labs/sdk-eclipse/lib/market";
 import { AnchorProvider } from "@coral-xyz/anchor";
 import BN from "bn.js";
 import {
@@ -18,13 +21,10 @@ import {
 } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
+import { MAX_SIGNATURES_PER_CALL } from "./consts";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
-enum EventTypes {
-  OpenPosition,
-  RemovePosition,
-}
 
 const fetchAllSignatures = async (
   connection: Connection,
@@ -101,6 +101,7 @@ const extractEvents = (
   transactionLog: string[]
 ) => {
   const eventsObject = initialEvents;
+  console.log(initialEvents);
   const eventLogs = transactionLog.filter((log) =>
     log.startsWith("Program data:")
   );
@@ -111,12 +112,19 @@ const extractEvents = (
     if (!decodedEvent) {
       return;
     }
+
     switch (decodedEvent.name) {
       case InvariantEventNames.CreatePositionEvent:
-        eventsObject[EventTypes.OpenPosition].push(parseEvent(decodedEvent));
+        eventsObject[InvariantEventNames.CreatePositionEvent].push(
+          parseEvent(decodedEvent)
+        );
+        console.log(parseEvent(decodedEvent));
         break;
       case InvariantEventNames.RemovePositionEvent:
-        eventsObject[EventTypes.RemovePosition].push(parseEvent(decodedEvent));
+        eventsObject[InvariantEventNames.RemovePositionEvent].push(
+          parseEvent(decodedEvent)
+        );
+        console.log(parseEvent(decodedEvent));
         break;
       default:
         return;
@@ -126,7 +134,6 @@ const extractEvents = (
 };
 
 export const createSnapshotForNetwork = async (network: Network) => {
-  const MAX_SIGNATURES_PER_CALL = 300;
   let provider: AnchorProvider;
   let lastTxHashFileName: string;
   let eventsSnapFilename: string;
@@ -152,7 +159,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
         "../data/events_snap_testnet.json"
       );
       pointsFileName = path.join(__dirname, "../data/points_testnet.json");
-
       break;
     default:
       throw new Error("Unknown network");
@@ -173,7 +179,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
     undefined;
 
   const sigs = await fetchAllSignatures(connection, programId, lastTxHash);
-  console.log(sigs.length);
   if (sigs.length === 0) return;
 
   const data = { lastTxHash: sigs[0] };
@@ -191,15 +196,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
   const events = extractEvents(initialEvents, market, finalLogs);
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(events, null, 2));
 };
-
-// createSnapshotForNetwork(Network.DEV).then(
-//   () => {
-//     console.log("Eclipse: Devnet snapshot done!");
-//   },
-//   (err) => {
-//     console.log(err);
-//   }
-// );
 
 createSnapshotForNetwork(Network.TEST).then(
   () => {
