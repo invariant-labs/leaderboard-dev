@@ -1,0 +1,1 @@
+export const MAX_SIGNATURES_PER_CALL = 300;
