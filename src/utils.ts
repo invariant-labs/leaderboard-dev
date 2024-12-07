@@ -94,43 +94,18 @@ export const convertJson = (previousData: any) => {
       const updatedEvent = {
         ...activeEntry.event,
         id: new BN(activeEntry.event.id, "hex"),
-        liquidity: new BN(activeEntry.event.liquidity, "hex"),
-        currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
       };
       return { event: updatedEvent };
     });
 
     const updatedClosed = userPools.closed.map((closedEntry: any) => {
-      const openEvent = !closedEntry.events[0]
-        ? closedEntry.events[0]
-        : {
-            ...closedEntry.events[0],
-            id: new BN(closedEntry.events[0].id, "hex"),
-            liquidity: new BN(closedEntry.events[0].liquidity, "hex"),
-            currentTimestamp: new BN(
-              closedEntry.events[0].currentTimestamp,
-              "hex"
-            ),
-          };
+      if (!!closedEntry.events[0]) return closedEntry;
+
       const closeEvent = {
         ...closedEntry.events[1],
         id: new BN(closedEntry.events[1].id, "hex"),
-        liquidity: new BN(closedEntry.events[1].liquidity, "hex"),
-        currentTimestamp: new BN(closedEntry.events[1].currentTimestamp, "hex"),
-        upperTickSecondsPerLiquidityOutside: new BN(
-          closedEntry.events[1].upperTickSecondsPerLiquidityOutside,
-          "hex"
-        ),
-        lowerTickSecondsPerLiquidityOutside: new BN(
-          closedEntry.events[1].lowerTickSecondsPerLiquidityOutside,
-          "hex"
-        ),
-        poolSecondsPerLiquidityGlobal: new BN(
-          closedEntry.events[1].poolSecondsPerLiquidityGlobal,
-          "hex"
-        ),
       };
-      const updatedEvents = [openEvent, closeEvent];
+      const updatedEvents = [null, closeEvent];
       return { events: updatedEvents };
     });
 
@@ -140,6 +115,64 @@ export const convertJson = (previousData: any) => {
     };
   }
   return updatedData;
+};
+
+export const isPromotedPool = (pool: PublicKey) =>
+  PROMOTED_POOLS.some(
+    (promotedPool) => promotedPool.toString() === pool.toString()
+  );
+
+export const processCreatePositionEvent = (
+  event: CreatePositionEvent,
+  eventsObject: Record<string, IPositions>
+) => {
+  const { pool, owner, id } = event;
+  if (!isPromotedPool(pool)) return;
+
+  const ownerKey = owner.toString();
+  const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
+
+  const correspondingItemIndex = ownerData.closed.findIndex((item) =>
+    item.events[1].id.eq(id)
+  );
+
+  if (correspondingItemIndex >= 0) {
+    const correspondingItem = ownerData.closed[correspondingItemIndex];
+    ownerData.closed.splice(correspondingItemIndex, 1);
+    ownerData.closed.push({
+      events: [event, correspondingItem.events[1]],
+    });
+  } else {
+    ownerData.active.push({ event });
+  }
+
+  eventsObject[ownerKey] = ownerData;
+};
+
+export const processRemovePositionEvent = (
+  event: RemovePositionEvent,
+  eventsObject: Record<string, IPositions>
+) => {
+  const { pool, owner, id } = event;
+  if (!isPromotedPool(pool)) return;
+
+  const ownerKey = owner.toString();
+  const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
+
+  const correspondingItemIndex = ownerData.active.findIndex((item) =>
+    item.event.id.eq(id)
+  );
+
+  const correspondingEvent =
+    correspondingItemIndex >= 0
+      ? ownerData.active.splice(correspondingItemIndex, 1)[0]?.event
+      : null;
+
+  ownerData.closed.push({
+    events: [correspondingEvent, event],
+  });
+
+  eventsObject[ownerKey] = ownerData;
 };
 
 export const extractEvents = (
@@ -153,58 +186,6 @@ export const extractEvents = (
     .filter((log) => log.startsWith("Program data:"))
     .map((log) => log.split("Program data: ")[1]);
 
-  const isPromotedPool = (pool: any) =>
-    PROMOTED_POOLS.some(
-      (promotedPool) => promotedPool.toString() === pool.toString()
-    );
-
-  const processCreatePositionEvent = (event: CreatePositionEvent) => {
-    const { pool, owner, id } = event;
-    if (!isPromotedPool(pool)) return;
-
-    const ownerKey = owner.toString();
-    const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
-
-    const correspondingItemIndex = ownerData.closed.findIndex((item) =>
-      item.events[1].id.eq(id)
-    );
-
-    if (correspondingItemIndex >= 0) {
-      const correspondingItem = ownerData.closed[correspondingItemIndex];
-      ownerData.closed.splice(correspondingItemIndex, 1);
-      ownerData.closed.push({
-        events: [event, correspondingItem.events[1]],
-      });
-    } else {
-      ownerData.active.push({ event });
-    }
-
-    eventsObject[ownerKey] = ownerData;
-  };
-
-  const processRemovePositionEvent = (event: RemovePositionEvent) => {
-    const { pool, owner, id } = event;
-    if (!isPromotedPool(pool)) return;
-
-    const ownerKey = owner.toString();
-    const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
-
-    const correspondingItemIndex = ownerData.active.findIndex((item) =>
-      item.event.id.eq(id)
-    );
-
-    const correspondingEvent =
-      correspondingItemIndex >= 0
-        ? ownerData.active.splice(correspondingItemIndex, 1)[0]?.event
-        : null;
-
-    ownerData.closed.push({
-      events: [correspondingEvent, event],
-    });
-
-    eventsObject[ownerKey] = ownerData;
-  };
-
   eventLogs.forEach((log) => {
     const decodedEvent = market.eventDecoder.decode(log);
     if (!decodedEvent) return;
@@ -212,13 +193,15 @@ export const extractEvents = (
     switch (decodedEvent.name) {
       case InvariantEventNames.CreatePositionEvent:
         processCreatePositionEvent(
-          parseEvent(decodedEvent) as CreatePositionEvent
+          parseEvent(decodedEvent) as CreatePositionEvent,
+          eventsObject
         );
         break;
 
       case InvariantEventNames.RemovePositionEvent:
         processRemovePositionEvent(
-          parseEvent(decodedEvent) as RemovePositionEvent
+          parseEvent(decodedEvent) as RemovePositionEvent,
+          eventsObject
         );
         break;
 
