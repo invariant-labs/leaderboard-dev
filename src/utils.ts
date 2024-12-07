@@ -13,6 +13,7 @@ import {
 } from "@solana/web3.js";
 import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
+import { IPositions } from "./types";
 
 export const fetchAllSignatures = async (
   connection: Connection,
@@ -84,7 +85,7 @@ export const fetchTransactionLogs = async (
 };
 
 export const convertJson = (previousData: any) => {
-  const updatedData = {};
+  const updatedData: Record<string, IPositions> = {};
 
   for (const userId in previousData) {
     const userPools = previousData[userId];
@@ -93,15 +94,43 @@ export const convertJson = (previousData: any) => {
       const updatedEvent = {
         ...activeEntry.event,
         id: new BN(activeEntry.event.id, "hex"),
+        liquidity: new BN(activeEntry.event.liquidity, "hex"),
+        currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
       };
       return { event: updatedEvent };
     });
 
     const updatedClosed = userPools.closed.map((closedEntry: any) => {
-      const updatedEvents = closedEntry.events.map((event: any) => ({
-        ...event,
-        id: new BN(event.id, "hex"),
-      }));
+      const openEvent = !closedEntry.events[0]
+        ? closedEntry.events[0]
+        : {
+            ...closedEntry.events[0],
+            id: new BN(closedEntry.events[0].id, "hex"),
+            liquidity: new BN(closedEntry.events[0].liquidity, "hex"),
+            currentTimestamp: new BN(
+              closedEntry.events[0].currentTimestamp,
+              "hex"
+            ),
+          };
+      const closeEvent = {
+        ...closedEntry.events[1],
+        id: new BN(closedEntry.events[1].id, "hex"),
+        liquidity: new BN(closedEntry.events[1].liquidity, "hex"),
+        currentTimestamp: new BN(closedEntry.events[1].currentTimestamp, "hex"),
+        upperTickSecondsPerLiquidityOutside: new BN(
+          closedEntry.events[1].upperTickSecondsPerLiquidityOutside,
+          "hex"
+        ),
+        lowerTickSecondsPerLiquidityOutside: new BN(
+          closedEntry.events[1].lowerTickSecondsPerLiquidityOutside,
+          "hex"
+        ),
+        poolSecondsPerLiquidityGlobal: new BN(
+          closedEntry.events[1].poolSecondsPerLiquidityGlobal,
+          "hex"
+        ),
+      };
+      const updatedEvents = [openEvent, closeEvent];
       return { events: updatedEvents };
     });
 
@@ -114,11 +143,11 @@ export const convertJson = (previousData: any) => {
 };
 
 export const extractEvents = (
-  previousData: any,
+  previousData: Record<string, IPositions>,
   market: Market,
   transactionLog: string[]
 ) => {
-  const eventsObject: any = convertJson(previousData);
+  const eventsObject: Record<string, IPositions> = previousData;
   const eventLogs = transactionLog.filter((log) =>
     log.startsWith("Program data:")
   );
@@ -131,40 +160,37 @@ export const extractEvents = (
     }
 
     switch (decodedEvent.name) {
-      case InvariantEventNames.CreatePositionEvent:
+      case InvariantEventNames.CreatePositionEvent: {
         const parsedCreateEvent: CreatePositionEvent = parseEvent(decodedEvent);
+        const { pool, owner, id } = parsedCreateEvent;
+        const ownerKey = owner.toString();
         if (
           PROMOTED_POOLS.every(
-            (pool) => pool.toString() !== parsedCreateEvent.pool.toString()
+            (promotedPool) => promotedPool.toString() !== pool.toString()
           )
         )
           return;
 
-        if (!!eventsObject[parsedCreateEvent.owner.toString()]) {
-          const correspondingItem = eventsObject[
-            parsedCreateEvent.owner.toString()
-          ].closed.find((item) => item.events[1].id.eq(parsedCreateEvent.id));
+        if (!!eventsObject[ownerKey]) {
+          const correspondingItem = eventsObject[ownerKey].closed.find((item) =>
+            item.events[1].id.eq(id)
+          );
           if (correspondingItem) {
-            const correspondingIndex = eventsObject[
-              parsedCreateEvent.owner.toString()
-            ].closed.findIndex((item) =>
-              item.events[1].id.eq(parsedCreateEvent.id)
+            const correspondingIndex = eventsObject[ownerKey].closed.findIndex(
+              (item) => item.events[1].id.eq(id)
             );
-            eventsObject[parsedCreateEvent.owner.toString()].closed.splice(
-              correspondingIndex,
-              1
-            );
-            eventsObject[parsedCreateEvent.owner.toString()].closed.push({
+            eventsObject[ownerKey].closed.splice(correspondingIndex, 1);
+            eventsObject[ownerKey].closed.push({
               events: [parsedCreateEvent, correspondingItem.events[1]],
             });
             return;
           }
-          eventsObject[parsedCreateEvent.owner.toString()].active.push({
+          eventsObject[ownerKey].active.push({
             event: parsedCreateEvent,
           });
           return;
         }
-        eventsObject[parsedCreateEvent.owner.toString()] = {
+        eventsObject[ownerKey] = {
           active: [
             {
               event: parsedCreateEvent,
@@ -173,41 +199,40 @@ export const extractEvents = (
           closed: [],
         };
         break;
-      case InvariantEventNames.RemovePositionEvent:
-        //@ts-expect-error
-        const parsedRemoveEvent: RemovePositionEvent = parseEvent(decodedEvent);
+      }
+      case InvariantEventNames.RemovePositionEvent: {
+        const parsedRemoveEvent: RemovePositionEvent = parseEvent(
+          decodedEvent
+        ) as RemovePositionEvent;
+        const { pool, owner, id } = parsedRemoveEvent;
+        const ownerKey = owner.toString();
         if (
           PROMOTED_POOLS.every(
-            (pool) => pool.toString() !== parsedRemoveEvent.pool.toString()
+            (promotedPool) => promotedPool.toString() !== pool.toString()
           )
         )
           return;
-        if (!!eventsObject[parsedRemoveEvent.owner.toString()]) {
-          const correspondingItem = eventsObject[
-            parsedRemoveEvent.owner.toString()
-          ].active.find((item) => item.event.id.eq(parsedRemoveEvent.id));
-
-          eventsObject[parsedRemoveEvent.owner.toString()].closed.push({
+        if (!!eventsObject[ownerKey]) {
+          const correspondingItem = eventsObject[ownerKey].active.find((item) =>
+            item.event.id.eq(id)
+          );
+          eventsObject[ownerKey].closed.push({
             events: [correspondingItem?.event || null, parsedRemoveEvent],
           });
           if (correspondingItem) {
-            const correspondingIndex = eventsObject[
-              parsedRemoveEvent.owner.toString()
-            ].active.findIndex((item) =>
-              item.event.id.eq(parsedRemoveEvent.id)
+            const correspondingIndex = eventsObject[ownerKey].active.findIndex(
+              (item) => item.event.id.eq(id)
             );
-            eventsObject[parsedRemoveEvent.owner.toString()].active.splice(
-              correspondingIndex,
-              1
-            );
+            eventsObject[ownerKey].active.splice(correspondingIndex, 1);
           }
           return;
         }
-        eventsObject[parsedRemoveEvent.owner.toString()] = {
+        eventsObject[ownerKey] = {
           active: [],
           closed: [{ events: [null, parsedRemoveEvent] }],
         };
         break;
+      }
       default:
         return;
     }
