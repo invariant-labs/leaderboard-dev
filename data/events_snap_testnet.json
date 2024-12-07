@@ -57,6 +57,15 @@
           "liquidity": "0642190f3fda",
           "currentTimestamp": "ffff2158fffeb4c0"
         }
+      },
+      {
+        "event": {
+          "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
+          "pool": "BeBSTyo7BnVcQ3KP7DyDwiFtkbUFRnmnp2KvDnYmjBWY",
+          "id": "37",
+          "liquidity": "0544970b1180",
+          "currentTimestamp": "ffff2158fffeb4c0"
+        }
       }
     ],
     "closed": [
@@ -129,6 +138,30 @@
             "lowerTickSecondsPerLiquidityOutside": "1cf3b6a8a6ed25ebfb5d",
             "poolSecondsPerLiquidityGlobal": "1d67a87bbcc04ecd32f6",
             "currentTimestamp": "67544906"
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
+            "pool": "BeBSTyo7BnVcQ3KP7DyDwiFtkbUFRnmnp2KvDnYmjBWY",
+            "id": "36",
+            "liquidity": "0642190f3fda",
+            "currentTimestamp": "ffff2158fffeb4c0"
+          },
+          {
+            "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
+            "pool": "BeBSTyo7BnVcQ3KP7DyDwiFtkbUFRnmnp2KvDnYmjBWY",
+            "id": "36",
+            "liquidity": "0642190f3fda",
+            "upperTick": -57000,
+            "currentTick": -70900,
+            "lowerTick": -84800,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "1cfe78af9c6a4fd68185",
+            "poolSecondsPerLiquidityGlobal": "1d7002161324d572c0dc",
+            "currentTimestamp": "6754533d"
           }
         ]
       }

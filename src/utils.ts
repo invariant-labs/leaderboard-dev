@@ -146,96 +146,86 @@ export const extractEvents = (
   previousData: Record<string, IPositions>,
   market: Market,
   transactionLog: string[]
-) => {
-  const eventsObject: Record<string, IPositions> = previousData;
-  const eventLogs = transactionLog.filter((log) =>
-    log.startsWith("Program data:")
-  );
-  eventLogs.forEach((eventLog) => {
-    const decodedEvent = market.eventDecoder.decode(
-      eventLog.split("Program data: ")[1]
+): Record<string, IPositions> => {
+  const eventsObject: Record<string, IPositions> = { ...previousData };
+
+  const eventLogs = transactionLog
+    .filter((log) => log.startsWith("Program data:"))
+    .map((log) => log.split("Program data: ")[1]);
+
+  const isPromotedPool = (pool: any) =>
+    PROMOTED_POOLS.some(
+      (promotedPool) => promotedPool.toString() === pool.toString()
     );
-    if (!decodedEvent) {
-      return;
+
+  const processCreatePositionEvent = (event: CreatePositionEvent) => {
+    const { pool, owner, id } = event;
+    if (!isPromotedPool(pool)) return;
+
+    const ownerKey = owner.toString();
+    const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
+
+    const correspondingItemIndex = ownerData.closed.findIndex((item) =>
+      item.events[1].id.eq(id)
+    );
+
+    if (correspondingItemIndex >= 0) {
+      const correspondingItem = ownerData.closed[correspondingItemIndex];
+      ownerData.closed.splice(correspondingItemIndex, 1);
+      ownerData.closed.push({
+        events: [event, correspondingItem.events[1]],
+      });
+    } else {
+      ownerData.active.push({ event });
     }
+
+    eventsObject[ownerKey] = ownerData;
+  };
+
+  const processRemovePositionEvent = (event: RemovePositionEvent) => {
+    const { pool, owner, id } = event;
+    if (!isPromotedPool(pool)) return;
+
+    const ownerKey = owner.toString();
+    const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
+
+    const correspondingItemIndex = ownerData.active.findIndex((item) =>
+      item.event.id.eq(id)
+    );
+
+    const correspondingEvent =
+      correspondingItemIndex >= 0
+        ? ownerData.active.splice(correspondingItemIndex, 1)[0]?.event
+        : null;
+
+    ownerData.closed.push({
+      events: [correspondingEvent, event],
+    });
+
+    eventsObject[ownerKey] = ownerData;
+  };
+
+  eventLogs.forEach((log) => {
+    const decodedEvent = market.eventDecoder.decode(log);
+    if (!decodedEvent) return;
 
     switch (decodedEvent.name) {
-      case InvariantEventNames.CreatePositionEvent: {
-        const parsedCreateEvent: CreatePositionEvent = parseEvent(decodedEvent);
-        const { pool, owner, id } = parsedCreateEvent;
-        const ownerKey = owner.toString();
-        if (
-          PROMOTED_POOLS.every(
-            (promotedPool) => promotedPool.toString() !== pool.toString()
-          )
-        )
-          return;
+      case InvariantEventNames.CreatePositionEvent:
+        processCreatePositionEvent(
+          parseEvent(decodedEvent) as CreatePositionEvent
+        );
+        break;
 
-        if (!!eventsObject[ownerKey]) {
-          const correspondingItem = eventsObject[ownerKey].closed.find((item) =>
-            item.events[1].id.eq(id)
-          );
-          if (correspondingItem) {
-            const correspondingIndex = eventsObject[ownerKey].closed.findIndex(
-              (item) => item.events[1].id.eq(id)
-            );
-            eventsObject[ownerKey].closed.splice(correspondingIndex, 1);
-            eventsObject[ownerKey].closed.push({
-              events: [parsedCreateEvent, correspondingItem.events[1]],
-            });
-            return;
-          }
-          eventsObject[ownerKey].active.push({
-            event: parsedCreateEvent,
-          });
-          return;
-        }
-        eventsObject[ownerKey] = {
-          active: [
-            {
-              event: parsedCreateEvent,
-            },
-          ],
-          closed: [],
-        };
+      case InvariantEventNames.RemovePositionEvent:
+        processRemovePositionEvent(
+          parseEvent(decodedEvent) as RemovePositionEvent
+        );
         break;
-      }
-      case InvariantEventNames.RemovePositionEvent: {
-        const parsedRemoveEvent: RemovePositionEvent = parseEvent(
-          decodedEvent
-        ) as RemovePositionEvent;
-        const { pool, owner, id } = parsedRemoveEvent;
-        const ownerKey = owner.toString();
-        if (
-          PROMOTED_POOLS.every(
-            (promotedPool) => promotedPool.toString() !== pool.toString()
-          )
-        )
-          return;
-        if (!!eventsObject[ownerKey]) {
-          const correspondingItem = eventsObject[ownerKey].active.find((item) =>
-            item.event.id.eq(id)
-          );
-          eventsObject[ownerKey].closed.push({
-            events: [correspondingItem?.event || null, parsedRemoveEvent],
-          });
-          if (correspondingItem) {
-            const correspondingIndex = eventsObject[ownerKey].active.findIndex(
-              (item) => item.event.id.eq(id)
-            );
-            eventsObject[ownerKey].active.splice(correspondingIndex, 1);
-          }
-          return;
-        }
-        eventsObject[ownerKey] = {
-          active: [],
-          closed: [{ events: [null, parsedRemoveEvent] }],
-        };
-        break;
-      }
+
       default:
-        return;
+        break;
     }
   });
+
   return eventsObject;
 };
