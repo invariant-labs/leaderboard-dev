@@ -1,10 +1,4 @@
-import {
-  CreatePositionEvent,
-  InvariantEventNames,
-  Market,
-  parseEvent,
-  RemovePositionEvent,
-} from "@invariant-labs/sdk-eclipse";
+import { Market } from "@invariant-labs/sdk-eclipse";
 import {
   Connection,
   PublicKey,
@@ -14,6 +8,14 @@ import {
 import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
 import { IPositions } from "./types";
+import {
+  calculatePointsForClosedPosition,
+  calculatePointsForOpenPosition,
+} from "./math";
+import {
+  CreatePositionEvent,
+  RemovePositionEvent,
+} from "@invariant-labs/sdk-eclipse/lib/market";
 
 export const fetchAllSignatures = async (
   connection: Connection,
@@ -95,7 +97,7 @@ export const convertJson = (previousData: any) => {
         ...activeEntry.event,
         id: new BN(activeEntry.event.id, "hex"),
       };
-      return { event: updatedEvent };
+      return { event: updatedEvent, points: activeEntry.points };
     });
 
     const updatedClosed = userPools.closed.map((closedEntry: any) => {
@@ -106,7 +108,7 @@ export const convertJson = (previousData: any) => {
         id: new BN(closedEntry.events[1].id, "hex"),
       };
       const updatedEvents = [null, closeEvent];
-      return { events: updatedEvents };
+      return { events: updatedEvents, points: closedEntry.points };
     });
 
     updatedData[userId] = {
@@ -122,15 +124,13 @@ export const isPromotedPool = (pool: PublicKey) =>
     (promotedPool) => promotedPool.toString() === pool.toString()
   );
 
-export const processCreatePositionEvent = (
+export const processCreatePositionEvent = async (
   event: CreatePositionEvent,
-  eventsObject: Record<string, IPositions>
+  ownerData: IPositions,
+  market: Market
 ) => {
-  const { pool, owner, id } = event;
+  const { pool, id } = event;
   if (!isPromotedPool(pool)) return;
-
-  const ownerKey = owner.toString();
-  const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
 
   const correspondingItemIndex = ownerData.closed.findIndex((item) =>
     item.events[1].id.eq(id)
@@ -141,23 +141,36 @@ export const processCreatePositionEvent = (
     ownerData.closed.splice(correspondingItemIndex, 1);
     ownerData.closed.push({
       events: [event, correspondingItem.events[1]],
+      points: calculatePointsForClosedPosition(correspondingItem.events[1]),
     });
   } else {
-    ownerData.active.push({ event });
+    const poolPubkey = new PublicKey(event.pool);
+    const [pool, upperTick, lowerTick] = await Promise.all([
+      market.getPoolByAddress(poolPubkey),
+      market.getTickByPool(poolPubkey, event.upperTick),
+      market.getTickByPool(poolPubkey, event.lowerTick),
+    ]);
+    const points = calculatePointsForOpenPosition(
+      event,
+      pool,
+      upperTick,
+      lowerTick
+    );
+    ownerData.active.push({
+      event,
+      points: points,
+    });
   }
 
-  eventsObject[ownerKey] = ownerData;
+  return ownerData;
 };
 
 export const processRemovePositionEvent = (
   event: RemovePositionEvent,
-  eventsObject: Record<string, IPositions>
+  ownerData: IPositions
 ) => {
-  const { pool, owner, id } = event;
+  const { pool, id } = event;
   if (!isPromotedPool(pool)) return;
-
-  const ownerKey = owner.toString();
-  const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
 
   const correspondingItemIndex = ownerData.active.findIndex((item) =>
     item.event.id.eq(id)
@@ -170,45 +183,8 @@ export const processRemovePositionEvent = (
 
   ownerData.closed.push({
     events: [correspondingEvent, event],
+    points: calculatePointsForClosedPosition(event),
   });
 
-  eventsObject[ownerKey] = ownerData;
-};
-
-export const extractEvents = (
-  previousData: Record<string, IPositions>,
-  market: Market,
-  transactionLog: string[]
-): Record<string, IPositions> => {
-  const eventsObject: Record<string, IPositions> = { ...previousData };
-
-  const eventLogs = transactionLog
-    .filter((log) => log.startsWith("Program data:"))
-    .map((log) => log.split("Program data: ")[1]);
-
-  eventLogs.forEach((log) => {
-    const decodedEvent = market.eventDecoder.decode(log);
-    if (!decodedEvent) return;
-
-    switch (decodedEvent.name) {
-      case InvariantEventNames.CreatePositionEvent:
-        processCreatePositionEvent(
-          parseEvent(decodedEvent) as CreatePositionEvent,
-          eventsObject
-        );
-        break;
-
-      case InvariantEventNames.RemovePositionEvent:
-        processRemovePositionEvent(
-          parseEvent(decodedEvent) as RemovePositionEvent,
-          eventsObject
-        );
-        break;
-
-      default:
-        break;
-    }
-  });
-
-  return eventsObject;
+  return ownerData;
 };
