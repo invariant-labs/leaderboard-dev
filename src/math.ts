@@ -45,15 +45,15 @@ export const calculateSecondsPerLiquidityGlobal = (
 };
 
 export const calculateSecondsPerLiquidityInside = (
-  upperTick: BN,
-  lowerTick: BN,
-  currentTick: BN,
+  upperTick: number,
+  lowerTick: number,
+  currentTick: number,
   upperTickSecondsPerLiquidityOutside: BN,
   lowerTickSecondsPerLiquidityOutside: BN,
   poolSecondsPerLiquidityGlobal: BN
 ): BN => {
-  const currentAboveLower = currentTick.gte(lowerTick);
-  const currentBelowUpper = currentTick.lt(upperTick);
+  const currentAboveLower = currentTick >= lowerTick;
+  const currentBelowUpper = currentTick < upperTick;
 
   let secondsPerLiquidityBelow, secondsPerLiquidityAbove;
 
