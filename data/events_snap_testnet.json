@@ -11,7 +11,7 @@
           "upperTick": -57000,
           "currentTimestamp": "67545af9"
         },
-        "secondsPerLiquidityInside": "01524b46a45519f6853c",
+        "previousSnapSecondsPerLiquidityInside": "01524b46a45519f6853c",
         "points": 361450000
       },
       {
@@ -24,7 +24,7 @@
           "upperTick": -57000,
           "currentTimestamp": "67544778"
         },
-        "secondsPerLiquidityInside": "01524b46a45519f6853c",
+        "previousSnapSecondsPerLiquidityInside": "01524b46a45519f6853c",
         "points": 429400000
       },
       {
@@ -37,7 +37,7 @@
           "upperTick": -45900,
           "currentTimestamp": "6753441d"
         },
-        "secondsPerLiquidityInside": "015d0d4d99d243e10b64",
+        "previousSnapSecondsPerLiquidityInside": "015d0d4d99d243e10b64",
         "points": 646690000
       }
     ],

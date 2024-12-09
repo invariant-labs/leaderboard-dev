@@ -9,7 +9,7 @@ import { PublicKey } from "@solana/web3.js";
 
 export interface IActive {
   event: CreatePositionEvent;
-  secondsPerLiquidityInside: BN;
+  previousSnapSecondsPerLiquidityInside: BN;
   points: number;
 }
 export interface IClosed {

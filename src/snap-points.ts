@@ -89,8 +89,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
     lastTxHash
   );
 
-  if (sigs.length === 0) return;
-
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -211,7 +209,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
       return { pool, poolStructure: poolStructure, ticks };
     })
   );
-
   const currentTimestamp = getTimestampInSeconds();
 
   const convertedLastSnapTimestamp = new BN(lastSnapTimestamp);
