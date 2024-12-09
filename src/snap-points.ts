@@ -226,21 +226,15 @@ export const createSnapshotForNetwork = async (network: Network) => {
   const updatedNewOpen = processNewOpen(
     newOpen,
     poolsWithTicks,
-    currentTimestamp,
-    convertedLastSnapTimestamp
+    currentTimestamp
   );
 
   const updatedNewClosed = processNewClosed(
     newClosed,
-    currentTimestamp,
     convertedLastSnapTimestamp
   );
 
-  const updatedNewOpenClosed = processNewOpenClosed(
-    newOpenClosed,
-    currentTimestamp,
-    convertedLastSnapTimestamp
-  );
+  const updatedNewOpenClosed = processNewOpenClosed(newOpenClosed);
 
   Object.keys(eventsObject).forEach((key) => {
     eventsObject[key].active = [];

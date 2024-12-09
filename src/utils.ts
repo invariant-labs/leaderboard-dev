@@ -162,8 +162,7 @@ export const processStillOpen = (
 export const processNewOpen = (
   newOpen: CreatePositionEvent[],
   poolsWithTicks: IPoolAndTicks[],
-  currentTimestamp: BN,
-  lastSnapTimestamp: BN
+  currentTimestamp: BN
 ) => {
   const updatedNewOpen: IActive[] = [];
 
@@ -202,7 +201,6 @@ export const processNewOpen = (
 
 export const processNewClosed = (
   newClosed: [IActive, RemovePositionEvent][],
-  currentTimestamp: BN,
   lastSnapTimestamp: BN
 ) => {
   const updatedNewClosed: IClosed[] = [];
@@ -234,9 +232,7 @@ export const processNewClosed = (
 };
 
 export const processNewOpenClosed = (
-  newOpenClosed: [CreatePositionEvent | null, RemovePositionEvent][],
-  currentTimestamp: BN,
-  lastSnapTimestamp: BN
+  newOpenClosed: [CreatePositionEvent | null, RemovePositionEvent][]
 ) => {
   const updatedNewOpenClosed: IClosed[] = [];
 
