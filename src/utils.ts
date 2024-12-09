@@ -1,9 +1,4 @@
-import {
-  InvariantEventNames,
-  Market,
-  Pair,
-  parseEvent,
-} from "@invariant-labs/sdk-eclipse";
+import { Market } from "@invariant-labs/sdk-eclipse";
 import {
   Connection,
   PublicKey,
@@ -14,13 +9,11 @@ import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
 import { IPositions } from "./types";
 import {
-  calculateReward,
-  calculateSecondsPerLiquidityGlobal,
-  calculateSecondsPerLiquidityInside,
+  calculatePointsForClosedPosition,
+  calculatePointsForOpenPosition,
 } from "./math";
 import {
   CreatePositionEvent,
-  PoolStructure,
   RemovePositionEvent,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 
@@ -131,71 +124,6 @@ export const isPromotedPool = (pool: PublicKey) =>
     (promotedPool) => promotedPool.toString() === pool.toString()
   );
 
-export const calculatePointsForClosedPosition = (
-  event: RemovePositionEvent
-) => {
-  const {
-    upperTick,
-    liquidity,
-    lowerTick,
-    poolSecondsPerLiquidityGlobal,
-    upperTickSecondsPerLiquidityOutside,
-    lowerTickSecondsPerLiquidityOutside,
-    currentTick,
-  } = event;
-  const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
-    upperTick,
-    lowerTick,
-    currentTick,
-    upperTickSecondsPerLiquidityOutside,
-    lowerTickSecondsPerLiquidityOutside,
-    poolSecondsPerLiquidityGlobal
-  );
-  const reward = calculateReward(
-    liquidity,
-    new BN(0),
-    secondsPerLiquidityInside
-  );
-  return reward;
-};
-
-export const calculatePointsForOpenPosition = async (
-  event: CreatePositionEvent,
-  market: Market
-) => {
-  const pool: PoolStructure = await market.getPoolByAddress(
-    new PublicKey(event.pool)
-  );
-
-  const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
-    pool.secondsPerLiquidityGlobal,
-    pool.liquidity,
-    pool.lastTimestamp
-  );
-  const upperTick = await market.getTickByPool(
-    new PublicKey(event.pool),
-    event.upperTick
-  );
-  const lowerTick = await market.getTickByPool(
-    new PublicKey(event.pool),
-    event.lowerTick
-  );
-  const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
-    event.upperTick,
-    event.lowerTick,
-    pool.currentTickIndex,
-    upperTick.secondsPerLiquidityOutside,
-    lowerTick.secondsPerLiquidityOutside,
-    secondsPerLiquidityGlobal
-  );
-  const reward = calculateReward(
-    event.liquidity,
-    new BN(0),
-    secondsPerLiquidityInside
-  );
-  return reward;
-};
-
 export const processCreatePositionEvent = async (
   event: CreatePositionEvent,
   eventsObject: Record<string, IPositions>,
@@ -254,42 +182,4 @@ export const processRemovePositionEvent = (
   });
 
   eventsObject[ownerKey] = ownerData;
-};
-
-export const extractEvents = async (
-  previousData: Record<string, IPositions>,
-  market: Market,
-  transactionLog: string[]
-): Promise<Record<string, IPositions>> => {
-  const eventsObject: Record<string, IPositions> = { ...previousData };
-  const eventLogs = transactionLog
-    .filter((log) => log.startsWith("Program data:"))
-    .map((log) => log.split("Program data: ")[1]);
-
-  for (const log of eventLogs) {
-    const decodedEvent = market.eventDecoder.decode(log);
-    if (!decodedEvent) continue;
-
-    switch (decodedEvent.name) {
-      case InvariantEventNames.CreatePositionEvent:
-        await processCreatePositionEvent(
-          parseEvent(decodedEvent) as CreatePositionEvent,
-          eventsObject,
-          market
-        );
-        break;
-
-      case InvariantEventNames.RemovePositionEvent:
-        processRemovePositionEvent(
-          parseEvent(decodedEvent) as RemovePositionEvent,
-          eventsObject
-        );
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  return eventsObject;
 };

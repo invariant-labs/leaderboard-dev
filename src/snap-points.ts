@@ -3,6 +3,8 @@ import {
   Market,
   getMarketAddress,
   IWallet,
+  InvariantEventNames,
+  parseEvent,
 } from "@invariant-labs/sdk-eclipse";
 import { AnchorProvider } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
@@ -11,10 +13,16 @@ import path from "path";
 import { MAX_SIGNATURES_PER_CALL } from "./consts";
 import {
   fetchAllSignatures,
-  extractEvents,
   fetchTransactionLogs,
   convertJson,
+  processCreatePositionEvent,
+  processRemovePositionEvent,
 } from "./utils";
+import { IPositions } from "./types";
+import {
+  CreatePositionEvent,
+  RemovePositionEvent,
+} from "@invariant-labs/sdk-eclipse/lib/market";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -87,12 +95,38 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   const finalLogs = txLogs.flat();
   const previousData = JSON.parse(fs.readFileSync(eventsSnapFilename, "utf-8"));
-  const events = await extractEvents(
-    convertJson(previousData),
-    market,
-    finalLogs
-  );
-  fs.writeFileSync(eventsSnapFilename, JSON.stringify(events, null, 2));
+  const eventsObject: Record<string, IPositions> = {
+    ...convertJson(previousData),
+  };
+  const eventLogs = finalLogs
+    .filter((log) => log.startsWith("Program data:"))
+    .map((log) => log.split("Program data: ")[1]);
+
+  for (const log of eventLogs) {
+    const decodedEvent = market.eventDecoder.decode(log);
+    if (!decodedEvent) continue;
+
+    switch (decodedEvent.name) {
+      case InvariantEventNames.CreatePositionEvent:
+        await processCreatePositionEvent(
+          parseEvent(decodedEvent) as CreatePositionEvent,
+          eventsObject,
+          market
+        );
+        break;
+
+      case InvariantEventNames.RemovePositionEvent:
+        processRemovePositionEvent(
+          parseEvent(decodedEvent) as RemovePositionEvent,
+          eventsObject
+        );
+        break;
+
+      default:
+        break;
+    }
+  }
+  fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
 };
 
 createSnapshotForNetwork(Network.TEST).then(
