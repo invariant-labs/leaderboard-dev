@@ -46,19 +46,19 @@ jobs:
           export ANCHOR_WALLET="/home/runner/.config/solana/id.json"
           npm install
           npm run snap
-      - uses: actions/upload-artifact@v4
-        with:
-          name: eclipse-points-snapshot-${{ github.run_id }}
-          path: |
-            ./data/*.json
-      - name: Commit changes
-        run: |
-          git config --global user.email stats@invariant.app
-          git config --global user.name invariantStats
-          git add ./data/
-          git commit -m "Snapshot of points done!"
-      - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: eclipse-points-snapshot-${{ github.run_id }}
+      #     path: |
+      #       ./data/*.json
+      # - name: Commit changes
+      #   run: |
+      #     git config --global user.email stats@invariant.app
+      #     git config --global user.name invariantStats
+      #     git add ./data/
+      #     git commit -m "Snapshot of points done!"
+      # - name: GitHub Push
+      #   uses: ad-m/github-push-action@v0.6.0
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: master
