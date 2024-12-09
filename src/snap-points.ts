@@ -87,7 +87,11 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   const finalLogs = txLogs.flat();
   const previousData = JSON.parse(fs.readFileSync(eventsSnapFilename, "utf-8"));
-  const events = extractEvents(convertJson(previousData), market, finalLogs);
+  const events = await extractEvents(
+    convertJson(previousData),
+    market,
+    finalLogs
+  );
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(events, null, 2));
 };
 
