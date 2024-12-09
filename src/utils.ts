@@ -126,14 +126,11 @@ export const isPromotedPool = (pool: PublicKey) =>
 
 export const processCreatePositionEvent = async (
   event: CreatePositionEvent,
-  eventsObject: Record<string, IPositions>,
+  ownerData: IPositions,
   market: Market
 ) => {
-  const { pool, owner, id } = event;
+  const { pool, id } = event;
   if (!isPromotedPool(pool)) return;
-
-  const ownerKey = owner.toString();
-  const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
 
   const correspondingItemIndex = ownerData.closed.findIndex((item) =>
     item.events[1].id.eq(id)
@@ -147,25 +144,33 @@ export const processCreatePositionEvent = async (
       points: calculatePointsForClosedPosition(correspondingItem.events[1]),
     });
   } else {
-    const points = await calculatePointsForOpenPosition(event, market);
+    const poolPubkey = new PublicKey(event.pool);
+    const [pool, upperTick, lowerTick] = await Promise.all([
+      market.getPoolByAddress(poolPubkey),
+      market.getTickByPool(poolPubkey, event.upperTick),
+      market.getTickByPool(poolPubkey, event.lowerTick),
+    ]);
+    const points = calculatePointsForOpenPosition(
+      event,
+      pool,
+      upperTick,
+      lowerTick
+    );
     ownerData.active.push({
       event,
       points: points,
     });
   }
 
-  eventsObject[ownerKey] = ownerData;
+  return ownerData;
 };
 
 export const processRemovePositionEvent = (
   event: RemovePositionEvent,
-  eventsObject: Record<string, IPositions>
+  ownerData: IPositions
 ) => {
-  const { pool, owner, id } = event;
+  const { pool, id } = event;
   if (!isPromotedPool(pool)) return;
-
-  const ownerKey = owner.toString();
-  const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
 
   const correspondingItemIndex = ownerData.active.findIndex((item) =>
     item.event.id.eq(id)
@@ -181,5 +186,5 @@ export const processRemovePositionEvent = (
     points: calculatePointsForClosedPosition(event),
   });
 
-  eventsObject[ownerKey] = ownerData;
+  return ownerData;
 };

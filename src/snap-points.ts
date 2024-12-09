@@ -98,30 +98,45 @@ export const createSnapshotForNetwork = async (network: Network) => {
   const eventsObject: Record<string, IPositions> = {
     ...convertJson(previousData),
   };
-  const eventLogs = finalLogs
-    .filter((log) => log.startsWith("Program data:"))
-    .map((log) => log.split("Program data: ")[1]);
+  const eventLogs: string[] = [];
+
+  finalLogs.map((log, index) => {
+    if (
+      log.startsWith("Program data:") &&
+      finalLogs[index + 1].startsWith(
+        `Program ${market.program.programId.toBase58()}`
+      )
+    )
+      eventLogs.push(log.split("Program data: ")[1]);
+  });
 
   for (const log of eventLogs) {
     const decodedEvent = market.eventDecoder.decode(log);
     if (!decodedEvent) continue;
 
     switch (decodedEvent.name) {
-      case InvariantEventNames.CreatePositionEvent:
-        await processCreatePositionEvent(
-          parseEvent(decodedEvent) as CreatePositionEvent,
-          eventsObject,
+      case InvariantEventNames.CreatePositionEvent: {
+        const event = parseEvent(decodedEvent) as CreatePositionEvent;
+        const ownerKey = event.owner.toString();
+        const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
+        const updatedData = await processCreatePositionEvent(
+          event,
+          ownerData,
           market
         );
-        break;
+        if (updatedData) eventsObject[ownerKey] = updatedData;
 
-      case InvariantEventNames.RemovePositionEvent:
-        processRemovePositionEvent(
-          parseEvent(decodedEvent) as RemovePositionEvent,
-          eventsObject
-        );
         break;
+      }
 
+      case InvariantEventNames.RemovePositionEvent: {
+        const event = parseEvent(decodedEvent) as RemovePositionEvent;
+        const ownerKey = event.owner.toString();
+        const ownerData = eventsObject[ownerKey] || { active: [], closed: [] };
+        const updatedData = processRemovePositionEvent(event, ownerData);
+        if (updatedData) eventsObject[ownerKey] = updatedData;
+        break;
+      }
       default:
         break;
     }

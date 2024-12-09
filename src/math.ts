@@ -1,7 +1,9 @@
 import {
   CreatePositionEvent,
   Market,
+  PoolStructure,
   RemovePositionEvent,
+  Tick,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
@@ -135,17 +137,12 @@ export const calculatePointsForClosedPosition = (
   return reward;
 };
 
-export const calculatePointsForOpenPosition = async (
+export const calculatePointsForOpenPosition = (
   event: CreatePositionEvent,
-  market: Market
+  pool: PoolStructure,
+  upperTick: Tick,
+  lowerTick: Tick
 ) => {
-  const poolPubkey = new PublicKey(event.pool);
-  const [pool, upperTick, lowerTick] = await Promise.all([
-    market.getPoolByAddress(poolPubkey),
-    market.getTickByPool(poolPubkey, event.upperTick),
-    market.getTickByPool(poolPubkey, event.lowerTick),
-  ]);
-
   const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
     pool.secondsPerLiquidityGlobal,
     pool.liquidity,
