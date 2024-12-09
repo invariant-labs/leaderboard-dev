@@ -21,7 +21,7 @@ import {
   processNewClosed,
   processNewOpenClosed,
 } from "./utils";
-import { IActive, IConfig, IPoolAndTicks, IPositions } from "./types";
+import { IActive, IConfig, IPoints, IPoolAndTicks, IPositions } from "./types";
 import {
   CreatePositionEvent,
   RemovePositionEvent,
@@ -272,8 +272,31 @@ export const createSnapshotForNetwork = async (network: Network) => {
     lastTxHash: sigs[0],
     currentTimestamp: currentTimestamp.toNumber(),
   };
+
+  const points: Record<string, IPoints> = Object.keys(eventsObject).reduce(
+    (acc, curr) => {
+      const pointsForOpen: number[] = eventsObject[curr].active.map(
+        (entry) => entry.points
+      );
+      const pointsForClosed: number[] = eventsObject[curr].closed.map(
+        (entry) => entry.points
+      );
+      const totalPoints = pointsForOpen
+        .concat(pointsForClosed)
+        .reduce((sum, point) => (sum += point), 0);
+      acc[curr] = {
+        totalPoints,
+        positionsAmount: eventsObject[curr].active.length,
+        last24HoursPoints: 0,
+      };
+      return acc;
+    },
+    {}
+  );
+
   fs.writeFileSync(configFileName, JSON.stringify(data, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
+  fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));
 };
 
 createSnapshotForNetwork(Network.TEST).then(
