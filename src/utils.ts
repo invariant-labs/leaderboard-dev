@@ -163,10 +163,6 @@ export const calculatePointsForOpenPosition = async (
   event: CreatePositionEvent,
   market: Market
 ) => {
-  const position = await market.getPosition(
-    new PublicKey(event.owner),
-    new BN(event.id, "hex").toNumber()
-  );
   const pool: PoolStructure = await market.getPoolByAddress(
     new PublicKey(event.pool)
   );
