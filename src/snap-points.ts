@@ -214,7 +214,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   const currentTimestamp = getTimestampInSeconds();
 
-  const convertedLastSnapTimestamp = new BN(lastSnapTimestamp, "hex");
+  const convertedLastSnapTimestamp = new BN(lastSnapTimestamp);
 
   const updatedStillOpen = processStillOpen(
     stillOpen,
@@ -268,7 +268,10 @@ export const createSnapshotForNetwork = async (network: Network) => {
     eventsObject[ownerKey].closed.push(entry);
   });
 
-  const data = { lastTxHash: sigs[0], currentTimestamp };
+  const data = {
+    lastTxHash: sigs[0],
+    currentTimestamp: currentTimestamp.toNumber(),
+  };
   fs.writeFileSync(configFileName, JSON.stringify(data, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
 };

@@ -9,11 +9,12 @@ import { PublicKey } from "@solana/web3.js";
 
 export interface IActive {
   event: CreatePositionEvent;
-  points: BN;
+  secondsPerLiquidityInside: BN;
+  points: number;
 }
 export interface IClosed {
   events: [CreatePositionEvent | null, RemovePositionEvent];
-  points: BN;
+  points: number;
 }
 export interface IPositions {
   active: IActive[];
@@ -21,7 +22,7 @@ export interface IPositions {
 }
 export interface IConfig {
   lastTxHash: string;
-  lastSnapTimestamp: string;
+  lastSnapTimestamp: number;
 }
 export interface IPoolAndTicks {
   pool: PublicKey;

@@ -15,19 +15,15 @@ export const calculateReward = (
   secondsPerLiquidityInsideInitial: BN,
   secondsPerLiquidityInside: BN,
   pointsToDistribute: BN,
-  totalSecondsInside: BN
+  totalSecondsPassed: BN
 ): BN => {
-  if (totalSecondsInside.eqn(0)) {
-    return new BN(0);
-  }
-
   const secondsInside = calculateSecondsInside(
     liquidity,
     secondsPerLiquidityInsideInitial,
     secondsPerLiquidityInside
   );
 
-  const points = pointsToDistribute.mul(secondsInside).div(totalSecondsInside);
+  const points = pointsToDistribute.mul(secondsInside).div(totalSecondsPassed);
 
   return points;
 };

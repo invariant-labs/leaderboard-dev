@@ -137,22 +137,28 @@ export const processStillOpen = (
       (tick) => tick.index === entry.event.lowerTick
     )!;
     const poolStructure = desiredPoolWithTicks.poolStructure;
+    const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
+      upperTick.index,
+      lowerTick.index,
+      poolStructure.currentTickIndex,
+      upperTick.secondsPerLiquidityOutside,
+      lowerTick.secondsPerLiquidityOutside,
+      poolStructure.secondsPerLiquidityGlobal
+    );
     updatedStillOpen.push({
       event: entry.event,
-      points: calculateReward(
-        entry.event.liquidity,
-        entry.points,
-        calculateSecondsPerLiquidityInside(
-          upperTick.index,
-          lowerTick.index,
-          poolStructure.currentTickIndex,
-          upperTick.secondsPerLiquidityOutside,
-          lowerTick.secondsPerLiquidityOutside,
-          poolStructure.secondsPerLiquidityGlobal
-        ),
-        calculatePointsToDistribute(lastSnapTimestamp, currentTimestamp),
-        currentTimestamp.sub(lastSnapTimestamp)
-      ),
+      secondsPerLiquidityInside,
+      points: new BN(entry.points)
+        .add(
+          calculateReward(
+            entry.event.liquidity,
+            entry.secondsPerLiquidityInside,
+            secondsPerLiquidityInside,
+            calculatePointsToDistribute(lastSnapTimestamp, currentTimestamp),
+            currentTimestamp.sub(lastSnapTimestamp)
+          )
+        )
+        .toNumber(),
     });
   });
 
@@ -177,22 +183,24 @@ export const processNewOpen = (
       (tick) => tick.index === entry.lowerTick
     )!;
     const poolStructure = desiredPoolWithTicks.poolStructure;
+    const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
+      upperTick.index,
+      lowerTick.index,
+      poolStructure.currentTickIndex,
+      upperTick.secondsPerLiquidityOutside,
+      lowerTick.secondsPerLiquidityOutside,
+      poolStructure.secondsPerLiquidityGlobal
+    );
     updatedNewOpen.push({
       event: entry,
+      secondsPerLiquidityInside,
       points: calculateReward(
         entry.liquidity,
         new BN(0),
-        calculateSecondsPerLiquidityInside(
-          upperTick.index,
-          lowerTick.index,
-          poolStructure.currentTickIndex,
-          upperTick.secondsPerLiquidityOutside,
-          lowerTick.secondsPerLiquidityOutside,
-          poolStructure.secondsPerLiquidityGlobal
-        ),
+        secondsPerLiquidityInside,
         calculatePointsToDistribute(entry.currentTimestamp, currentTimestamp),
         currentTimestamp.sub(entry.currentTimestamp)
-      ),
+      ).toNumber(),
     });
   });
 
@@ -208,23 +216,27 @@ export const processNewClosed = (
   newClosed.forEach((entry) => {
     updatedNewClosed.push({
       events: [entry[0].event, entry[1]],
-      points: calculateReward(
-        entry[1].liquidity,
-        entry[0].points,
-        calculateSecondsPerLiquidityInside(
-          entry[1].upperTick,
-          entry[1].lowerTick,
-          entry[1].currentTick,
-          entry[1].upperTickSecondsPerLiquidityOutside,
-          entry[1].lowerTickSecondsPerLiquidityOutside,
-          entry[1].poolSecondsPerLiquidityGlobal
-        ),
-        calculatePointsToDistribute(
-          lastSnapTimestamp,
-          entry[1].currentTimestamp
-        ),
-        entry[1].currentTimestamp.sub(lastSnapTimestamp)
-      ),
+      points: new BN(entry[0].points)
+        .add(
+          calculateReward(
+            entry[1].liquidity,
+            entry[0].secondsPerLiquidityInside,
+            calculateSecondsPerLiquidityInside(
+              entry[1].upperTick,
+              entry[1].lowerTick,
+              entry[1].currentTick,
+              entry[1].upperTickSecondsPerLiquidityOutside,
+              entry[1].lowerTickSecondsPerLiquidityOutside,
+              entry[1].poolSecondsPerLiquidityGlobal
+            ),
+            calculatePointsToDistribute(
+              lastSnapTimestamp,
+              entry[1].currentTimestamp
+            ),
+            entry[1].currentTimestamp.sub(lastSnapTimestamp)
+          )
+        )
+        .toNumber(),
     });
   });
 
@@ -239,23 +251,25 @@ export const processNewOpenClosed = (
   newOpenClosed.forEach((entry) => {
     updatedNewOpenClosed.push({
       events: [entry[0], entry[1]],
-      points: calculateReward(
-        entry[1].liquidity,
-        new BN(0),
-        calculateSecondsPerLiquidityInside(
-          entry[1].upperTick,
-          entry[1].lowerTick,
-          entry[1].currentTick,
-          entry[1].upperTickSecondsPerLiquidityOutside,
-          entry[1].lowerTickSecondsPerLiquidityOutside,
-          entry[1].poolSecondsPerLiquidityGlobal
-        ),
-        calculatePointsToDistribute(
-          entry[0]?.currentTimestamp ?? new BN(0),
-          entry[1].currentTimestamp
-        ),
-        entry[1].currentTimestamp.sub(entry[0]?.currentTimestamp ?? new BN(0))
-      ),
+      points: !entry[0]
+        ? 0
+        : calculateReward(
+            entry[1].liquidity,
+            new BN(0),
+            calculateSecondsPerLiquidityInside(
+              entry[1].upperTick,
+              entry[1].lowerTick,
+              entry[1].currentTick,
+              entry[1].upperTickSecondsPerLiquidityOutside,
+              entry[1].lowerTickSecondsPerLiquidityOutside,
+              entry[1].poolSecondsPerLiquidityGlobal
+            ),
+            calculatePointsToDistribute(
+              entry[0]?.currentTimestamp ?? new BN(0),
+              entry[1].currentTimestamp
+            ),
+            entry[1].currentTimestamp.sub(entry[0]?.currentTimestamp)
+          ).toNumber(),
     });
   });
 
