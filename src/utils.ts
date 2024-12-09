@@ -1,4 +1,3 @@
-import { Market } from "@invariant-labs/sdk-eclipse";
 import {
   Connection,
   PublicKey,
@@ -7,10 +6,11 @@ import {
 } from "@solana/web3.js";
 import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
-import { IPositions } from "./types";
+import { IActive, IClosed, IPoolAndTicks, IPositions } from "./types";
 import {
-  calculatePointsForClosedPosition,
-  calculatePointsForOpenPosition,
+  calculatePointsToDistribute,
+  calculateReward,
+  calculateSecondsPerLiquidityInside,
 } from "./math";
 import {
   CreatePositionEvent,
@@ -96,24 +96,24 @@ export const convertJson = (previousData: any) => {
       const updatedEvent = {
         ...activeEntry.event,
         id: new BN(activeEntry.event.id, "hex"),
+        owner: new PublicKey(activeEntry.event.owner),
+        pool: new PublicKey(activeEntry.event.pool),
+        liquidity: new BN(activeEntry.event.liquidity, "hex"),
+        currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
       };
-      return { event: updatedEvent, points: activeEntry.points };
-    });
-
-    const updatedClosed = userPools.closed.map((closedEntry: any) => {
-      if (!!closedEntry.events[0]) return closedEntry;
-
-      const closeEvent = {
-        ...closedEntry.events[1],
-        id: new BN(closedEntry.events[1].id, "hex"),
+      return {
+        event: updatedEvent,
+        points: activeEntry.points,
+        previousSnapSecondsPerLiquidityInside: new BN(
+          activeEntry.previousSnapSecondsPerLiquidityInside,
+          "hex"
+        ),
       };
-      const updatedEvents = [null, closeEvent];
-      return { events: updatedEvents, points: closedEntry.points };
     });
 
     updatedData[userId] = {
       active: updatedActive,
-      closed: updatedClosed,
+      closed: userPools.closed,
     };
   }
   return updatedData;
@@ -124,67 +124,162 @@ export const isPromotedPool = (pool: PublicKey) =>
     (promotedPool) => promotedPool.toString() === pool.toString()
   );
 
-export const processCreatePositionEvent = async (
-  event: CreatePositionEvent,
-  ownerData: IPositions,
-  market: Market
+export const processStillOpen = (
+  stillOpen: IActive[],
+  poolsWithTicks: IPoolAndTicks[],
+  currentTimestamp: BN,
+  lastSnapTimestamp: BN
 ) => {
-  const { pool, id } = event;
-  if (!isPromotedPool(pool)) return;
+  const updatedStillOpen: IActive[] = [];
 
-  const correspondingItemIndex = ownerData.closed.findIndex((item) =>
-    item.events[1].id.eq(id)
-  );
-
-  if (correspondingItemIndex >= 0) {
-    const correspondingItem = ownerData.closed[correspondingItemIndex];
-    ownerData.closed.splice(correspondingItemIndex, 1);
-    ownerData.closed.push({
-      events: [event, correspondingItem.events[1]],
-      points: calculatePointsForClosedPosition(correspondingItem.events[1]),
-    });
-  } else {
-    const poolPubkey = new PublicKey(event.pool);
-    const [pool, upperTick, lowerTick] = await Promise.all([
-      market.getPoolByAddress(poolPubkey),
-      market.getTickByPool(poolPubkey, event.upperTick),
-      market.getTickByPool(poolPubkey, event.lowerTick),
-    ]);
-    const points = calculatePointsForOpenPosition(
-      event,
-      pool,
-      upperTick,
-      lowerTick
+  stillOpen.forEach((entry) => {
+    const desiredPoolWithTicks = poolsWithTicks.find(
+      (poolWithTicks) =>
+        poolWithTicks.pool.toString() === entry.event.pool.toString()
+    )!;
+    const upperTick = desiredPoolWithTicks.ticks.find(
+      (tick) => tick.index === entry.event.upperTick
+    )!;
+    const lowerTick = desiredPoolWithTicks.ticks.find(
+      (tick) => tick.index === entry.event.lowerTick
+    )!;
+    const poolStructure = desiredPoolWithTicks.poolStructure;
+    const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
+      upperTick.index,
+      lowerTick.index,
+      poolStructure.currentTickIndex,
+      upperTick.secondsPerLiquidityOutside,
+      lowerTick.secondsPerLiquidityOutside,
+      poolStructure.secondsPerLiquidityGlobal
     );
-    ownerData.active.push({
-      event,
-      points: points,
+
+    updatedStillOpen.push({
+      event: entry.event,
+      previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
+      points: new BN(entry.points)
+        .add(
+          calculateReward(
+            entry.event.liquidity,
+            entry.previousSnapSecondsPerLiquidityInside,
+            secondsPerLiquidityInside,
+            calculatePointsToDistribute(lastSnapTimestamp, currentTimestamp),
+            currentTimestamp.sub(lastSnapTimestamp)
+          )
+        )
+        .toNumber(),
     });
-  }
-
-  return ownerData;
-};
-
-export const processRemovePositionEvent = (
-  event: RemovePositionEvent,
-  ownerData: IPositions
-) => {
-  const { pool, id } = event;
-  if (!isPromotedPool(pool)) return;
-
-  const correspondingItemIndex = ownerData.active.findIndex((item) =>
-    item.event.id.eq(id)
-  );
-
-  const correspondingEvent =
-    correspondingItemIndex >= 0
-      ? ownerData.active.splice(correspondingItemIndex, 1)[0]?.event
-      : null;
-
-  ownerData.closed.push({
-    events: [correspondingEvent, event],
-    points: calculatePointsForClosedPosition(event),
   });
 
-  return ownerData;
+  return updatedStillOpen;
+};
+
+export const processNewOpen = (
+  newOpen: CreatePositionEvent[],
+  poolsWithTicks: IPoolAndTicks[],
+  currentTimestamp: BN
+) => {
+  const updatedNewOpen: IActive[] = [];
+
+  newOpen.forEach((entry) => {
+    const desiredPoolWithTicks = poolsWithTicks.find(
+      (poolWithTicks) => poolWithTicks.pool.toString() === entry.pool.toString()
+    )!;
+    const upperTick = desiredPoolWithTicks.ticks.find(
+      (tick) => tick.index === entry.upperTick
+    )!;
+    const lowerTick = desiredPoolWithTicks.ticks.find(
+      (tick) => tick.index === entry.lowerTick
+    )!;
+    const poolStructure = desiredPoolWithTicks.poolStructure;
+    const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
+      upperTick.index,
+      lowerTick.index,
+      poolStructure.currentTickIndex,
+      upperTick.secondsPerLiquidityOutside,
+      lowerTick.secondsPerLiquidityOutside,
+      poolStructure.secondsPerLiquidityGlobal
+    );
+    updatedNewOpen.push({
+      event: entry,
+      previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
+      points: calculateReward(
+        entry.liquidity,
+        new BN(0),
+        secondsPerLiquidityInside,
+        calculatePointsToDistribute(entry.currentTimestamp, currentTimestamp),
+        currentTimestamp.sub(entry.currentTimestamp)
+      ).toNumber(),
+    });
+  });
+
+  return updatedNewOpen;
+};
+
+export const processNewClosed = (
+  newClosed: [IActive, RemovePositionEvent][],
+  lastSnapTimestamp: BN
+) => {
+  const updatedNewClosed: IClosed[] = [];
+
+  newClosed.forEach((entry) => {
+    updatedNewClosed.push({
+      events: [entry[0].event, entry[1]],
+      points: new BN(entry[0].points)
+        .add(
+          calculateReward(
+            entry[1].liquidity,
+            entry[0].previousSnapSecondsPerLiquidityInside,
+            calculateSecondsPerLiquidityInside(
+              entry[1].upperTick,
+              entry[1].lowerTick,
+              entry[1].currentTick,
+              entry[1].upperTickSecondsPerLiquidityOutside,
+              entry[1].lowerTickSecondsPerLiquidityOutside,
+              entry[1].poolSecondsPerLiquidityGlobal
+            ),
+            calculatePointsToDistribute(
+              lastSnapTimestamp,
+              entry[1].currentTimestamp
+            ),
+            entry[1].currentTimestamp.sub(lastSnapTimestamp)
+          )
+        )
+        .toNumber(),
+    });
+  });
+
+  return updatedNewClosed;
+};
+
+export const processNewOpenClosed = (
+  newOpenClosed: [CreatePositionEvent | null, RemovePositionEvent][]
+) => {
+  const updatedNewOpenClosed: IClosed[] = [];
+
+  newOpenClosed.forEach((entry) => {
+    updatedNewOpenClosed.push({
+      events: [entry[0], entry[1]],
+      points: !entry[0]
+        ? 0
+        : calculateReward(
+            entry[1].liquidity,
+            new BN(0),
+            calculateSecondsPerLiquidityInside(
+              entry[1].upperTick,
+              entry[1].lowerTick,
+              entry[1].currentTick,
+              entry[1].upperTickSecondsPerLiquidityOutside,
+              entry[1].lowerTickSecondsPerLiquidityOutside,
+              entry[1].poolSecondsPerLiquidityGlobal
+            ),
+            calculatePointsToDistribute(
+              entry[0]?.currentTimestamp ?? new BN(0),
+              entry[1].currentTimestamp
+            ),
+            entry[1].currentTimestamp.sub(entry[0]?.currentTimestamp)
+          ).toNumber(),
+    });
+  });
+
+  return updatedNewOpenClosed;
 };

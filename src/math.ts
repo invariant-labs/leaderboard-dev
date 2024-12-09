@@ -1,12 +1,4 @@
-import {
-  CreatePositionEvent,
-  Market,
-  PoolStructure,
-  RemovePositionEvent,
-  Tick,
-} from "@invariant-labs/sdk-eclipse/lib/market";
-import { PublicKey } from "@solana/web3.js";
-import BN from "bn.js";
+import { BN } from "@coral-xyz/anchor";
 
 const MAX_U128 = new BN("340282366920938463463374607431768211455");
 const SECONDS_PER_LIQUIDITY_DECIMAL = 24;
@@ -16,35 +8,56 @@ const SECONDS_PER_LIQUIDITY_DENOMINATOR = new BN(10).pow(
   new BN(SECONDS_PER_LIQUIDITY_DECIMAL)
 );
 
-export const POINTS_PER_SECONDS = new BN(1000);
+export const POINTS_PER_SECOND = new BN(10000);
 
 export const calculateReward = (
   liquidity: BN,
   secondsPerLiquidityInsideInitial: BN,
+  secondsPerLiquidityInside: BN,
+  pointsToDistribute: BN,
+  totalSecondsPassed: BN
+): BN => {
+  const secondsInside = calculateSecondsInside(
+    liquidity,
+    secondsPerLiquidityInsideInitial,
+    secondsPerLiquidityInside
+  );
+  const points = pointsToDistribute.mul(secondsInside).div(totalSecondsPassed);
+
+  return points;
+};
+
+export const calculateSecondsInside = (
+  liquidity: BN,
+  secondsPerLiquidityInsideInitial: BN,
   secondsPerLiquidityInside: BN
 ): BN => {
-  const secondsInside = wrappingSub(
+  return wrappingSub(
     secondsPerLiquidityInside,
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
     .div(SECONDS_PER_LIQUIDITY_DENOMINATOR)
     .div(LIQUIDITY_DENOMINATOR);
+};
 
-  const points = POINTS_PER_SECONDS.mul(secondsInside);
-
-  return points;
+export const calculatePointsToDistribute = (
+  lastSnapTimestamp: BN,
+  currentTimestamp: BN
+) => {
+  return POINTS_PER_SECOND.mul(currentTimestamp.sub(lastSnapTimestamp));
 };
 
 export const calculateSecondsPerLiquidityGlobal = (
   currentSecondsPerLiquidityGlobal: BN,
   liquidity: BN,
-  lastTimestamp: BN
+  lastTimestamp: BN,
+  now: BN
 ): BN => {
-  const now = getTimestampInSeconds();
   const deltaTime = now
     .sub(lastTimestamp)
     .mul(SECONDS_PER_LIQUIDITY_DENOMINATOR);
+
   const newSecondsPerLiquidityGlobal = wrappingAdd(
     currentSecondsPerLiquidityGlobal,
     deltaTime.div(liquidity)
@@ -89,7 +102,7 @@ export const calculateSecondsPerLiquidityInside = (
   );
 };
 
-const getTimestampInSeconds = (): BN => {
+export const getTimestampInSeconds = (): BN => {
   return new BN(Math.floor(Date.now() / 1000));
 };
 
@@ -107,60 +120,4 @@ const wrappingAdd = (a: BN, b: BN): BN => {
   } else {
     return a.add(b);
   }
-};
-
-export const calculatePointsForClosedPosition = (
-  event: RemovePositionEvent
-) => {
-  const {
-    upperTick,
-    liquidity,
-    lowerTick,
-    poolSecondsPerLiquidityGlobal,
-    upperTickSecondsPerLiquidityOutside,
-    lowerTickSecondsPerLiquidityOutside,
-    currentTick,
-  } = event;
-  const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
-    upperTick,
-    lowerTick,
-    currentTick,
-    upperTickSecondsPerLiquidityOutside,
-    lowerTickSecondsPerLiquidityOutside,
-    poolSecondsPerLiquidityGlobal
-  );
-  const reward = calculateReward(
-    liquidity,
-    new BN(0),
-    secondsPerLiquidityInside
-  );
-  return reward;
-};
-
-export const calculatePointsForOpenPosition = (
-  event: CreatePositionEvent,
-  pool: PoolStructure,
-  upperTick: Tick,
-  lowerTick: Tick
-) => {
-  const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
-    pool.secondsPerLiquidityGlobal,
-    pool.liquidity,
-    pool.lastTimestamp
-  );
-
-  const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
-    event.upperTick,
-    event.lowerTick,
-    pool.currentTickIndex,
-    upperTick.secondsPerLiquidityOutside,
-    lowerTick.secondsPerLiquidityOutside,
-    secondsPerLiquidityGlobal
-  );
-  const reward = calculateReward(
-    event.liquidity,
-    new BN(0),
-    secondsPerLiquidityInside
-  );
-  return reward;
 };

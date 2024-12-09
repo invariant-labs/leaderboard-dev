@@ -11,7 +11,8 @@
           "upperTick": -57000,
           "currentTimestamp": "67545af9"
         },
-        "points": "02278768"
+        "previousSnapSecondsPerLiquidityInside": "01524b46a45519f6853c",
+        "points": 361450000
       },
       {
         "event": {
@@ -23,7 +24,8 @@
           "upperTick": -57000,
           "currentTimestamp": "67544778"
         },
-        "points": "028f3660"
+        "previousSnapSecondsPerLiquidityInside": "01524b46a45519f6853c",
+        "points": 429400000
       },
       {
         "event": {
@@ -35,7 +37,8 @@
           "upperTick": -45900,
           "currentTimestamp": "6753441d"
         },
-        "points": "03dac548"
+        "previousSnapSecondsPerLiquidityInside": "015d0d4d99d243e10b64",
+        "points": 646690000
       }
     ],
     "closed": [
@@ -64,7 +67,7 @@
             "currentTimestamp": "6754533d"
           }
         ],
-        "points": "dbe4f8"
+        "points": 144110000
       },
       {
         "events": [
@@ -91,7 +94,7 @@
             "currentTimestamp": "67544906"
           }
         ],
-        "points": "0147c628"
+        "points": 214810000
       },
       {
         "events": [
@@ -118,7 +121,7 @@
             "currentTimestamp": "67534432"
           }
         ],
-        "points": "c350"
+        "points": 500000
       },
       {
         "events": [
@@ -145,7 +148,7 @@
             "currentTimestamp": "6753434a"
           }
         ],
-        "points": "023e38"
+        "points": 1470000
       }
     ]
   },
@@ -177,7 +180,7 @@
             "currentTimestamp": "67531c41"
           }
         ],
-        "points": "00"
+        "points": 0
       }
     ]
   }
