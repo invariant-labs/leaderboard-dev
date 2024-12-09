@@ -101,7 +101,14 @@ export const convertJson = (previousData: any) => {
         liquidity: new BN(activeEntry.event.liquidity, "hex"),
         currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
       };
-      return { event: updatedEvent, points: new BN(activeEntry.points, "hex") };
+      return {
+        event: updatedEvent,
+        points: activeEntry.points,
+        previousSnapSecondsPerLiquidityInside: new BN(
+          activeEntry.previousSnapSecondsPerLiquidityInside,
+          "hex"
+        ),
+      };
     });
 
     updatedData[userId] = {
@@ -145,14 +152,15 @@ export const processStillOpen = (
       lowerTick.secondsPerLiquidityOutside,
       poolStructure.secondsPerLiquidityGlobal
     );
+
     updatedStillOpen.push({
       event: entry.event,
-      secondsPerLiquidityInside,
+      previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
       points: new BN(entry.points)
         .add(
           calculateReward(
             entry.event.liquidity,
-            entry.secondsPerLiquidityInside,
+            entry.previousSnapSecondsPerLiquidityInside,
             secondsPerLiquidityInside,
             calculatePointsToDistribute(lastSnapTimestamp, currentTimestamp),
             currentTimestamp.sub(lastSnapTimestamp)
@@ -193,7 +201,7 @@ export const processNewOpen = (
     );
     updatedNewOpen.push({
       event: entry,
-      secondsPerLiquidityInside,
+      previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
       points: calculateReward(
         entry.liquidity,
         new BN(0),
@@ -220,7 +228,7 @@ export const processNewClosed = (
         .add(
           calculateReward(
             entry[1].liquidity,
-            entry[0].secondsPerLiquidityInside,
+            entry[0].previousSnapSecondsPerLiquidityInside,
             calculateSecondsPerLiquidityInside(
               entry[1].upperTick,
               entry[1].lowerTick,

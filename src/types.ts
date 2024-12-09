@@ -9,7 +9,7 @@ import { PublicKey } from "@solana/web3.js";
 
 export interface IActive {
   event: CreatePositionEvent;
-  secondsPerLiquidityInside: BN;
+  previousSnapSecondsPerLiquidityInside: BN;
   points: number;
 }
 export interface IClosed {
@@ -28,4 +28,9 @@ export interface IPoolAndTicks {
   pool: PublicKey;
   poolStructure: PoolStructure;
   ticks: Tick[];
+}
+export interface IPoints {
+  totalPoints: number;
+  positionsAmount: number;
+  last24HoursPoints: number;
 }
