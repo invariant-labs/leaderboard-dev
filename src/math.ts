@@ -24,7 +24,6 @@ export const calculateReward = (
   );
 
   const points = pointsToDistribute.mul(secondsInside).div(totalSecondsPassed);
-
   return points;
 };
 
@@ -38,6 +37,7 @@ export const calculateSecondsInside = (
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
+    .div(LIQUIDITY_DENOMINATOR)
     .div(SECONDS_PER_LIQUIDITY_DENOMINATOR);
 };
 
@@ -56,7 +56,8 @@ export const calculateSecondsPerLiquidityGlobal = (
 ): BN => {
   const deltaTime = now
     .sub(lastTimestamp)
-    .mul(SECONDS_PER_LIQUIDITY_DENOMINATOR);
+    .mul(SECONDS_PER_LIQUIDITY_DENOMINATOR)
+    .mul(LIQUIDITY_DENOMINATOR);
 
   const newSecondsPerLiquidityGlobal = wrappingAdd(
     currentSecondsPerLiquidityGlobal,
