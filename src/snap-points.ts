@@ -285,20 +285,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
         totalPoints,
         positionsAmount: eventsObject[curr].active.length,
         last24HoursPoints: 0,
-        position: 0,
+        rank: 0,
       };
       return acc;
     },
     {}
   );
-
-  const sortedKeys = Object.keys(points).sort(
-    (a, b) => points[b].totalPoints - points[a].totalPoints
-  );
-
-  sortedKeys.forEach((key, index) => {
-    points[key].position = index + 1;
-  });
 
   fs.writeFileSync(configFileName, JSON.stringify(data, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));

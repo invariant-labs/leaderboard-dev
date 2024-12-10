@@ -22,8 +22,26 @@ export default function (req: VercelRequest, res: VercelResponse) {
   let data: Record<string, IPoints>;
 
   if (net === "eclipse-testnet") {
+    const sortedKeys = Object.keys(ECLIPSE_TESTNET_DATA).sort(
+      (a, b) =>
+        ECLIPSE_TESTNET_DATA[b].totalPoints -
+        ECLIPSE_TESTNET_DATA[a].totalPoints
+    );
+
+    sortedKeys.forEach((key, index) => {
+      ECLIPSE_TESTNET_DATA[key].rank = index + 1;
+    });
     data = ECLIPSE_TESTNET_DATA as unknown as Record<string, IPoints>;
   } else if (net === "eclipse-mainnet") {
+    const sortedKeys = Object.keys(ECLIPSE_MAINNET_DATA).sort(
+      (a, b) =>
+        ECLIPSE_MAINNET_DATA[b].totalPoints -
+        ECLIPSE_MAINNET_DATA[a].totalPoints
+    );
+
+    sortedKeys.forEach((key, index) => {
+      ECLIPSE_MAINNET_DATA[key].rank = index + 1;
+    });
     data = ECLIPSE_MAINNET_DATA as unknown as Record<string, IPoints>;
   } else {
     return res.status(400).send("INVALID NETWORK");
