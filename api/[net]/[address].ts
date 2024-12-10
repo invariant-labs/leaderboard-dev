@@ -47,8 +47,11 @@ export default function (req: VercelRequest, res: VercelResponse) {
     sortedKeys.forEach((key, index) => {
       ECLIPSE_TESTNET_DATA[key].rank = index + 1;
     });
+    const userData = address
+      ? ECLIPSE_TESTNET_DATA[address as string] ?? null
+      : null;
     const testnetData: IData = {
-      user: address ? ECLIPSE_TESTNET_DATA[address as string] ?? null : null,
+      user: userData ? { ...userData, address } : null,
       leaderboard: Object.keys(ECLIPSE_TESTNET_DATA).map((key) => {
         return { ...ECLIPSE_TESTNET_DATA[key], address: key };
       }),
@@ -64,8 +67,11 @@ export default function (req: VercelRequest, res: VercelResponse) {
     sortedKeys.forEach((key, index) => {
       ECLIPSE_MAINNET_DATA[key].rank = index + 1;
     });
+    const userData = address
+      ? ECLIPSE_MAINNET_DATA[address as string] ?? null
+      : null;
     const mainnetData: IData = {
-      user: address ? ECLIPSE_MAINNET_DATA[address as string] ?? null : null,
+      user: userData ? { ...userData, address } : null,
       leaderboard: Object.keys(ECLIPSE_MAINNET_DATA).map((key) => {
         return { ...ECLIPSE_MAINNET_DATA[key], address: key };
       }),
