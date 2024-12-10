@@ -10,6 +10,7 @@ import { IActive, IClosed, IPoolAndTicks, IPositions } from "./types";
 import {
   calculatePointsToDistribute,
   calculateReward,
+  calculateSecondsPerLiquidityGlobal,
   calculateSecondsPerLiquidityInside,
 } from "./math";
 import {
@@ -150,7 +151,12 @@ export const processStillOpen = (
       poolStructure.currentTickIndex,
       upperTick.secondsPerLiquidityOutside,
       lowerTick.secondsPerLiquidityOutside,
-      poolStructure.secondsPerLiquidityGlobal
+      calculateSecondsPerLiquidityGlobal(
+        poolStructure.secondsPerLiquidityGlobal,
+        poolStructure.liquidity,
+        poolStructure.lastTimestamp,
+        currentTimestamp
+      )
     );
 
     updatedStillOpen.push({
@@ -197,7 +203,12 @@ export const processNewOpen = (
       poolStructure.currentTickIndex,
       upperTick.secondsPerLiquidityOutside,
       lowerTick.secondsPerLiquidityOutside,
-      poolStructure.secondsPerLiquidityGlobal
+      calculateSecondsPerLiquidityGlobal(
+        poolStructure.secondsPerLiquidityGlobal,
+        poolStructure.liquidity,
+        poolStructure.lastTimestamp,
+        currentTimestamp
+      )
     );
     updatedNewOpen.push({
       event: entry,
