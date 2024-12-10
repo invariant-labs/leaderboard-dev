@@ -59,7 +59,7 @@ jobs:
 
   deploy:
     needs: [points-snap]
-    #   if: ${{ always() }}
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
