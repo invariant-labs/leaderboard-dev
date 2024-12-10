@@ -196,19 +196,23 @@ export const processNewOpen = (
     const lowerTick = desiredPoolWithTicks.ticks.find(
       (tick) => tick.index === entry.lowerTick
     )!;
+
     const poolStructure = desiredPoolWithTicks.poolStructure;
+
+    const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
+      poolStructure.secondsPerLiquidityGlobal,
+      poolStructure.liquidity,
+      poolStructure.lastTimestamp,
+      currentTimestamp
+    );
+
     const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
       upperTick.index,
       lowerTick.index,
       poolStructure.currentTickIndex,
       upperTick.secondsPerLiquidityOutside,
       lowerTick.secondsPerLiquidityOutside,
-      calculateSecondsPerLiquidityGlobal(
-        poolStructure.secondsPerLiquidityGlobal,
-        poolStructure.liquidity,
-        poolStructure.lastTimestamp,
-        currentTimestamp
-      )
+      secondsPerLiquidityGlobal
     );
     updatedNewOpen.push({
       event: entry,
