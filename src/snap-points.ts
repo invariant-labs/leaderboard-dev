@@ -200,7 +200,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
           ),
         ])
       );
-
       const [poolStructure, ticks] = await Promise.all([
         market.getPoolByAddress(pool),
         Promise.all(ticksUsed.map((tick) => market.getTickByPool(pool, tick))),
@@ -209,6 +208,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
       return { pool, poolStructure: poolStructure, ticks };
     })
   );
+
   const currentTimestamp = getTimestampInSeconds();
 
   const convertedLastSnapTimestamp = new BN(lastSnapTimestamp);
@@ -266,7 +266,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
   });
 
   const data = {
-    lastTxHash: sigs[0],
+    lastTxHash: sigs[0] ?? lastTxHash,
     currentTimestamp: currentTimestamp.toNumber(),
   };
 
