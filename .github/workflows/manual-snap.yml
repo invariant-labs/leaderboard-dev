@@ -23,7 +23,7 @@ jobs:
           npm install -g mocha
           npm install -g ts-mocha
           npm install -g typescript
-          npm install -g @project-serum/anchor
+          npm install -g @coral-xyz/anchor
           ts-mocha -h
       - name: install essential
         run: |
