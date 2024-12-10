@@ -33,4 +33,5 @@ export interface IPoints {
   totalPoints: number;
   positionsAmount: number;
   last24HoursPoints: number;
+  position: number;
 }

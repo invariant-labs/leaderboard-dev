@@ -1,12 +1,8 @@
 {
   "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1": {
-    "totalPoints": 2822110000,
-    "positionsAmount": 3,
-    "last24HoursPoints": 0
-  },
-  "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu": {
     "totalPoints": 0,
-    "positionsAmount": 0,
-    "last24HoursPoints": 0
+    "positionsAmount": 1,
+    "last24HoursPoints": 0,
+    "position": 1
   }
 }
