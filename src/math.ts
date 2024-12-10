@@ -22,6 +22,7 @@ export const calculateReward = (
     secondsPerLiquidityInsideInitial,
     secondsPerLiquidityInside
   );
+
   const points = pointsToDistribute.mul(secondsInside).div(totalSecondsPassed);
 
   return points;
@@ -37,8 +38,7 @@ export const calculateSecondsInside = (
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
-    .div(SECONDS_PER_LIQUIDITY_DENOMINATOR)
-    .div(LIQUIDITY_DENOMINATOR);
+    .div(SECONDS_PER_LIQUIDITY_DENOMINATOR);
 };
 
 export const calculatePointsToDistribute = (
