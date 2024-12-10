@@ -88,7 +88,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
     market.eventOptAccount.address,
     lastTxHash
   );
-
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -208,7 +207,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
       return { pool, poolStructure: poolStructure, ticks };
     })
   );
-
+  console.log(poolsWithTicks);
   const currentTimestamp = getTimestampInSeconds();
 
   const convertedLastSnapTimestamp = new BN(lastSnapTimestamp);
