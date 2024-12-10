@@ -109,7 +109,6 @@ export const getTimestampInSeconds = (): BN => {
 
 const wrappingSub = (a: BN, b: BN): BN => {
   if (b.gt(a)) {
-    console.log("Underflow");
     return MAX_U128.sub(b.sub(a)).add(1);
   } else {
     return a.sub(b);
