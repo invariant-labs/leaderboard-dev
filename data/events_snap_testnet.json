@@ -11,8 +11,8 @@
           "upperTick": 221790,
           "currentTimestamp": "675847d5"
         },
-        "previousSnapSecondsPerLiquidityInside": "a18dccb6b9f36fe5",
-        "points": 1050000
+        "previousSnapSecondsPerLiquidityInside": "04689cd06b2eaecf53",
+        "points": 7450000
       },
       {
         "event": {
@@ -24,8 +24,54 @@
           "upperTick": 221790,
           "currentTimestamp": "6758478b"
         },
-        "previousSnapSecondsPerLiquidityInside": "a18dccb6b9f36fe5",
-        "points": 1050000
+        "previousSnapSecondsPerLiquidityInside": "04689cd06b2eaecf53",
+        "points": 7450000
+      }
+    ],
+    "closed": [
+      {
+        "events": [
+          {
+            "owner": "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu",
+            "pool": "Di21LcBK8Q9UV5xTzVkyKZ9Nh3rAXQQfmbsnvXjjcVPp",
+            "id": "07",
+            "liquidity": "085c104e4838",
+            "lowerTick": -221790,
+            "upperTick": 221790,
+            "currentTimestamp": "67584a67"
+          },
+          {
+            "owner": "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu",
+            "pool": "Di21LcBK8Q9UV5xTzVkyKZ9Nh3rAXQQfmbsnvXjjcVPp",
+            "id": "07",
+            "liquidity": "085c104e4838",
+            "upperTick": 221790,
+            "currentTick": -44370,
+            "lowerTick": -221790,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "43da998dfc2fcd95d5",
+            "poolSecondsPerLiquidityGlobal": "46452286a30c7b317f",
+            "currentTimestamp": "67584a7b"
+          }
+        ],
+        "points": 4090000
+      }
+    ]
+  },
+  "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1": {
+    "active": [
+      {
+        "event": {
+          "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
+          "pool": "Di21LcBK8Q9UV5xTzVkyKZ9Nh3rAXQQfmbsnvXjjcVPp",
+          "id": "08",
+          "liquidity": "085c10897689",
+          "lowerTick": -221730,
+          "upperTick": 221730,
+          "currentTimestamp": "67584cf0"
+        },
+        "previousSnapSecondsPerLiquidityInside": "01fe13d7c4520133a9",
+        "points": 3370000
       }
     ],
     "closed": []
