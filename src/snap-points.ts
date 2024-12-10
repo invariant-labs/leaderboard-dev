@@ -285,6 +285,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         totalPoints,
         positionsAmount: eventsObject[curr].active.length,
         last24HoursPoints: 0,
+        rank: 0,
       };
       return acc;
     },
