@@ -219,7 +219,7 @@ export const processNewOpen = (
       previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
       points: calculateReward(
         entry.liquidity,
-        new BN(0),
+        entry.secondsPerLiquidityInsideInitial,
         secondsPerLiquidityInside,
         calculatePointsToDistribute(entry.currentTimestamp, currentTimestamp),
         currentTimestamp.sub(entry.currentTimestamp)
@@ -277,8 +277,8 @@ export const processNewOpenClosed = (
       points: !entry[0]
         ? 0
         : calculateReward(
-            entry[1].liquidity,
-            new BN(0),
+            entry[0].liquidity,
+            entry[0].secondsPerLiquidityInsideInitial,
             calculateSecondsPerLiquidityInside(
               entry[1].upperTick,
               entry[1].lowerTick,
@@ -288,10 +288,10 @@ export const processNewOpenClosed = (
               entry[1].poolSecondsPerLiquidityGlobal
             ),
             calculatePointsToDistribute(
-              entry[0]?.currentTimestamp ?? new BN(0),
+              entry[0].currentTimestamp,
               entry[1].currentTimestamp
             ),
-            entry[1].currentTimestamp.sub(entry[0]?.currentTimestamp)
+            entry[1].currentTimestamp.sub(entry[0].currentTimestamp)
           ).toNumber(),
     });
   });

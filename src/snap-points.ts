@@ -88,7 +88,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
     market.eventOptAccount.address,
     lastTxHash
   );
-
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
