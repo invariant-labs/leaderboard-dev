@@ -6,7 +6,7 @@ import {
 } from "@solana/web3.js";
 import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
-import { IActive, IClosed, IPoolAndTicks, IPositions } from "./types";
+import { IActive, IClosed, IPoints, IPoolAndTicks, IPositions } from "./types";
 import {
   calculatePointsToDistribute,
   calculateReward,
@@ -87,7 +87,7 @@ export const fetchTransactionLogs = async (
   ).flat();
 };
 
-export const convertJson = (previousData: any) => {
+export const convertEventsJson = (previousData: any) => {
   const updatedData: Record<string, IPositions> = {};
 
   for (const userId in previousData) {
@@ -115,6 +115,29 @@ export const convertJson = (previousData: any) => {
     updatedData[userId] = {
       active: updatedActive,
       closed: userPools.closed,
+    };
+  }
+  return updatedData;
+};
+
+export const convertPointsJson = (previousData: any) => {
+  const updatedData: Record<string, IPoints> = {};
+
+  for (const userId in previousData) {
+    const userPoints = previousData[userId];
+
+    const convertedHistory = userPoints.points24HoursHistory.map(
+      (item: any) => {
+        return {
+          points: item.points,
+          timestamp: new BN(item.timestamp, "hex"),
+        };
+      }
+    );
+
+    updatedData[userId] = {
+      ...userPoints,
+      points24HoursHistory: convertedHistory,
     };
   }
   return updatedData;

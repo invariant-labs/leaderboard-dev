@@ -10,18 +10,25 @@ import { AnchorProvider, BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
-import { MAX_SIGNATURES_PER_CALL, PROMOTED_POOLS } from "./consts";
+import { DAY, MAX_SIGNATURES_PER_CALL, PROMOTED_POOLS } from "./consts";
 import {
   fetchAllSignatures,
   fetchTransactionLogs,
-  convertJson,
+  convertEventsJson,
   isPromotedPool,
   processStillOpen,
   processNewOpen,
   processNewClosed,
   processNewOpenClosed,
 } from "./utils";
-import { IActive, IConfig, IPoints, IPoolAndTicks, IPositions } from "./types";
+import {
+  IActive,
+  IConfig,
+  IPoints,
+  IPointsJson,
+  IPoolAndTicks,
+  IPositions,
+} from "./types";
 import {
   CreatePositionEvent,
   RemovePositionEvent,
@@ -97,7 +104,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
   const finalLogs = txLogs.flat();
   const previousData = JSON.parse(fs.readFileSync(eventsSnapFilename, "utf-8"));
   const eventsObject: Record<string, IPositions> = {
-    ...convertJson(previousData),
+    ...convertEventsJson(previousData),
   };
 
   const eventLogs: string[] = [];
@@ -269,8 +276,21 @@ export const createSnapshotForNetwork = async (network: Network) => {
     currentTimestamp: currentTimestamp.toNumber(),
   };
 
+  const previousPoints: Record<string, IPointsJson> = JSON.parse(
+    fs.readFileSync(pointsFileName, "utf-8")
+  );
   const points: Record<string, IPoints> = Object.keys(eventsObject).reduce(
     (acc, curr) => {
+      const prev24HoursHistory = previousPoints[curr]?.points24HoursHistory;
+      if (prev24HoursHistory) {
+        prev24HoursHistory.forEach((item, idx) => {
+          if (new BN(item.timestamp).add(DAY).lt(currentTimestamp)) {
+            prev24HoursHistory.splice(idx, 1);
+          }
+        });
+      }
+      const previousTotalPoints = previousPoints[curr]?.totalPoints ?? 0;
+
       const pointsForOpen: number[] = eventsObject[curr].active.map(
         (entry) => entry.points
       );
@@ -285,6 +305,20 @@ export const createSnapshotForNetwork = async (network: Network) => {
         positionsAmount: eventsObject[curr].active.length,
         last24HoursPoints: 0,
         rank: 0,
+        points24HoursHistory: prev24HoursHistory
+          ? [
+              ...prev24HoursHistory,
+              {
+                diff: totalPoints - previousTotalPoints,
+                timestamp: currentTimestamp,
+              },
+            ]
+          : [
+              {
+                diff: totalPoints - previousTotalPoints,
+                timestamp: currentTimestamp,
+              },
+            ],
       };
       return acc;
     },
