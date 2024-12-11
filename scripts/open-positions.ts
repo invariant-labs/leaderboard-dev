@@ -78,7 +78,7 @@ const main = async () => {
     );
     const params: InitPosition = {
       knownPrice: poolState.sqrtPrice,
-      liquidityDelta: new BN(1000),
+      liquidityDelta: new BN(100000),
       lowerTick: -Infinity,
       upperTick: Infinity,
       pair,
@@ -90,7 +90,7 @@ const main = async () => {
 
     const initPositionTx = await initPosition(market, params, FOUNDER);
 
-    // await signAndSend(initPositionTx, [FOUNDER, wallet], connection);
+    await signAndSend(initPositionTx, [FOUNDER, wallet], connection);
   }
 };
 
