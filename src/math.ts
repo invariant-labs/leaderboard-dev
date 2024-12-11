@@ -1,5 +1,6 @@
 import { BN } from "@coral-xyz/anchor";
 
+export const POINTS_PER_SECOND = new BN(10000);
 const MAX_U128 = new BN("340282366920938463463374607431768211455");
 const SECONDS_PER_LIQUIDITY_DECIMAL = 24;
 const LIQUIDITY_DECIMAL = 6;
@@ -7,8 +8,7 @@ const LIQUIDITY_DENOMINATOR = new BN(10).pow(new BN(LIQUIDITY_DECIMAL));
 const SECONDS_PER_LIQUIDITY_DENOMINATOR = new BN(10).pow(
   new BN(SECONDS_PER_LIQUIDITY_DECIMAL)
 );
-
-export const POINTS_PER_SECOND = new BN(10000);
+const CUSTOM_DECIMAL = POINTS_PER_SECOND;
 
 export const calculateReward = (
   liquidity: BN,
@@ -23,7 +23,10 @@ export const calculateReward = (
     secondsPerLiquidityInside
   );
 
-  const points = pointsToDistribute.mul(secondsInside).div(totalSecondsPassed);
+  const points = pointsToDistribute
+    .mul(secondsInside)
+    .div(totalSecondsPassed)
+    .div(CUSTOM_DECIMAL);
   return points;
 };
 
@@ -37,6 +40,7 @@ export const calculateSecondsInside = (
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
+    .mul(CUSTOM_DECIMAL)
     .div(LIQUIDITY_DENOMINATOR)
     .div(SECONDS_PER_LIQUIDITY_DENOMINATOR);
 };

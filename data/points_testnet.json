@@ -1,6 +1,6 @@
 {
   "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR": {
-    "totalPoints": 54150000,
+    "totalPoints": 98686688,
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -18,6 +18,10 @@
       {
         "diff": 23840000,
         "timestamp": "67599cb6"
+      },
+      {
+        "diff": 44536688,
+        "timestamp": "6759b680"
       }
     ]
   }

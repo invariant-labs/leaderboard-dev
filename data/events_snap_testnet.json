@@ -12,8 +12,8 @@
           "currentTimestamp": "67597b29",
           "secondsPerLiquidityInsideInitial": "01091b47fdd57d37a0b6"
         },
-        "previousSnapSecondsPerLiquidityInside": "011a46a63ca35b8ddd3b",
-        "points": 31660000
+        "previousSnapSecondsPerLiquidityInside": "0125eb9a34133f5dd3e5",
+        "points": 53143344
       },
       {
         "event": {
@@ -26,8 +26,8 @@
           "currentTimestamp": "67598412",
           "secondsPerLiquidityInsideInitial": "010ee10fd3ef1e5b7d2e"
         },
-        "previousSnapSecondsPerLiquidityInside": "011a46a63ca35b8ddd3b",
-        "points": 21020000
+        "previousSnapSecondsPerLiquidityInside": "0125eb9a34133f5dd3e5",
+        "points": 42503344
       }
     ],
     "closed": [
@@ -198,6 +198,34 @@
           }
         ],
         "points": 70000
+      },
+      {
+        "events": [
+          {
+            "owner": "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR",
+            "pool": "7AdV5E8NznuVjNTT8rNm1MBGn8MNuFN9y9poQVSQ6gjD",
+            "id": "0b",
+            "liquidity": "0918aa68b3e3",
+            "lowerTick": -221600,
+            "upperTick": 219400,
+            "currentTimestamp": "6759b334",
+            "secondsPerLiquidityInsideInitial": "0124add9937269b206a5"
+          },
+          {
+            "owner": "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR",
+            "pool": "7AdV5E8NznuVjNTT8rNm1MBGn8MNuFN9y9poQVSQ6gjD",
+            "id": "0b",
+            "liquidity": "0918aa68b3e3",
+            "upperTick": 219400,
+            "currentTick": -46100,
+            "lowerTick": -221600,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "0506463a08b21e090e",
+            "poolSecondsPerLiquidityGlobal": "012a8df8d31110578fa3",
+            "currentTimestamp": "6759b5a8"
+          }
+        ],
+        "points": 1570000
       }
     ]
   }
