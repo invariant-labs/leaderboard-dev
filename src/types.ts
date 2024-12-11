@@ -29,9 +29,14 @@ export interface IPoolAndTicks {
   poolStructure: PoolStructure;
   ticks: Tick[];
 }
+export interface IPointsHistory {
+  diff: number;
+  timestamp: BN;
+}
 export interface IPoints {
   totalPoints: number;
   positionsAmount: number;
   last24HoursPoints: number;
   rank: number;
+  points24HoursHistory: IPointsHistory[];
 }
