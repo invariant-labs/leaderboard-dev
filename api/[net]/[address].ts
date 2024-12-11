@@ -1,6 +1,8 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import ECLIPSE_TESTNET_DATA from "../../data/points_testnet.json";
 import ECLIPSE_MAINNET_DATA from "../../data/points_mainnet.json";
+import { BN } from "@coral-xyz/anchor";
+import { IPointsHistory } from "../../src/types";
 
 interface IData {
   user: {
@@ -46,6 +48,12 @@ export default function (req: VercelRequest, res: VercelResponse) {
 
     sortedKeys.forEach((key, index) => {
       ECLIPSE_TESTNET_DATA[key].rank = index + 1;
+      ECLIPSE_TESTNET_DATA[key].last24HoursPoints = ECLIPSE_TESTNET_DATA[
+        key
+      ].points24HoursHistory.reduce(
+        (acc: number, curr: IPointsHistory) => (acc += curr.diff),
+        0
+      );
     });
     const userData = address
       ? ECLIPSE_TESTNET_DATA[address as string] ?? null

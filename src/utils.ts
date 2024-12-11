@@ -6,7 +6,7 @@ import {
 } from "@solana/web3.js";
 import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
-import { IActive, IClosed, IPoolAndTicks, IPositions } from "./types";
+import { IActive, IClosed, IPoints, IPoolAndTicks, IPositions } from "./types";
 import {
   calculatePointsToDistribute,
   calculateReward,
