@@ -178,7 +178,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
                 ),
               },
               previousSnapSecondsPerLiquidityInside: new BN(
-                correspondingItem.previousSnapSecondsPerLiquidityInside
+                correspondingItem.previousSnapSecondsPerLiquidityInside,
+                "hex"
               ),
               points: correspondingItem.points,
             },
@@ -200,8 +201,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     positions.active.forEach((activeEntry) => {
       const hasBeenClosed = newClosed.some(
         (newClosedEntry) =>
-          newClosedEntry[0].event.id === new BN(activeEntry.event.id, "hex"),
-        "hex"
+          newClosedEntry[0].event.id === new BN(activeEntry.event.id, "hex")
       );
       if (!hasBeenClosed) {
         stillOpen.push({
@@ -214,7 +214,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
             currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
           },
           previousSnapSecondsPerLiquidityInside: new BN(
-            activeEntry.previousSnapSecondsPerLiquidityInside
+            activeEntry.previousSnapSecondsPerLiquidityInside,
+            "hex"
           ),
           points: activeEntry.points,
         });
@@ -316,7 +317,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
       const prev24HoursHistory = previousPoints[curr]?.points24HoursHistory;
       if (prev24HoursHistory) {
         prev24HoursHistory.forEach((item, idx) => {
-          if (new BN(item.timestamp).add(DAY).lt(currentTimestamp)) {
+          if (new BN(item.timestamp, "hex").add(DAY).lt(currentTimestamp)) {
             prev24HoursHistory.splice(idx, 1);
           }
         });

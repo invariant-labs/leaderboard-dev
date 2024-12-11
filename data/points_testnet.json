@@ -1,1 +1,18 @@
-{}
+{
+  "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR": {
+    "totalPoints": 10690000,
+    "positionsAmount": 3,
+    "last24HoursPoints": 0,
+    "rank": 0,
+    "points24HoursHistory": [
+      {
+        "diff": 4640000,
+        "timestamp": "67597eb5"
+      },
+      {
+        "diff": 6050000,
+        "timestamp": "6759830e"
+      }
+    ]
+  }
+}
