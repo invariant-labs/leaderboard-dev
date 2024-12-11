@@ -336,8 +336,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
       acc[curr] = {
         totalPoints,
         positionsAmount: eventsObject[curr].active.length,
-        last24HoursPoints: 0,
-        rank: 0,
         points24HoursHistory: prev24HoursHistory
           ? [
               ...prev24HoursHistory,
