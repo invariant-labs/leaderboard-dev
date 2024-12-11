@@ -6,7 +6,7 @@ import {
 } from "@solana/web3.js";
 import { PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
-import { IActive, IClosed, IPoolAndTicks, IPositions } from "./types";
+import { IActive, IClosed, IPoints, IPoolAndTicks, IPositions } from "./types";
 import {
   calculatePointsToDistribute,
   calculateReward,
@@ -85,39 +85,6 @@ export const fetchTransactionLogs = async (
       })
     )
   ).flat();
-};
-
-export const convertJson = (previousData: any) => {
-  const updatedData: Record<string, IPositions> = {};
-
-  for (const userId in previousData) {
-    const userPools = previousData[userId];
-
-    const updatedActive = userPools.active.map((activeEntry: any) => {
-      const updatedEvent = {
-        ...activeEntry.event,
-        id: new BN(activeEntry.event.id, "hex"),
-        owner: new PublicKey(activeEntry.event.owner),
-        pool: new PublicKey(activeEntry.event.pool),
-        liquidity: new BN(activeEntry.event.liquidity, "hex"),
-        currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
-      };
-      return {
-        event: updatedEvent,
-        points: activeEntry.points,
-        previousSnapSecondsPerLiquidityInside: new BN(
-          activeEntry.previousSnapSecondsPerLiquidityInside,
-          "hex"
-        ),
-      };
-    });
-
-    updatedData[userId] = {
-      active: updatedActive,
-      closed: userPools.closed,
-    };
-  }
-  return updatedData;
 };
 
 export const isPromotedPool = (pool: PublicKey) =>
@@ -219,7 +186,7 @@ export const processNewOpen = (
       previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
       points: calculateReward(
         entry.liquidity,
-        new BN(0),
+        entry.secondsPerLiquidityInsideInitial,
         secondsPerLiquidityInside,
         calculatePointsToDistribute(entry.currentTimestamp, currentTimestamp),
         currentTimestamp.sub(entry.currentTimestamp)
@@ -277,8 +244,8 @@ export const processNewOpenClosed = (
       points: !entry[0]
         ? 0
         : calculateReward(
-            entry[1].liquidity,
-            new BN(0),
+            entry[0].liquidity,
+            entry[0].secondsPerLiquidityInsideInitial,
             calculateSecondsPerLiquidityInside(
               entry[1].upperTick,
               entry[1].lowerTick,
@@ -288,10 +255,10 @@ export const processNewOpenClosed = (
               entry[1].poolSecondsPerLiquidityGlobal
             ),
             calculatePointsToDistribute(
-              entry[0]?.currentTimestamp ?? new BN(0),
+              entry[0].currentTimestamp,
               entry[1].currentTimestamp
             ),
-            entry[1].currentTimestamp.sub(entry[0]?.currentTimestamp)
+            entry[1].currentTimestamp.sub(entry[0].currentTimestamp)
           ).toNumber(),
     });
   });
