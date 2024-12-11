@@ -20,9 +20,15 @@ import {
   processNewOpen,
   processNewClosed,
   processNewOpenClosed,
-  convertPointsJson,
 } from "./utils";
-import { IActive, IConfig, IPoints, IPoolAndTicks, IPositions } from "./types";
+import {
+  IActive,
+  IConfig,
+  IPoints,
+  IPointsJson,
+  IPoolAndTicks,
+  IPositions,
+} from "./types";
 import {
   CreatePositionEvent,
   RemovePositionEvent,
@@ -270,15 +276,15 @@ export const createSnapshotForNetwork = async (network: Network) => {
     currentTimestamp: currentTimestamp.toNumber(),
   };
 
-  const previousPoints: Record<string, IPoints> = {
-    ...convertPointsJson(JSON.parse(fs.readFileSync(pointsFileName, "utf-8"))),
-  };
+  const previousPoints: Record<string, IPointsJson> = JSON.parse(
+    fs.readFileSync(pointsFileName, "utf-8")
+  );
   const points: Record<string, IPoints> = Object.keys(eventsObject).reduce(
     (acc, curr) => {
       const prev24HoursHistory = previousPoints[curr]?.points24HoursHistory;
       if (prev24HoursHistory) {
         prev24HoursHistory.forEach((item, idx) => {
-          if (item.timestamp.add(DAY).lt(currentTimestamp)) {
+          if (new BN(item.timestamp).add(DAY).lt(currentTimestamp)) {
             prev24HoursHistory.splice(idx, 1);
           }
         });

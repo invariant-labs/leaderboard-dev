@@ -40,3 +40,14 @@ export interface IPoints {
   rank: number;
   points24HoursHistory: IPointsHistory[];
 }
+export interface IPointsHistoryJson {
+  diff: number;
+  timestamp: string;
+}
+export interface IPointsJson {
+  totalPoints: number;
+  positionsAmount: number;
+  last24HoursPoints: number;
+  rank: number;
+  points24HoursHistory: IPointsHistoryJson[];
+}
