@@ -161,6 +161,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         const correspondingItemIndexPreviousData = ownerData.active.findIndex(
           (item) => new BN(item.event.id, "hex").eq(event.id)
         );
+
         if (correspondingItemIndexPreviousData >= 0) {
           const correspondingItem =
             ownerData.active[correspondingItemIndexPreviousData];
@@ -199,9 +200,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   Object.values(eventsObject).forEach((positions) =>
     positions.active.forEach((activeEntry) => {
-      const hasBeenClosed = newClosed.some(
-        (newClosedEntry) =>
-          newClosedEntry[0].event.id === new BN(activeEntry.event.id, "hex")
+      const hasBeenClosed = newClosed.some((newClosedEntry) =>
+        newClosedEntry[0].event.id.eq(new BN(activeEntry.event.id, "hex"))
       );
       if (!hasBeenClosed) {
         stillOpen.push({
