@@ -12,8 +12,8 @@
           "currentTimestamp": "67597b29",
           "secondsPerLiquidityInsideInitial": "01091b47fdd57d37a0b6"
         },
-        "previousSnapSecondsPerLiquidityInside": "0113cfbf10d5113ba3aa",
-        "points": 19740000
+        "previousSnapSecondsPerLiquidityInside": "011a46a63ca35b8ddd3b",
+        "points": 31660000
       },
       {
         "event": {
@@ -26,8 +26,8 @@
           "currentTimestamp": "67598412",
           "secondsPerLiquidityInsideInitial": "010ee10fd3ef1e5b7d2e"
         },
-        "previousSnapSecondsPerLiquidityInside": "0113cfbf10d5113ba3aa",
-        "points": 9100000
+        "previousSnapSecondsPerLiquidityInside": "011a46a63ca35b8ddd3b",
+        "points": 21020000
       }
     ],
     "closed": [

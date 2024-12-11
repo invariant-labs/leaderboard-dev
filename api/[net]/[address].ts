@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import ECLIPSE_TESTNET_DATA from "../../data/points_testnet.json";
 import ECLIPSE_MAINNET_DATA from "../../data/points_mainnet.json";
-import { IPoints, IPointsHistory } from "../../src/types";
+import { IPointsHistory, IPointsJson } from "../../src/types";
 
 interface IData {
   user: {
@@ -37,12 +37,12 @@ export default function (req: VercelRequest, res: VercelResponse) {
   const { net, address } = req.query;
   const pubkey = address as string;
   let data: IData;
-  let currentData: Record<string, IPoints>;
+  let currentData: Record<string, IPointsJson>;
 
   if (net === "eclipse-testnet") {
-    currentData = ECLIPSE_TESTNET_DATA as Record<string, IPoints>;
+    currentData = ECLIPSE_TESTNET_DATA as Record<string, IPointsJson>;
   } else if (net === "eclipse-mainnet") {
-    currentData = ECLIPSE_MAINNET_DATA as Record<string, IPoints>;
+    currentData = ECLIPSE_MAINNET_DATA as Record<string, IPointsJson>;
   } else {
     return res.status(400).send("INVALID NETWORK");
   }
