@@ -8,7 +8,7 @@ const LIQUIDITY_DENOMINATOR = new BN(10).pow(new BN(LIQUIDITY_DECIMAL));
 const SECONDS_PER_LIQUIDITY_DENOMINATOR = new BN(10).pow(
   new BN(SECONDS_PER_LIQUIDITY_DECIMAL)
 );
-const CUSTOM_DECIMAL = POINTS_PER_SECOND;
+const SECONDS_INSIDE_DENOMINATOR = POINTS_PER_SECOND;
 
 export const calculateReward = (
   liquidity: BN,
@@ -26,7 +26,7 @@ export const calculateReward = (
   const points = pointsToDistribute
     .mul(secondsInside)
     .div(totalSecondsPassed)
-    .div(CUSTOM_DECIMAL);
+    .div(SECONDS_INSIDE_DENOMINATOR);
   return points;
 };
 
@@ -40,7 +40,7 @@ export const calculateSecondsInside = (
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
-    .mul(CUSTOM_DECIMAL)
+    .mul(SECONDS_INSIDE_DENOMINATOR)
     .div(LIQUIDITY_DENOMINATOR)
     .div(SECONDS_PER_LIQUIDITY_DENOMINATOR);
 };
