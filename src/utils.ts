@@ -87,62 +87,6 @@ export const fetchTransactionLogs = async (
   ).flat();
 };
 
-export const convertEventsJson = (previousData: any) => {
-  const updatedData: Record<string, IPositions> = {};
-
-  for (const userId in previousData) {
-    const userPools = previousData[userId];
-
-    const updatedActive = userPools.active.map((activeEntry: any) => {
-      const updatedEvent = {
-        ...activeEntry.event,
-        id: new BN(activeEntry.event.id, "hex"),
-        owner: new PublicKey(activeEntry.event.owner),
-        pool: new PublicKey(activeEntry.event.pool),
-        liquidity: new BN(activeEntry.event.liquidity, "hex"),
-        currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
-      };
-      return {
-        event: updatedEvent,
-        points: activeEntry.points,
-        previousSnapSecondsPerLiquidityInside: new BN(
-          activeEntry.previousSnapSecondsPerLiquidityInside,
-          "hex"
-        ),
-      };
-    });
-
-    updatedData[userId] = {
-      active: updatedActive,
-      closed: userPools.closed,
-    };
-  }
-  return updatedData;
-};
-
-export const convertPointsJson = (previousData: any) => {
-  const updatedData: Record<string, IPoints> = {};
-
-  for (const userId in previousData) {
-    const userPoints = previousData[userId];
-
-    const convertedHistory = userPoints.points24HoursHistory.map(
-      (item: any) => {
-        return {
-          points: item.points,
-          timestamp: new BN(item.timestamp, "hex"),
-        };
-      }
-    );
-
-    updatedData[userId] = {
-      ...userPoints,
-      points24HoursHistory: convertedHistory,
-    };
-  }
-  return updatedData;
-};
-
 export const isPromotedPool = (pool: PublicKey) =>
   PROMOTED_POOLS.some(
     (promotedPool) => promotedPool.toString() === pool.toString()
