@@ -7,3 +7,5 @@ export const PROMOTED_POOLS = [
   new PublicKey("4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc"), // USDC/TTS 0.05%
 ];
 export const DAY = new BN(86400);
+export const FULL_SNAP_START_TX_HASH =
+  "3pAqNRWob3mzebdgPVUFbRWCYsQzy6WXxizJirPvUadrzqoxG8LBFXdg6fdYJSn6gWUfMePNeT27GsD4CLw8xFzb";
