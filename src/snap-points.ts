@@ -88,7 +88,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     fs.readFileSync(configFileName, "utf-8")
   );
 
-  const { lastTxHash, lastSnapTimestamp } = previousConfig;
+  const { lastTxHash } = previousConfig;
   const sigs = await fetchAllSignatures(
     connection,
     market.eventOptAccount.address,
@@ -177,12 +177,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
                   correspondingItem.event.currentTimestamp,
                   "hex"
                 ),
+                secondsPerLiquidityInsideInitial: new BN(
+                  correspondingItem.event.secondsPerLiquidityInsideInitial,
+                  "hex"
+                ),
               },
-              previousSnapSecondsPerLiquidityInside: new BN(
-                correspondingItem.previousSnapSecondsPerLiquidityInside,
-                "hex"
-              ),
-              points: correspondingItem.points,
+              points: new BN(correspondingItem.points, "hex"),
             },
             event,
           ]);
@@ -212,12 +212,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
             pool: new PublicKey(activeEntry.event.pool),
             liquidity: new BN(activeEntry.event.liquidity, "hex"),
             currentTimestamp: new BN(activeEntry.event.currentTimestamp, "hex"),
+            secondsPerLiquidityInsideInitial: new BN(
+              activeEntry.event.secondsPerLiquidityInsideInitial,
+              "hex"
+            ),
           },
-          previousSnapSecondsPerLiquidityInside: new BN(
-            activeEntry.previousSnapSecondsPerLiquidityInside,
-            "hex"
-          ),
-          points: activeEntry.points,
+          points: new BN(activeEntry.points, "hex"),
         });
       }
     })
@@ -250,13 +250,10 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   const currentTimestamp = getTimestampInSeconds();
 
-  const convertedLastSnapTimestamp = new BN(lastSnapTimestamp);
-
   const updatedStillOpen = processStillOpen(
     stillOpen,
     poolsWithTicks,
-    currentTimestamp,
-    convertedLastSnapTimestamp
+    currentTimestamp
   );
 
   const updatedNewOpen = processNewOpen(
@@ -265,10 +262,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     currentTimestamp
   );
 
-  const updatedNewClosed = processNewClosed(
-    newClosed,
-    convertedLastSnapTimestamp
-  );
+  const updatedNewClosed = processNewClosed(newClosed);
 
   const updatedNewOpenClosed = processNewOpenClosed(newOpenClosed);
 
@@ -304,9 +298,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
     eventsObject[ownerKey].closed.push(entry);
   });
 
-  const data = {
+  const config = {
     lastTxHash: sigs[0] ?? lastTxHash,
-    currentTimestamp: currentTimestamp.toNumber(),
   };
 
   const previousPoints: Record<string, IPointsJson> = JSON.parse(
@@ -322,17 +315,18 @@ export const createSnapshotForNetwork = async (network: Network) => {
           }
         });
       }
-      const previousTotalPoints = previousPoints[curr]?.totalPoints ?? 0;
+      const previousTotalPoints: BN =
+        new BN(previousPoints[curr]?.totalPoints, "hex") ?? new BN(0);
 
-      const pointsForOpen: number[] = eventsObject[curr].active.map(
+      const pointsForOpen: BN[] = eventsObject[curr].active.map(
         (entry) => entry.points
       );
-      const pointsForClosed: number[] = eventsObject[curr].closed.map(
+      const pointsForClosed: BN[] = eventsObject[curr].closed.map(
         (entry) => entry.points
       );
       const totalPoints = pointsForOpen
         .concat(pointsForClosed)
-        .reduce((sum, point) => (sum += point), 0);
+        .reduce((sum, point) => sum.add(point), new BN(0));
       acc[curr] = {
         totalPoints,
         positionsAmount: eventsObject[curr].active.length,
@@ -340,13 +334,13 @@ export const createSnapshotForNetwork = async (network: Network) => {
           ? [
               ...prev24HoursHistory,
               {
-                diff: totalPoints - previousTotalPoints,
+                diff: totalPoints.sub(previousTotalPoints),
                 timestamp: currentTimestamp,
               },
             ]
           : [
               {
-                diff: totalPoints - previousTotalPoints,
+                diff: totalPoints.sub(previousTotalPoints),
                 timestamp: currentTimestamp,
               },
             ],
@@ -356,7 +350,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     {}
   );
 
-  fs.writeFileSync(configFileName, JSON.stringify(data, null, 2));
+  fs.writeFileSync(configFileName, JSON.stringify(config, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
   fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));
 };
