@@ -4,11 +4,12 @@ export const POINTS_PER_SECOND = new BN(10000);
 const MAX_U128 = new BN("340282366920938463463374607431768211455");
 const SECONDS_PER_LIQUIDITY_DECIMAL = 24;
 const LIQUIDITY_DECIMAL = 6;
+const POINTS_DECIMAL = 6;
 const LIQUIDITY_DENOMINATOR = new BN(10).pow(new BN(LIQUIDITY_DECIMAL));
 const SECONDS_PER_LIQUIDITY_DENOMINATOR = new BN(10).pow(
   new BN(SECONDS_PER_LIQUIDITY_DECIMAL)
 );
-const SECONDS_INSIDE_DENOMINATOR = POINTS_PER_SECOND;
+const POINTS_DENOMINATOR = new BN(10).pow(new BN(POINTS_DECIMAL));
 
 export const calculateReward = (
   liquidity: BN,
@@ -23,10 +24,7 @@ export const calculateReward = (
     secondsPerLiquidityInside
   );
 
-  const points = pointsToDistribute
-    .mul(secondsInside)
-    .div(totalSecondsPassed)
-    .div(SECONDS_INSIDE_DENOMINATOR);
+  const points = pointsToDistribute.mul(secondsInside).div(totalSecondsPassed);
   return points;
 };
 
@@ -40,7 +38,7 @@ export const calculateSecondsInside = (
     secondsPerLiquidityInsideInitial
   )
     .mul(liquidity)
-    .mul(SECONDS_INSIDE_DENOMINATOR)
+    .mul(POINTS_DENOMINATOR)
     .div(LIQUIDITY_DENOMINATOR)
     .div(SECONDS_PER_LIQUIDITY_DENOMINATOR);
 };
