@@ -21,7 +21,6 @@ export interface IPositions {
 }
 export interface IConfig {
   lastTxHash: string;
-  calcPointsFromTimestamp: string;
 }
 export interface IPoolAndTicks {
   pool: PublicKey;

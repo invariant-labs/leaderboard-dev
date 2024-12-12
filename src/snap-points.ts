@@ -88,7 +88,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     fs.readFileSync(configFileName, "utf-8")
   );
 
-  const { lastTxHash, calcPointsFromTimestamp } = previousConfig;
+  const { lastTxHash } = previousConfig;
   const sigs = await fetchAllSignatures(
     connection,
     market.eventOptAccount.address,
@@ -300,7 +300,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   const config = {
     lastTxHash: sigs[0] ?? lastTxHash,
-    calcPointsFromTimestamp: calcPointsFromTimestamp,
   };
 
   const previousPoints: Record<string, IPointsJson> = JSON.parse(
