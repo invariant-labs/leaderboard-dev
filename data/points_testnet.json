@@ -1,6 +1,6 @@
 {
   "Fp93x7oYTZftGN8jUPv9qE1dVPEASH33P33ew19JedDV": {
-    "totalPoints": "0ab912c30c00",
+    "totalPoints": "0c2b4625a800",
     "positionsAmount": 0,
     "points24HoursHistory": [
       {
@@ -26,6 +26,46 @@
       {
         "diff": "00",
         "timestamp": "675c009e"
+      },
+      {
+        "diff": "00",
+        "timestamp": "675c00c9"
+      },
+      {
+        "diff": "29e8d60800",
+        "timestamp": "675c00f0"
+      },
+      {
+        "diff": "1bf08eb000",
+        "timestamp": "675c00fc"
+      },
+      {
+        "diff": "358d117c00",
+        "timestamp": "675c0113"
+      },
+      {
+        "diff": "0df8475800",
+        "timestamp": "675c0119"
+      },
+      {
+        "diff": "104c533c00",
+        "timestamp": "675c0120"
+      },
+      {
+        "diff": "c83bfe9800",
+        "timestamp": "675c0180"
+      },
+      {
+        "diff": "00",
+        "timestamp": "675c0186"
+      },
+      {
+        "diff": "00",
+        "timestamp": "675c0190"
+      },
+      {
+        "diff": "104c533c00",
+        "timestamp": "675c01b6"
       }
     ]
   }
