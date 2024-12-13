@@ -1655,15 +1655,29 @@
         "event": {
           "owner": "Fp93x7oYTZftGN8jUPv9qE1dVPEASH33P33ew19JedDV",
           "pool": "4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc",
-          "id": "45",
+          "id": "47",
           "liquidity": "989680",
           "lowerTick": -92115,
           "upperTick": -92105,
-          "currentTimestamp": "675bf9f3",
+          "currentTimestamp": "675c00e7",
+          "secondsPerLiquidityInsideInitial": "be951906eba2aa800000"
+        },
+        "previousSnapSecondsPerLiquidityInside": "017293b0a9e69fd9c00000",
+        "points": 85000
+      },
+      {
+        "event": {
+          "owner": "Fp93x7oYTZftGN8jUPv9qE1dVPEASH33P33ew19JedDV",
+          "pool": "4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc",
+          "id": "46",
+          "liquidity": "989680",
+          "lowerTick": -92115,
+          "upperTick": -92105,
+          "currentTimestamp": "675c00de",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "previousSnapSecondsPerLiquidityInside": "2578a5ebb1a9a630800000",
-        "points": 4530000
+        "previousSnapSecondsPerLiquidityInside": "017293b0a9e69fd9c00000",
+        "points": 175000
       }
     ],
     "closed": [
@@ -1722,6 +1736,34 @@
           }
         ],
         "points": 11260000
+      },
+      {
+        "events": [
+          {
+            "owner": "Fp93x7oYTZftGN8jUPv9qE1dVPEASH33P33ew19JedDV",
+            "pool": "4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc",
+            "id": "45",
+            "liquidity": "989680",
+            "lowerTick": -92115,
+            "upperTick": -92105,
+            "currentTimestamp": "675bf9f3",
+            "secondsPerLiquidityInsideInitial": "00"
+          },
+          {
+            "owner": "Fp93x7oYTZftGN8jUPv9qE1dVPEASH33P33ew19JedDV",
+            "pool": "4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc",
+            "id": "45",
+            "liquidity": "989680",
+            "upperTick": -92105,
+            "currentTick": -92110,
+            "lowerTick": -92115,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "8d5f52988723e4d357d12d6c",
+            "poolSecondsPerLiquidityGlobal": "8dc0d8e455ae791097512d6c",
+            "currentTimestamp": "675bfe8e"
+          }
+        ],
+        "points": 11790000
       }
     ]
   },
