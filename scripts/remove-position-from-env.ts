@@ -49,7 +49,7 @@ const main = async () => {
 
   const params: RemovePosition = {
     pair,
-    index: 0,
+    index: 2,
     owner: FOUNDER.publicKey,
     userTokenX: founderAccountX,
     userTokenY: founderAccountY,
