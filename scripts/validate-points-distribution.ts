@@ -4,40 +4,38 @@ import { IPointsJson } from "../src/types";
 import * as fs from "fs";
 import path from "path";
 import { BN } from "@coral-xyz/anchor";
-import { POINTS_PER_SECOND } from "../src/math";
+import { POINTS_DENOMINATOR, POINTS_PER_SECOND } from "../src/math";
 
-const testMath = async () => {
+const validatePointsDistribution = async () => {
   const firstTimestamp = await createSnapshotForNetwork(Network.TEST);
-  const previousPointsFirst: Record<string, IPointsJson> = JSON.parse(
+  const previousPoints: Record<string, IPointsJson> = JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../data/points_testnet.json"),
       "utf-8"
     )
   );
-  const pointsFirst: BN = Object.keys(previousPointsFirst).reduce(
-    (acc, curr) =>
-      acc.add(new BN(previousPointsFirst[curr].totalPoints, "hex")),
+  const previousPointsSum: BN = Object.keys(previousPoints).reduce(
+    (acc, curr) => acc.add(new BN(previousPoints[curr].totalPoints, "hex")),
     new BN(0)
   );
   await new Promise((resolve) => setTimeout(resolve, 3000));
   const secondTimestamp = await createSnapshotForNetwork(Network.TEST);
-  const previousPointsSecond: Record<string, IPointsJson> = JSON.parse(
+  const currentPoints: Record<string, IPointsJson> = JSON.parse(
     fs.readFileSync(
       path.join(__dirname, "../data/points_testnet.json"),
       "utf-8"
     )
   );
-  const pointsSecond: BN = Object.keys(previousPointsSecond).reduce(
-    (acc, curr) =>
-      acc.add(new BN(previousPointsSecond[curr].totalPoints, "hex")),
+  const currentPointsSum: BN = Object.keys(currentPoints).reduce(
+    (acc, curr) => acc.add(new BN(currentPoints[curr].totalPoints, "hex")),
     new BN(0)
   );
 
-  const pointsDiff = pointsSecond.sub(pointsFirst);
+  const pointsDiff = currentPointsSum.sub(previousPointsSum);
   const expectedPointsDiff = secondTimestamp
     .sub(firstTimestamp)
     .mul(POINTS_PER_SECOND)
-    .muln(10 ** 6);
+    .muln(POINTS_DENOMINATOR);
 
   const difference = expectedPointsDiff.sub(pointsDiff);
   const percentageDiff = difference.muln(100).div(expectedPointsDiff);
@@ -50,4 +48,4 @@ const testMath = async () => {
   console.log("Actual points distributed:", pointsDiff.toNumber() + "%");
 };
 
-testMath();
+validatePointsDistribution();
