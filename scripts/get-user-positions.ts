@@ -1,7 +1,7 @@
 import { AnchorProvider } from "@coral-xyz/anchor";
+import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { IWallet, Market, Network, Pair } from "@invariant-labs/sdk-eclipse";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import fs from "fs";
 
 require("dotenv").config();
 
@@ -13,15 +13,10 @@ const connection = provider.connection;
 
 // const POOL = new PublicKey("G8Skt6kgqVL9ocYn4aYVGs3gUg8EfQrTJAkA2qt3gcs8"); // USDC/ETH 0.01%
 const POOL = new PublicKey("4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc"); // USDC/ETH 0.01%
-
+const FOUNDER = Keypair.fromSecretKey(
+  bs58.decode(process.env.FOUNDER_PRIVATE_KEY as string)
+);
 const main = async () => {
-  const wallets = JSON.parse(
-    fs.readFileSync("./scripts/wallets.json", "utf-8")
-  );
-  const walletKeys = wallets.map((w) =>
-    Keypair.fromSecretKey(new Uint8Array(w))
-  );
-
   const market = await Market.build(
     Network.TEST,
     provider.wallet as IWallet,
@@ -30,15 +25,14 @@ const main = async () => {
 
   const poolState = await market.getPoolByAddress(POOL);
 
-  const pair = new Pair(poolState.tokenX, poolState.tokenY, {
-    fee: poolState.fee,
-    tickSpacing: poolState.tickSpacing,
-  });
-
-  const allPositions = await market.getAllPositions();
+  const { head } = await market.getPositionList(FOUNDER.publicKey);
+  const allPositions = await market.getPositionsFromRange(
+    FOUNDER.publicKey,
+    0,
+    head
+  );
   console.log("Total positions", allPositions.length);
-  const filtered = allPositions.filter((pos) => pos.pool.equals(POOL));
-  console.log(filtered);
-  console.log("Total position on pool", filtered.length);
+  console.log(allPositions);
+  console.log(poolState);
 };
 main();

@@ -76,11 +76,14 @@ const main = async () => {
       pair.tokenY,
       wallet.publicKey
     );
+    const currentTickIndex = poolState.currentTickIndex;
+    const lowerTick = currentTickIndex - (index + 1) * pair.tickSpacing;
+    const upperTick = currentTickIndex + (index + 1) * pair.tickSpacing;
     const params: InitPosition = {
       knownPrice: poolState.sqrtPrice,
       liquidityDelta: new BN(100000),
-      lowerTick: -Infinity,
-      upperTick: Infinity,
+      lowerTick,
+      upperTick,
       pair,
       owner: wallet.publicKey,
       slippage: toDecimal(1, 2),

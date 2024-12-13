@@ -30,6 +30,7 @@ export const calculateReward = (
     .mul(POINTS_DENOMINATOR)
     .div(totalSecondsPassed)
     .div(SECONDS_INSIDE_DENOMINATOR);
+
   return points;
 };
 
