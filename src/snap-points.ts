@@ -355,7 +355,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
   fs.writeFileSync(configFileName, JSON.stringify(config, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
   fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));
-  return currentTimestamp;
 };
 
 createSnapshotForNetwork(Network.TEST).then(
