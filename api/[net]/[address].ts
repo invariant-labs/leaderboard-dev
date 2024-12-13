@@ -36,6 +36,11 @@ export default function (req: VercelRequest, res: VercelResponse) {
   );
 
   const { net, address } = req.query;
+
+  // Extract pagination parameters from query
+  const offset = Number(req.query.offset) || 0;
+  const size = Number(req.query.size) || undefined;
+
   const pubkey = address as string;
   let currentData: Record<string, IPointsJson>;
 
@@ -75,15 +80,17 @@ export default function (req: VercelRequest, res: VercelResponse) {
       : null;
   const finalData: IData = {
     user: userData ? { ...userData } : null,
-    leaderboard: Object.keys(currentData).map((key) => {
-      return {
-        address: key,
-        rank: rank[key],
-        last24hPoints: last24HoursPoints[key],
-        points: new BN(currentData[key].totalPoints, "hex"),
-        positions: currentData[key].positionsAmount,
-      };
-    }),
+    leaderboard: Object.keys(currentData)
+      .map((key) => {
+        return {
+          address: key,
+          rank: rank[key],
+          last24hPoints: last24HoursPoints[key],
+          points: new BN(currentData[key].totalPoints, "hex"),
+          positions: currentData[key].positionsAmount,
+        };
+      })
+      .slice(offset, size),
   };
 
   res.json(finalData);
