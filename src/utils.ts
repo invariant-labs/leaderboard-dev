@@ -95,8 +95,7 @@ export const isPromotedPool = (pool: PublicKey) =>
 export const processStillOpen = (
   stillOpen: IActive[],
   poolsWithTicks: IPoolAndTicks[],
-  currentTimestamp: BN,
-  lastSnapTimestamp: BN
+  currentTimestamp: BN
 ) => {
   const updatedStillOpen: IActive[] = [];
 
@@ -128,18 +127,16 @@ export const processStillOpen = (
 
     updatedStillOpen.push({
       event: entry.event,
-      previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
-      points: new BN(entry.points)
-        .add(
-          calculateReward(
-            entry.event.liquidity,
-            entry.previousSnapSecondsPerLiquidityInside,
-            secondsPerLiquidityInside,
-            calculatePointsToDistribute(lastSnapTimestamp, currentTimestamp),
-            currentTimestamp.sub(lastSnapTimestamp)
-          )
-        )
-        .toNumber(),
+      points: calculateReward(
+        entry.event.liquidity,
+        entry.event.secondsPerLiquidityInsideInitial,
+        secondsPerLiquidityInside,
+        calculatePointsToDistribute(
+          entry.event.currentTimestamp,
+          currentTimestamp
+        ),
+        currentTimestamp.sub(entry.event.currentTimestamp)
+      ),
     });
   });
 
@@ -183,14 +180,13 @@ export const processNewOpen = (
     );
     updatedNewOpen.push({
       event: entry,
-      previousSnapSecondsPerLiquidityInside: secondsPerLiquidityInside,
       points: calculateReward(
         entry.liquidity,
         entry.secondsPerLiquidityInsideInitial,
         secondsPerLiquidityInside,
         calculatePointsToDistribute(entry.currentTimestamp, currentTimestamp),
         currentTimestamp.sub(entry.currentTimestamp)
-      ).toNumber(),
+      ),
     });
   });
 
@@ -198,35 +194,30 @@ export const processNewOpen = (
 };
 
 export const processNewClosed = (
-  newClosed: [IActive, RemovePositionEvent][],
-  lastSnapTimestamp: BN
+  newClosed: [IActive, RemovePositionEvent][]
 ) => {
   const updatedNewClosed: IClosed[] = [];
 
   newClosed.forEach((entry) => {
     updatedNewClosed.push({
       events: [entry[0].event, entry[1]],
-      points: new BN(entry[0].points)
-        .add(
-          calculateReward(
-            entry[1].liquidity,
-            entry[0].previousSnapSecondsPerLiquidityInside,
-            calculateSecondsPerLiquidityInside(
-              entry[1].upperTick,
-              entry[1].lowerTick,
-              entry[1].currentTick,
-              entry[1].upperTickSecondsPerLiquidityOutside,
-              entry[1].lowerTickSecondsPerLiquidityOutside,
-              entry[1].poolSecondsPerLiquidityGlobal
-            ),
-            calculatePointsToDistribute(
-              lastSnapTimestamp,
-              entry[1].currentTimestamp
-            ),
-            entry[1].currentTimestamp.sub(lastSnapTimestamp)
-          )
-        )
-        .toNumber(),
+      points: calculateReward(
+        entry[1].liquidity,
+        entry[0].event.secondsPerLiquidityInsideInitial,
+        calculateSecondsPerLiquidityInside(
+          entry[1].upperTick,
+          entry[1].lowerTick,
+          entry[1].currentTick,
+          entry[1].upperTickSecondsPerLiquidityOutside,
+          entry[1].lowerTickSecondsPerLiquidityOutside,
+          entry[1].poolSecondsPerLiquidityGlobal
+        ),
+        calculatePointsToDistribute(
+          entry[0].event.currentTimestamp,
+          entry[1].currentTimestamp
+        ),
+        entry[1].currentTimestamp.sub(entry[0].event.currentTimestamp)
+      ),
     });
   });
 
@@ -242,7 +233,7 @@ export const processNewOpenClosed = (
     updatedNewOpenClosed.push({
       events: [entry[0], entry[1]],
       points: !entry[0]
-        ? 0
+        ? new BN(0)
         : calculateReward(
             entry[0].liquidity,
             entry[0].secondsPerLiquidityInsideInitial,
@@ -259,7 +250,7 @@ export const processNewOpenClosed = (
               entry[1].currentTimestamp
             ),
             entry[1].currentTimestamp.sub(entry[0].currentTimestamp)
-          ).toNumber(),
+          ),
     });
   });
 
