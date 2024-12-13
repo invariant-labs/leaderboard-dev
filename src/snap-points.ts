@@ -19,6 +19,7 @@ import {
   processNewOpen,
   processNewClosed,
   processNewOpenClosed,
+  retryOperation,
 } from "./utils";
 import {
   IActive,
@@ -89,18 +90,16 @@ export const createSnapshotForNetwork = async (network: Network) => {
   );
 
   const { lastTxHash } = previousConfig;
-  const sigs = await fetchAllSignatures(
-    connection,
-    market.eventOptAccount.address,
-    lastTxHash
+  const sigs = await retryOperation(
+    fetchAllSignatures(connection, market.eventOptAccount.address, lastTxHash)
   );
-  const txLogs = await fetchTransactionLogs(
-    connection,
-    sigs,
-    MAX_SIGNATURES_PER_CALL
+
+  const txLogs = await retryOperation(
+    fetchTransactionLogs(connection, sigs, MAX_SIGNATURES_PER_CALL)
   );
 
   const finalLogs = txLogs.flat();
+
   const eventsObject: Record<string, IPositions> = JSON.parse(
     fs.readFileSync(eventsSnapFilename, "utf-8")
   );
@@ -240,8 +239,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
         ])
       );
       const [poolStructure, ticks] = await Promise.all([
-        market.getPoolByAddress(pool),
-        Promise.all(ticksUsed.map((tick) => market.getTickByPool(pool, tick))),
+        retryOperation(market.getPoolByAddress(pool)),
+        Promise.all(
+          ticksUsed.map((tick) =>
+            retryOperation(market.getTickByPool(pool, tick))
+          )
+        ),
       ]);
 
       return { pool, poolStructure: poolStructure, ticks };

@@ -9,3 +9,5 @@ export const PROMOTED_POOLS = [
 export const DAY = new BN(86400);
 export const FULL_SNAP_START_TX_HASH =
   "3pAqNRWob3mzebdgPVUFbRWCYsQzy6WXxizJirPvUadrzqoxG8LBFXdg6fdYJSn6gWUfMePNeT27GsD4CLw8xFzb";
+
+export const MAX_RETIRES = 3;
