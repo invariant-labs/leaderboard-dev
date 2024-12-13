@@ -64,11 +64,13 @@ const main = async () => {
     FOUNDER.publicKey
   );
 
-  const lowerTick = currentTickIndex - pair.tickSpacing;
-  const upperTick = currentTickIndex + pair.tickSpacing;
+  // const lowerTick = currentTickIndex - pair.tickSpacing;
+  // const upperTick = currentTickIndex + pair.tickSpacing;
+  const lowerTick = -Infinity;
+  const upperTick = Infinity;
   const params: InitPosition = {
     knownPrice: poolState.sqrtPrice,
-    liquidityDelta: new BN(10000000),
+    liquidityDelta: new BN(100000000000),
     lowerTick,
     upperTick,
     pair,
