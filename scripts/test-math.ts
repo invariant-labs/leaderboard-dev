@@ -38,7 +38,16 @@ const testMath = async () => {
     .sub(firstTimestamp)
     .mul(POINTS_PER_SECOND)
     .muln(10 ** 6);
-  console.log(pointsDiff.toNumber(), expectedPointsDiff.toNumber());
+
+  const difference = expectedPointsDiff.sub(pointsDiff);
+  const percentageDiff = difference.muln(100).div(expectedPointsDiff);
+
+  console.log("Loss:", percentageDiff.toNumber() + "%");
+  console.log(
+    "Expected points distributed:",
+    expectedPointsDiff.toNumber() + "%"
+  );
+  console.log("Actual points distributed:", pointsDiff.toNumber() + "%");
 };
 
 testMath();
