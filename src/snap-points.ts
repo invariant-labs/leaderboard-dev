@@ -249,7 +249,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
   );
 
   const currentTimestamp = getTimestampInSeconds();
-  console.log("Current timestamp:", currentTimestamp.toString());
+
   const updatedStillOpen = processStillOpen(
     stillOpen,
     poolsWithTicks,
@@ -327,7 +327,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
       const totalPoints = pointsForOpen
         .concat(pointsForClosed)
-        .reduce((sum, point) => sum.add(point), new BN(0));
+        .reduce((sum, point) => sum.add(new BN(point, "hex")), new BN(0));
 
       acc[curr] = {
         totalPoints,

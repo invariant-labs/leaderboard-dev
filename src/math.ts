@@ -19,21 +19,12 @@ export const calculateReward = (
   pointsToDistribute: BN,
   totalSecondsPassed: BN
 ): BN => {
-  console.log(
-    "Params to string:",
-    liquidity.toString(),
-    secondsPerLiquidityInsideInitial.toString(),
-    secondsPerLiquidityInside.toString(),
-    pointsToDistribute.toString(),
-    totalSecondsPassed.toString()
-  );
   const secondsInside = calculateSecondsInside(
     liquidity,
     secondsPerLiquidityInsideInitial,
     secondsPerLiquidityInside
   );
 
-  console.log("Seconds inside:", secondsInside.toString());
   const points = pointsToDistribute
     .mul(secondsInside)
     .mul(POINTS_DENOMINATOR)
