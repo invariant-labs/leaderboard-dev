@@ -11,7 +11,6 @@ import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
 import {
-  DAY,
   FULL_SNAP_START_TX_HASH,
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS,
@@ -20,19 +19,10 @@ import {
   fetchAllSignatures,
   fetchTransactionLogs,
   isPromotedPool,
-  processStillOpen,
   processNewOpen,
-  processNewClosed,
   processNewOpenClosed,
 } from "./utils";
-import {
-  IActive,
-  IConfig,
-  IPoints,
-  IPointsJson,
-  IPoolAndTicks,
-  IPositions,
-} from "./types";
+import { IPoolAndTicks, IPositions } from "./types";
 import {
   CreatePositionEvent,
   RemovePositionEvent,
@@ -89,9 +79,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
   );
 
   const finalLogs = txLogs.flat();
-  const eventsObject: Record<string, IPositions> = JSON.parse(
-    fs.readFileSync(eventsSnapFilename, "utf-8")
-  );
+  const eventsObject: Record<string, IPositions> = {};
 
   const eventLogs: string[] = [];
 
