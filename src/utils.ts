@@ -4,9 +4,9 @@ import {
   ConfirmedSignatureInfo,
   ParsedTransactionWithMeta,
 } from "@solana/web3.js";
-import { PROMOTED_POOLS } from "./consts";
+import { MAX_RETIRES, PROMOTED_POOLS } from "./consts";
 import { BN } from "@coral-xyz/anchor";
-import { IActive, IClosed, IPoints, IPoolAndTicks, IPositions } from "./types";
+import { IActive, IClosed, IPoolAndTicks } from "./types";
 import {
   calculatePointsToDistribute,
   calculateReward,
@@ -17,6 +17,23 @@ import {
   CreatePositionEvent,
   RemovePositionEvent,
 } from "@invariant-labs/sdk-eclipse/lib/market";
+
+export const retryOperation = async (fn: Promise<any>, retires: number = 0) => {
+  try {
+    return await fn;
+  } catch (error) {
+    if (retires < MAX_RETIRES) {
+      await delay(400);
+      return retryOperation(fn, retires + 1);
+    } else {
+      throw new Error("Failed to retry operation");
+    }
+  }
+};
+
+export const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 export const fetchAllSignatures = async (
   connection: Connection,
