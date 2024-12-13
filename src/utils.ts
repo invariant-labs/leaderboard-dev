@@ -97,7 +97,9 @@ export const fetchTransactionLogs = async (
           (idx + 1) * batchSize
         );
         return processParsedTransactions(
-          await connection.getParsedTransactions(batchSignatures, "confirmed")
+          await retryOperation(
+            connection.getParsedTransactions(batchSignatures, "confirmed")
+          )
         );
       })
     )
