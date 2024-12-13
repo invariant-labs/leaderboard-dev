@@ -268,7 +268,6 @@ const initPositionInstruction = async (
   payer: Keypair,
   cache: InitPositionInstructionCache = {}
 ) => {
-  console.log("KnownPrice:", knownPrice);
   const slippageLimitLower = calculatePriceAfterSlippage(
     knownPrice,
     slippage,

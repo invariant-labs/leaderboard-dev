@@ -233,7 +233,7 @@ export const processNewOpenClosed = (
     updatedNewOpenClosed.push({
       events: [entry[0], entry[1]],
       points: !entry[0]
-        ? 0
+        ? new BN(0)
         : calculateReward(
             entry[0].liquidity,
             entry[0].secondsPerLiquidityInsideInitial,

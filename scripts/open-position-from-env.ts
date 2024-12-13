@@ -48,6 +48,7 @@ const main = async () => {
   );
 
   const poolState = await market.getPoolByAddress(POOL);
+  const currentTickIndex = poolState.currentTickIndex;
 
   const pair = new Pair(poolState.tokenX, poolState.tokenY, {
     fee: poolState.fee,
@@ -62,11 +63,14 @@ const main = async () => {
     pair.tokenY,
     FOUNDER.publicKey
   );
+
+  const lowerTick = currentTickIndex - pair.tickSpacing;
+  const upperTick = currentTickIndex + pair.tickSpacing;
   const params: InitPosition = {
     knownPrice: poolState.sqrtPrice,
-    liquidityDelta: new BN(100000),
-    lowerTick: -Infinity,
-    upperTick: Infinity,
+    liquidityDelta: new BN(10000000),
+    lowerTick,
+    upperTick,
     pair,
     owner: FOUNDER.publicKey,
     slippage: toDecimal(1, 2),
@@ -252,7 +256,6 @@ const initPositionInstruction = async (
   payer: Keypair,
   cache: InitPositionInstructionCache = {}
 ) => {
-  console.log("KnownPrice:", knownPrice);
   const slippageLimitLower = calculatePriceAfterSlippage(
     knownPrice,
     slippage,
