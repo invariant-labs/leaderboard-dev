@@ -1,16 +1,11 @@
 import { AnchorProvider } from "@coral-xyz/anchor";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
-import {
-  IWallet,
-  Market,
-  Network,
-  Pair,
-  signAndSend,
-} from "@invariant-labs/sdk-eclipse";
-import { RemovePosition } from "@invariant-labs/sdk-eclipse/lib/market";
+import { IWallet, Market, Network, Pair } from "@invariant-labs/sdk-eclipse";
+import { Swap } from "@invariant-labs/sdk-eclipse/lib/market";
+import { toDecimal } from "@invariant-labs/sdk-eclipse/lib/utils";
 import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import fs from "fs";
+import BN from "bn.js";
 
 require("dotenv").config();
 
@@ -38,25 +33,30 @@ const main = async () => {
     tickSpacing: poolState.tickSpacing,
   });
 
-  const founderAccountX = getAssociatedTokenAddressSync(
+  const userAccountX = getAssociatedTokenAddressSync(
     pair.tokenX,
     FOUNDER.publicKey
   );
-  const founderAccountY = getAssociatedTokenAddressSync(
+  const userAccountY = getAssociatedTokenAddressSync(
     pair.tokenY,
     FOUNDER.publicKey
   );
 
-  const params: RemovePosition = {
+  const amount = new BN(25000);
+  const swap: Swap = {
     pair,
-    index: 0,
+    // USDC is tokenX, TTS is tokenY
+    xToY: true,
+    amount,
+    estimatedPriceAfterSwap: poolState.sqrtPrice,
+    slippage: toDecimal(5, 1),
+    accountX: userAccountX,
+    accountY: userAccountY,
+    byAmountIn: true,
     owner: FOUNDER.publicKey,
-    userTokenX: founderAccountX,
-    userTokenY: founderAccountY,
-    payer: FOUNDER.publicKey,
   };
-  const tx = await market.removePositionTransaction(params);
-  await signAndSend(tx, [FOUNDER], connection);
+
+  await market.swap(swap, FOUNDER);
 };
 
 main();
