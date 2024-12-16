@@ -10,7 +10,12 @@ import { AnchorProvider, BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
-import { DAY, MAX_SIGNATURES_PER_CALL, PROMOTED_POOLS } from "./consts";
+import {
+  DAY,
+  MAX_SIGNATURES_PER_CALL,
+  PROMOTED_POOLS_TESTNET,
+  PROMOTED_POOLS_MAINNET,
+} from "./consts";
 import {
   fetchAllSignatures,
   fetchTransactionLogs,
@@ -43,6 +48,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
   let configFileName: string;
   let eventsSnapFilename: string;
   let pointsFileName: string;
+  let PROMOTED_POOLS: PublicKey[];
 
   switch (network) {
     case Network.MAIN:
@@ -56,6 +62,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         "../data/events_snap_mainnet.json"
       );
       pointsFileName = path.join(__dirname, "../data/points_mainnet.json");
+      PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -70,6 +77,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         "../data/events_snap_testnet.json"
       );
       pointsFileName = path.join(__dirname, "../data/points_testnet.json");
+      PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
       break;
     default:
       throw new Error("Unknown network");
@@ -128,7 +136,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (!isPromotedPool(event.pool)) return acc;
+        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
           item[1].id.eq(event.id)
         );
@@ -142,7 +150,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (!isPromotedPool(event.pool)) return acc;
+        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
         const ownerKey = event.owner.toString();
         const ownerData = eventsObject[ownerKey] || {
           active: [],
