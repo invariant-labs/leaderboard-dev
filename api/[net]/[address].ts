@@ -62,7 +62,7 @@ export default function (req: VercelRequest, res: VercelResponse) {
     user: userData ? { ...userData } : null,
     leaderboard: currentData.slice(
       offset,
-      size ? offset + size : currentData.length - offset
+      size ? offset + size : currentData.length
     ),
   };
 
