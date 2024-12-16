@@ -389,7 +389,7 @@ const validatePointsDistribution = async () => {
 
       const totalPoints = pointsForOpen
         .concat(pointsForClosed)
-        .reduce((sum, point) => sum.add(new BN(point, "hex")), new BN(0));
+        .reduce((sum, point) => sum.add(point), new BN(0));
 
       return acc.add(totalPoints);
     },
