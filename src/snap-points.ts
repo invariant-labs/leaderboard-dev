@@ -136,7 +136,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (!isPromotedPool(event.pool)) return acc;
+        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
           item[1].id.eq(event.id)
         );
@@ -150,7 +150,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (!isPromotedPool(event.pool)) return acc;
+        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
         const ownerKey = event.owner.toString();
         const ownerData = eventsObject[ownerKey] || {
           active: [],
