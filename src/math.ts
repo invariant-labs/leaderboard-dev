@@ -67,6 +67,10 @@ export const calculateSecondsPerLiquidityGlobal = (
     .mul(SECONDS_PER_LIQUIDITY_DENOMINATOR)
     .mul(LIQUIDITY_DENOMINATOR);
 
+  if (liquidity.eqn(0)) {
+    return currentSecondsPerLiquidityGlobal;
+  }
+
   const newSecondsPerLiquidityGlobal = wrappingAdd(
     currentSecondsPerLiquidityGlobal,
     deltaTime.div(liquidity)
