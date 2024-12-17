@@ -5,14 +5,14 @@ import fs from "fs";
 
 require("dotenv").config();
 
-// const provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
-const provider = AnchorProvider.local(
-  "https://testnet.dev2.eclipsenetwork.xyz"
-);
+const provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
+// const provider = AnchorProvider.local(
+//   "https://testnet.dev2.eclipsenetwork.xyz"
+// );
 const connection = provider.connection;
 
 // const POOL = new PublicKey("G8Skt6kgqVL9ocYn4aYVGs3gUg8EfQrTJAkA2qt3gcs8"); // USDC/ETH 0.01%
-const POOL = new PublicKey("4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc"); // USDC/ETH 0.01%
+const POOL = new PublicKey("HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce"); // USDC/ETH 0.01%
 
 const main = async () => {
   const wallets = JSON.parse(

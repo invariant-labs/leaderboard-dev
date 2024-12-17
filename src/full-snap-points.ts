@@ -189,20 +189,20 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
 };
 
-createFullSnapshotForNetwork(Network.TEST).then(
-  () => {
-    console.log("Eclipse: Testnet snapshot done!");
-  },
-  (err) => {
-    console.log(err);
-  }
-);
-
-// createFullSnapshotForNetwork(Network.MAIN).then(
+// createFullSnapshotForNetwork(Network.TEST).then(
 //   () => {
-//     console.log("Eclipse: Mainnet snapshot done!");
+//     console.log("Eclipse: Testnet snapshot done!");
 //   },
 //   (err) => {
 //     console.log(err);
 //   }
 // );
+
+createFullSnapshotForNetwork(Network.MAIN).then(
+  () => {
+    console.log("Eclipse: Mainnet snapshot done!");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
