@@ -6,23 +6,12 @@ import {
   Network,
   parseEvent,
 } from "@invariant-labs/sdk-eclipse";
-import { createSnapshotForNetwork } from "../src/snap-points";
-import {
-  IActive,
-  IConfig,
-  IPointsJson,
-  IPoolAndTicks,
-  IPositions,
-} from "../src/types";
+import { IActive, IConfig, IPoolAndTicks, IPositions } from "../src/types";
 import * as fs from "fs";
 import path from "path";
 import { AnchorProvider, BN } from "@coral-xyz/anchor";
-import {
-  getTimestampInSeconds,
-  POINTS_DENOMINATOR,
-  POINTS_PER_SECOND,
-} from "../src/math";
-import { createFullSnapshotForNetwork } from "../src/full-snap-points";
+import { getTimestampInSeconds } from "../src/math";
+
 import { PublicKey } from "@solana/web3.js";
 import {
   CreatePositionEvent,
@@ -31,7 +20,7 @@ import {
 import {
   FULL_SNAP_START_TX_HASH,
   MAX_SIGNATURES_PER_CALL,
-  PROMOTED_POOLS,
+  PROMOTED_POOLS_MAINNET,
 } from "../src/consts";
 import {
   fetchAllSignatures,
@@ -44,14 +33,12 @@ import {
 } from "../src/utils";
 
 const validatePointsDistribution = async () => {
-  const provider = AnchorProvider.local(
-    "https://testnet.dev2.eclipsenetwork.xyz"
-  );
+  const provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
   const connection = provider.connection;
-  const programId = new PublicKey(getMarketAddress(Network.TEST));
+  const programId = new PublicKey(getMarketAddress(Network.MAIN));
 
   const market = Market.build(
-    Network.TEST,
+    Network.MAIN,
     provider.wallet as IWallet,
     connection,
     programId
@@ -95,7 +82,7 @@ const validatePointsDistribution = async () => {
       (acc, curr) => {
         if (curr.name === InvariantEventNames.CreatePositionEvent) {
           const event = parseEvent(curr) as CreatePositionEvent;
-          if (!isPromotedPool(event.pool)) return acc;
+          if (!isPromotedPool(PROMOTED_POOLS_MAINNET, event.pool)) return acc;
           const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
             item[1].id.eq(event.id)
           );
@@ -109,7 +96,7 @@ const validatePointsDistribution = async () => {
           return acc;
         } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
           const event = parseEvent(curr) as RemovePositionEvent;
-          if (!isPromotedPool(event.pool)) return acc;
+          if (!isPromotedPool(PROMOTED_POOLS_MAINNET, event.pool)) return acc;
           const correspondingItemIndex = acc.newOpen.findIndex((item) =>
             item.id.eq(event.id)
           );
@@ -130,7 +117,7 @@ const validatePointsDistribution = async () => {
 
   const previousConfig: IConfig = JSON.parse(
     fs.readFileSync(
-      path.join(__dirname, "../data/previous_config_testnet.json"),
+      path.join(__dirname, "../data/previous_config_mainnet.json"),
       "utf-8"
     )
   );
@@ -150,7 +137,7 @@ const validatePointsDistribution = async () => {
   const finalLogs = txLogs.flat();
   const eventsObject: Record<string, IPositions> = JSON.parse(
     fs.readFileSync(
-      path.join(__dirname, "../data/events_snap_testnet.json"),
+      path.join(__dirname, "../data/events_snap_mainnet.json"),
       "utf-8"
     )
   );
@@ -179,7 +166,7 @@ const validatePointsDistribution = async () => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (!isPromotedPool(event.pool)) return acc;
+        if (!isPromotedPool(PROMOTED_POOLS_MAINNET, event.pool)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
           item[1].id.eq(event.id)
         );
@@ -193,7 +180,7 @@ const validatePointsDistribution = async () => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (!isPromotedPool(event.pool)) return acc;
+        if (!isPromotedPool(PROMOTED_POOLS_MAINNET, event.pool)) return acc;
         const ownerKey = event.owner.toString();
         const ownerData = eventsObject[ownerKey] || {
           active: [],
@@ -274,7 +261,7 @@ const validatePointsDistribution = async () => {
   );
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
-    PROMOTED_POOLS.map(async (pool) => {
+    PROMOTED_POOLS_MAINNET.map(async (pool) => {
       const ticksUsed = Array.from(
         new Set([
           ...stillOpen.flatMap((entry) =>
@@ -417,6 +404,12 @@ const validatePointsDistribution = async () => {
   const pointsDiff = pointsFromFullSnapshot.sub(pointsFromSnapshot);
   const percentageDiff = pointsDiff.muln(100).div(pointsFromFullSnapshot);
 
+  console.log(
+    "Distributed: ",
+    pointsFromSnapshot.muln(100).div(pointsFromFullSnapshot).toNumber(),
+    "%",
+    `${pointsFromSnapshot.toNumber()} / ${pointsFromFullSnapshot.toNumber()}`
+  );
   console.log(
     `Loss: ${percentageDiff.toNumber()} % (${pointsDiff} / ${pointsFromFullSnapshot})`
   );
