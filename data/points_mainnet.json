@@ -1,6 +1,6 @@
 {
   "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu": {
-    "totalPoints": "41d17ceee000",
+    "totalPoints": "558929ca3c00",
     "positionsAmount": 41,
     "points24HoursHistory": [
       {
@@ -102,6 +102,10 @@
       {
         "diff": "0119c58a8600",
         "timestamp": "67619fc3"
+      },
+      {
+        "diff": "13b7acdb5c00",
+        "timestamp": "6761a83b"
       }
     ]
   }
