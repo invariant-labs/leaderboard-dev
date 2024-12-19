@@ -1,6 +1,6 @@
 {
   "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s": {
-    "totalPoints": "a0eebb00",
+    "totalPoints": "b2d05e00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -10,6 +10,10 @@
       {
         "diff": "05f5e100",
         "timestamp": "67648ebc"
+      },
+      {
+        "diff": "11e1a300",
+        "timestamp": "67649123"
       }
     ]
   }
