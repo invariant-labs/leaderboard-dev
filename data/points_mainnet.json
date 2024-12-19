@@ -26,16 +26,24 @@
       {
         "diff": "00",
         "timestamp": "67649d81"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67649e6d"
       }
     ]
   },
   "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu": {
-    "totalPoints": "00",
-    "positionsAmount": 0,
+    "totalPoints": "01b5b2c58f00",
+    "positionsAmount": 1,
     "points24HoursHistory": [
       {
         "diff": "00",
         "timestamp": "67649d81"
+      },
+      {
+        "diff": "01b5b2c58f00",
+        "timestamp": "67649e6d"
       }
     ]
   }
