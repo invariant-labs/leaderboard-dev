@@ -98,8 +98,9 @@ export const createSnapshotForNetwork = async (network: Network) => {
   );
 
   const { lastTxHash } = previousConfig;
+  const refAddress = market.getEventOptAccount(PROMOTED_POOLS[0]).address;
   const sigs = await retryOperation(
-    fetchAllSignatures(connection, market.eventOptAccount.address, lastTxHash)
+    fetchAllSignatures(connection, refAddress, lastTxHash)
   );
 
   const txLogs = await retryOperation(
