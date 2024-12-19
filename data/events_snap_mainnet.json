@@ -871,5 +871,23 @@
         "points": "028992ff9b00"
       }
     ]
+  },
+  "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn": {
+    "active": [
+      {
+        "event": {
+          "owner": "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "3e",
+          "liquidity": "2461583e76",
+          "lowerTick": -14140,
+          "upperTick": -13640,
+          "currentTimestamp": "6764a372",
+          "secondsPerLiquidityInsideInitial": "00"
+        },
+        "points": "03875c0faf00"
+      }
+    ],
+    "closed": []
   }
 }
