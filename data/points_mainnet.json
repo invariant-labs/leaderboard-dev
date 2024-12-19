@@ -22,6 +22,20 @@
       {
         "diff": "00",
         "timestamp": "6764974b"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67649d81"
+      }
+    ]
+  },
+  "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu": {
+    "totalPoints": "00",
+    "positionsAmount": 0,
+    "points24HoursHistory": [
+      {
+        "diff": "00",
+        "timestamp": "67649d81"
       }
     ]
   }
