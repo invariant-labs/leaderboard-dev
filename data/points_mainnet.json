@@ -130,6 +130,10 @@
       {
         "diff": "00",
         "timestamp": "67652a4b"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67652ebd"
       }
     ]
   },
@@ -244,11 +248,15 @@
       {
         "diff": "00",
         "timestamp": "67652a4b"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67652ebd"
       }
     ]
   },
   "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn": {
-    "totalPoints": "0139f771766300",
+    "totalPoints": "0144510e51eb00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -346,6 +354,10 @@
       {
         "diff": "115f10b71800",
         "timestamp": "67652a4b"
+      },
+      {
+        "diff": "0a599cdb8800",
+        "timestamp": "67652ebd"
       }
     ]
   }
