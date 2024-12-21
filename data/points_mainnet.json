@@ -1,1 +1,22 @@
-{}
+{
+  "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s": {
+    "totalPoints": "566d3e8000",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "566d3e8000",
+        "timestamp": "6766ea7d"
+      }
+    ]
+  },
+  "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn": {
+    "totalPoints": "8469295700",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "8469295700",
+        "timestamp": "6766ea7d"
+      }
+    ]
+  }
+}
