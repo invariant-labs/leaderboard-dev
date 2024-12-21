@@ -2,22 +2,22 @@
   {
     "address": "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn",
     "rank": 1,
-    "last24hPoints": "032644f890c200",
-    "points": "038973211e2500",
+    "last24hPoints": "03136f0c5f4600",
+    "points": "03955191bb6900",
     "positions": 1
   },
   {
-    "address": "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu",
+    "address": "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s",
     "rank": 2,
+    "last24hPoints": "04c36767f500",
+    "points": "05871f120b00",
+    "positions": 2
+  },
+  {
+    "address": "6Wpj1RUs1hBwKuAzfFPGeHtgiQp5Fx4PVkDwfgzkLYCu",
+    "rank": 3,
     "last24hPoints": "00",
     "points": "028992ff9b00",
     "positions": 0
-  },
-  {
-    "address": "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s",
-    "rank": 3,
-    "last24hPoints": "304a00da00",
-    "points": "f401aaf000",
-    "positions": 2
   }
 ]
