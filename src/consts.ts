@@ -11,6 +11,6 @@ export const PROMOTED_POOLS_MAINNET = [
 ];
 export const DAY = new BN(86400);
 export const FULL_SNAP_START_TX_HASH =
-  "27t2VZ4QcFyy6iVxUt3bH5u51v4oH9qj8ULgFE65T5n4g8x8WnXAkP3qtNea1ruzr3gG5796P1SppKgEjgA1NBuw";
+  "zt4f4PYU2qKyvevjvED2Q9RSUJbiGSJns8NCQGAuLFgrTJ8irentnaEzc7uxxoi65vtmWxhwZh8HDg6NRsWjQxw";
 
 export const MAX_RETIRES = 3;
