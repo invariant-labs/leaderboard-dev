@@ -66,6 +66,10 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -136,6 +140,10 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -202,6 +210,10 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -248,11 +260,15 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
   "DaCnxmE8ygbWprukoEixko3HF65VDQ9tDiPo38cc1uh3": {
-    "totalPoints": "091494c600",
+    "totalPoints": "0932622b00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -294,11 +310,15 @@
       {
         "diff": "11e1a300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "1dcd6500",
+        "timestamp": "67672102"
       }
     ]
   },
   "EWDvKbRS9M3i4zSA6UYG7E8R3KV6k6JKunUi9UuMniuc": {
-    "totalPoints": "019b8d2b8c00",
+    "totalPoints": "01a0a6830700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -340,11 +360,15 @@
       {
         "diff": "032a9f8800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0519577b00",
+        "timestamp": "67672102"
       }
     ]
   },
   "AQ9mY38uQMMdz8w1epiWVXqxUnWPZQF1b9Pv2GkJrkwN": {
-    "totalPoints": "042aec5300",
+    "totalPoints": "043ccdf600",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -386,11 +410,15 @@
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "11e1a300",
+        "timestamp": "67672102"
       }
     ]
   },
   "28TxhZSsaQvFouJmW5NUJWQguqDgKnZQBvzrTQBX2qRv": {
-    "totalPoints": "053724e000",
+    "totalPoints": "054310a200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -432,11 +460,15 @@
       {
         "diff": "05f5e100",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0bebc200",
+        "timestamp": "67672102"
       }
     ]
   },
   "735WWiE8mp84Cv4Xh8PdQLXAPLPkG4m8WobwAvRym66E": {
-    "totalPoints": "2063018f00",
+    "totalPoints": "20b673dd00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -478,6 +510,10 @@
       {
         "diff": "2faf0800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "53724e00",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -524,11 +560,15 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
   "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF": {
-    "totalPoints": "829248e800",
+    "totalPoints": "8345194600",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -570,11 +610,15 @@
       {
         "diff": "713fb300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "b2d05e00",
+        "timestamp": "67672102"
       }
     ]
   },
   "CUBW8bNn8DJ7UvncMcWexSD6hM5PycaYzpZz29nkeZnV": {
-    "totalPoints": "01072b214700",
+    "totalPoints": "0108a2a3a600",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -616,11 +660,15 @@
       {
         "diff": "e8754700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0177825f00",
+        "timestamp": "67672102"
       }
     ]
   },
   "4aZPrrdS5bknRVvv9qznjP64buY3j7tGYtUThWcVyTwE": {
-    "totalPoints": "3b17a8aa00",
+    "totalPoints": "3b65251700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -662,11 +710,15 @@
       {
         "diff": "2faf0800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "4d7c6d00",
+        "timestamp": "67672102"
       }
     ]
   },
   "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK": {
-    "totalPoints": "03d63e1d6b00",
+    "totalPoints": "03e731554300",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -708,11 +760,15 @@
       {
         "diff": "0a7a358200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "10f337d800",
+        "timestamp": "67672102"
       }
     ]
   },
   "GZTbayrxCDAjVmWAvczpAzMmuW5VoXGaUPSUNchSb1rJ": {
-    "totalPoints": "b79c390e00",
+    "totalPoints": "b866e0f000",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -754,11 +810,15 @@
       {
         "diff": "83215600",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "caa7e200",
+        "timestamp": "67672102"
       }
     ]
   },
   "EtxtgjMf66ydeKv3vBooqKHWnp6YnjHusWLNsFaDcfD7": {
-    "totalPoints": "01f29b58c700",
+    "totalPoints": "01f3a19b7300",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -800,11 +860,15 @@
       {
         "diff": "a6e49c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "010642ac00",
+        "timestamp": "67672102"
       }
     ]
   },
   "C63WkxS9t1r8o91CNrKniDuBVocTSjFzS3brxzKLCipQ": {
-    "totalPoints": "01868cd4c600",
+    "totalPoints": "0187ec7fa100",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -846,11 +910,15 @@
       {
         "diff": "d693a400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "015faadb00",
+        "timestamp": "67672102"
       }
     ]
   },
   "7KQETrPtGTwZfkG8Tqsgtiko4Dmky6p4mP6HLZ9WRmPc": {
-    "totalPoints": "01273ab08800",
+    "totalPoints": "012852d4d700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -892,11 +960,15 @@
       {
         "diff": "acda7d00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0118244f00",
+        "timestamp": "67672102"
       }
     ]
   },
   "3h73bGVzpkMdnT6GHpdLyz4kNHZTDZgSUw7pLQb6tjU6": {
-    "totalPoints": "dc898500",
+    "totalPoints": "f4610900",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -934,11 +1006,15 @@
       {
         "diff": "0bebc200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "17d78400",
+        "timestamp": "67672102"
       }
     ]
   },
   "9uuWWiifNFCW8Tt8nHWNBypRqvZSVWgsHCUrTywLPCyD": {
-    "totalPoints": "4bd53b9900",
+    "totalPoints": "4edc17db00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -976,11 +1052,15 @@
       {
         "diff": "01dcd65000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0306dc4200",
+        "timestamp": "67672102"
       }
     ]
   },
   "3qSTECLuKXC7GjqMRdjz5fHMDewkXF8qW8ha8GUZXQKs": {
-    "totalPoints": "0312c80400",
+    "totalPoints": "035a4e9000",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1018,11 +1098,15 @@
       {
         "diff": "2faf0800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "47868c00",
+        "timestamp": "67672102"
       }
     ]
   },
   "GKrQqP1ghqrQ7S4UaXs6xqaCK19CpS9DUtzZWDyhrcVM": {
-    "totalPoints": "01137c373800",
+    "totalPoints": "0129ca573600",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -1060,11 +1144,15 @@
       {
         "diff": "0dc8985000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "164e1ffe00",
+        "timestamp": "67672102"
       }
     ]
   },
   "8byYFz8rBD2uGuuE4vof8RoqY4TEGKwMnnnqtoUF2oa9": {
-    "totalPoints": "02dd231b00",
+    "totalPoints": "031eb3c600",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1102,11 +1190,15 @@
       {
         "diff": "29b92700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "4190ab00",
+        "timestamp": "67672102"
       }
     ]
   },
   "7hJNbRsGV38zXSavSPXcKM7mWXDpk6sZCZYNpKAZ9YBo": {
-    "totalPoints": "052b391e00",
+    "totalPoints": "05a26eb200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1144,11 +1236,15 @@
       {
         "diff": "47868c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "77359400",
+        "timestamp": "67672102"
       }
     ]
   },
   "14NfRBBhPiKcRg9MBWvgjHfuZ2QcZf4gj1iTTYXpBDo6": {
-    "totalPoints": "12f519415700",
+    "totalPoints": "14ad083b4600",
     "positionsAmount": 3,
     "points24HoursHistory": [
       {
@@ -1186,11 +1282,15 @@
       {
         "diff": "0110041b4300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "01b7eef9ef00",
+        "timestamp": "67672102"
       }
     ]
   },
   "5gNNnw1DLJdQ62x7mbf3XmMmmwbpBdtau3dZwrVaCTPz": {
-    "totalPoints": "1252e2b300",
+    "totalPoints": "13f41e3900",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1228,11 +1328,15 @@
       {
         "diff": "010642ac00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "01a13b8600",
+        "timestamp": "67672102"
       }
     ]
   },
   "6x9wYVgUQAPin6fJVYmKeNMKpK1QFQWmhzBQKCsxha4d": {
-    "totalPoints": "1bdead0d00",
+    "totalPoints": "1e4a907500",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1270,11 +1374,15 @@
       {
         "diff": "017d784000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "026be36800",
+        "timestamp": "67672102"
       }
     ]
   },
   "AsHMjuB1xkRFaCJPh3g2noDQSowMZuF3sDLsnbH7zJAt": {
-    "totalPoints": "010c388d00",
+    "totalPoints": "0124101100",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1312,11 +1420,15 @@
       {
         "diff": "0bebc200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "17d78400",
+        "timestamp": "67672102"
       }
     ]
   },
   "12DTBJ8PRaz5LJX5iAEeBWqH8Ds2SZiMepvg8EqoSdja": {
-    "totalPoints": "05cc27d900",
+    "totalPoints": "06435d6d00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1354,11 +1466,15 @@
       {
         "diff": "47868c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "77359400",
+        "timestamp": "67672102"
       }
     ]
   },
   "6nNYC4r5dDEvGwASmvauDWrGAm1pMRLRsg7iGYLUMznJ": {
-    "totalPoints": "31268a5f00",
+    "totalPoints": "3503fa4500",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1396,11 +1512,15 @@
       {
         "diff": "0265ed8700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "03dd6fe600",
+        "timestamp": "67672102"
       }
     ]
   },
   "4MiZHFA3vpk12jc93mktPn3Pe9VxrzwSFF7EqdcktSoJ": {
-    "totalPoints": "0625900800",
+    "totalPoints": "069cc59c00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1438,11 +1558,15 @@
       {
         "diff": "47868c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "77359400",
+        "timestamp": "67672102"
       }
     ]
   },
   "4VW2eQa6mpes5yG4sq3FAN6JjLZeF8pkpLvmEkgGqwTf": {
-    "totalPoints": "0482e8eb6300",
+    "totalPoints": "04bdd0e50500",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1480,11 +1604,15 @@
       {
         "diff": "34fe046400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "3ae7f9a200",
+        "timestamp": "67672102"
       }
     ]
   },
   "4rfHwgFcS1KimwfxHcR2mAx4KAac84YfAiBz269UG3cQ": {
-    "totalPoints": "011f85c69d00",
+    "totalPoints": "012811442c00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1522,11 +1650,15 @@
       {
         "diff": "054efc6400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "088b7d8f00",
+        "timestamp": "67672102"
       }
     ]
   },
   "9Pd66Eaoi3g1eWvtVCKhmBCXkehPzfanAZtLLC6C7tZ7": {
-    "totalPoints": "0124101100",
+    "totalPoints": "012a05f200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1564,11 +1696,15 @@
       {
         "diff": "05f5e100",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "05f5e100",
+        "timestamp": "67672102"
       }
     ]
   },
   "7aDtbQHJx82t9aoHQZdXcG1womHQkgKE8txM53TmttAt": {
-    "totalPoints": "3aa668f700",
+    "totalPoints": "3bf4322f00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1606,11 +1742,15 @@
       {
         "diff": "caa7e200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "014dc93800",
+        "timestamp": "67672102"
       }
     ]
   },
   "Fo8eXAo8jSvSZoTtNhdzES9zLqDjVeLYkEGYr6ULwRD1": {
-    "totalPoints": "04f6c430d300",
+    "totalPoints": "0550384b9500",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1644,11 +1784,15 @@
       {
         "diff": "374c1a6700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "59741ac200",
+        "timestamp": "67672102"
       }
     ]
   },
   "2g2xzcMiTGysNZzv9zZcDqx7MtdRxWG1VHMVPDw3qdW9": {
-    "totalPoints": "079ad03cbf00",
+    "totalPoints": "08eb1d2fab00",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -1682,11 +1826,15 @@
       {
         "diff": "cff6de6400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "01504cf2ec00",
+        "timestamp": "67672102"
       }
     ]
   },
   "G1xQ78d2uc7VyCWg6MVhi66UMH7hGbVBFes6NLKfyDHQ": {
-    "totalPoints": "05e09922ae00",
+    "totalPoints": "07286c79ae00",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -1720,11 +1868,15 @@
       {
         "diff": "cab9c3a300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0147d3570000",
+        "timestamp": "67672102"
       }
     ]
   },
   "DoV4nWWpet7VqP2eZtLric6ZV29zwPQuiPf8ZpnfhHHw": {
-    "totalPoints": "83215600",
+    "totalPoints": "8f0d1800",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1758,11 +1910,15 @@
       {
         "diff": "0bebc200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0bebc200",
+        "timestamp": "67672102"
       }
     ]
   },
   "9MGSJXZwta7rWkL5MwpEbvwznXY6pU7uQqcoJoK2n39": {
-    "totalPoints": "0774ee8fc400",
+    "totalPoints": "084fe8bae100",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1796,11 +1952,15 @@
       {
         "diff": "876a0fb800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "dafa2b1d00",
+        "timestamp": "67672102"
       }
     ]
   },
   "9iEVqYCUqePDJssVuyxotzotbevXNVqzccZJmMwQkniN": {
-    "totalPoints": "01d0ea8e00",
+    "totalPoints": "02068f7700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1834,11 +1994,15 @@
       {
         "diff": "1dcd6500",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "35a4e900",
+        "timestamp": "67672102"
       }
     ]
   },
   "ejDsbS4B8pswMqxP3YgF8Bq3jZp1tbPjRU8VLrEKa8n": {
-    "totalPoints": "534e8aba00",
+    "totalPoints": "5c2d7a9700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1872,11 +2036,15 @@
       {
         "diff": "057eab6c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "08deefdd00",
+        "timestamp": "67672102"
       }
     ]
   },
   "BSRWGz4xfGQuiFdQfEGnZaP3KhcJ5Eomrwo4Hf9abpwP": {
-    "totalPoints": "0454a57a00",
+    "totalPoints": "04c5e52d00",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -1910,11 +2078,15 @@
       {
         "diff": "47868c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "713fb300",
+        "timestamp": "67672102"
       }
     ]
   },
   "328i1a7mgPzKwbtUwt14up1zuP5z5FRyytgVyjR37uvJ": {
-    "totalPoints": "015faadb00",
+    "totalPoints": "01836e2100",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1948,11 +2120,15 @@
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "23c34600",
+        "timestamp": "67672102"
       }
     ]
   },
   "9gRLEbtA5EoeyNFMagCeMpCS82HS9HyohkCJGSEdwP2E": {
-    "totalPoints": "9af8da00",
+    "totalPoints": "acda7d00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -1986,11 +2162,15 @@
       {
         "diff": "0bebc200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "11e1a300",
+        "timestamp": "67672102"
       }
     ]
   },
   "68cZySyPjipap2TBkTF6xke13wfo85KWM6C56FQ9JsXC": {
-    "totalPoints": "4c880bf700",
+    "totalPoints": "5902db0f00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2020,11 +2200,15 @@
       {
         "diff": "07badfcc00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0c7acf1800",
+        "timestamp": "67672102"
       }
     ]
   },
   "6z8kWL7KUeAtCZjJfBb9KhLjaytRdVH5PgoDZRuq4kv2": {
-    "totalPoints": "8f7e57b300",
+    "totalPoints": "a69129b200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2054,6 +2238,10 @@
       {
         "diff": "0e45c3c500",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "1712d1ff00",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -2088,11 +2276,15 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
   "2UuLxPm1Hgi6QGEq6aqANqU4bPHgWLYM7ci8m6ZoYXbd": {
-    "totalPoints": "01e8c21200",
+    "totalPoints": "02363e7f00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2122,11 +2314,15 @@
       {
         "diff": "2faf0800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "4d7c6d00",
+        "timestamp": "67672102"
       }
     ]
   },
   "DYzgrZbedYhUAqVcxzoudnNhV5Yih8w191qT2AGo69cv": {
-    "totalPoints": "012a05f200",
+    "totalPoints": "0159b4fa00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2156,11 +2352,15 @@
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2faf0800",
+        "timestamp": "67672102"
       }
     ]
   },
   "6hVFEi1fpQpzknaL875X5UbpJZCnN1ymvMjqERPbX92e": {
-    "totalPoints": "35a4e900",
+    "totalPoints": "3b9aca00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2190,11 +2390,15 @@
       {
         "diff": "05f5e100",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "05f5e100",
+        "timestamp": "67672102"
       }
     ]
   },
   "JBpEJ3xH6vfJSRGx4R4bnkoUwEFmWZVDegG6pqHV8PqM": {
-    "totalPoints": "01ea7b250a00",
+    "totalPoints": "0217be49a200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2224,11 +2428,15 @@
       {
         "diff": "28b8da3500",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2d43249800",
+        "timestamp": "67672102"
       }
     ]
   },
   "8pYXVVMtUA9cnXezoJy6ttJBzy9Qt8keDx1diY4DngcW": {
-    "totalPoints": "0ec8e51b00",
+    "totalPoints": "10bd92ef00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2258,6 +2466,10 @@
       {
         "diff": "013be79500",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "01f4add400",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -2292,11 +2504,15 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
   "GzH4Br9mHeBK7dbH8QmB3CCdNS753ctvcX6cRZQDAEYE": {
-    "totalPoints": "0a668ee03400",
+    "totalPoints": "0bc7104ed800",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2326,6 +2542,10 @@
       {
         "diff": "d9f3e87100",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0160816ea400",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -2360,6 +2580,10 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
@@ -2394,11 +2618,15 @@
       {
         "diff": "00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67672102"
       }
     ]
   },
   "BV7hksJBzmNU7tauoMzboTF3NcYCoxnjY3f4BwCF6MdU": {
-    "totalPoints": "119a1c7400",
+    "totalPoints": "15eec1ee00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2424,11 +2652,15 @@
       {
         "diff": "02b369f400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0454a57a00",
+        "timestamp": "67672102"
       }
     ]
   },
   "5wv22ed541FWJskxxEwqUe1iL8V87nyU7ifdoRVkwnDC": {
-    "totalPoints": "0289b0cd00",
+    "totalPoints": "031eb3c600",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2454,11 +2686,15 @@
       {
         "diff": "59682f00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "9502f900",
+        "timestamp": "67672102"
       }
     ]
   },
   "HmHFrfMYS9irC6Zk1ZmsPMJvzC85kLLdfgMypE8USZj4": {
-    "totalPoints": "03b9aca000",
+    "totalPoints": "048a4a6300",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2484,11 +2720,15 @@
       {
         "diff": "89173700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "d09dc300",
+        "timestamp": "67672102"
       }
     ]
   },
   "Bru9f3Yfvp7TMiiJNjQW7Mj27Z7vZUnVKsczKyz7EF4p": {
-    "totalPoints": "0424f67200",
+    "totalPoints": "05017ff700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2514,11 +2754,15 @@
       {
         "diff": "89173700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "dc898500",
+        "timestamp": "67672102"
       }
     ]
   },
   "BaUfiMAxuW6xiLrxEfxHRF9v1ScoqaqZhuAK44cVrWh5": {
-    "totalPoints": "0145b4f00500",
+    "totalPoints": "018981cf6500",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2544,11 +2788,15 @@
       {
         "diff": "29e8d60800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "43ccdf6000",
+        "timestamp": "67672102"
       }
     ]
   },
   "C4YM7uNY7UvF4a1mb3CgDzPwFs4RogTsQyyQVfCK9f3g": {
-    "totalPoints": "a6e49c00",
+    "totalPoints": "c4b20100",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2574,11 +2822,15 @@
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "1dcd6500",
+        "timestamp": "67672102"
       }
     ]
   },
   "3d2Fi3eTFZG3z2u1nvsbHv5naCMojsu6kJeVL6Tu3sud": {
-    "totalPoints": "31df509e00",
+    "totalPoints": "3b5f2f3600",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2604,11 +2856,15 @@
       {
         "diff": "05de097c00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "097fde9800",
+        "timestamp": "67672102"
       }
     ]
   },
   "3YvMaurdkmc19ncGQjVPXQmiC5HuBvdEXsgbXcCHogAr": {
-    "totalPoints": "0513619a00",
+    "totalPoints": "06cc74a400",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2630,11 +2886,15 @@
       {
         "diff": "01122e6e00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "01b9130a00",
+        "timestamp": "67672102"
       }
     ]
   },
   "7MGnr8TXdC7uQ8T2jrzidsVQkzmWcmkP6Gk7HMny1u3U": {
-    "totalPoints": "d693a400",
+    "totalPoints": "011e1a3000",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2656,11 +2916,15 @@
       {
         "diff": "2faf0800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "47868c00",
+        "timestamp": "67672102"
       }
     ]
   },
   "DwnQnCiSmGmKJP6VqowLaSgcvzV5y7nh4sq6pB7LPkAN": {
-    "totalPoints": "03ef518900",
+    "totalPoints": "053724e000",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2682,11 +2946,15 @@
       {
         "diff": "d09dc300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "0147d35700",
+        "timestamp": "67672102"
       }
     ]
   },
   "udeseBsAkEHGRVdbsqNe9YKFDqcjn7iD9G5CP3LnA5Y": {
-    "totalPoints": "02a093eff700",
+    "totalPoints": "037c0b468900",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2708,11 +2976,15 @@
       {
         "diff": "87b1964400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "db77569200",
+        "timestamp": "67672102"
       }
     ]
   },
   "EMqoGMNxSNdt698Zevv1dZXVSXku7GkAymC1sBCYh8ez": {
-    "totalPoints": "2faf0800",
+    "totalPoints": "4190ab00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2734,11 +3006,15 @@
       {
         "diff": "05f5e100",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "11e1a300",
+        "timestamp": "67672102"
       }
     ]
   },
   "9zMoHSrefhQdwTXfwp7uTaXZ4mkSJszvJkVDSmKaxKy2": {
-    "totalPoints": "0351c3127100",
+    "totalPoints": "04409f7a2400",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2760,11 +3036,15 @@
       {
         "diff": "93af39e700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "eedc67b300",
+        "timestamp": "67672102"
       }
     ]
   },
   "EutRhaH3ZCWBzRsDpUmDNA4Rk3dVB6PgdY1J95jtQuFA": {
-    "totalPoints": "9502f900",
+    "totalPoints": "bebc2000",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2786,11 +3066,15 @@
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "29b92700",
+        "timestamp": "67672102"
       }
     ]
   },
   "F8k8qYVTn5zabvAa5LQwH4pshuB9cehUagN4BCLAppLj": {
-    "totalPoints": "01122e6e00",
+    "totalPoints": "015faadb00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2812,11 +3096,15 @@
       {
         "diff": "29b92700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "4d7c6d00",
+        "timestamp": "67672102"
       }
     ]
   },
   "8XzDo7wa2DEKhZ3ZUPbKykDvuYpAbFBkoZx3MoPVmGdA": {
-    "totalPoints": "4ca5d95c00",
+    "totalPoints": "731c895000",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2834,11 +3122,15 @@
       {
         "diff": "17cb983e00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2676aff400",
+        "timestamp": "67672102"
       }
     ]
   },
   "2rNsprmghvETLhbKg6JojrmdfqvkkBTDwFjEjq93WGGP": {
-    "totalPoints": "012a05f200",
+    "totalPoints": "01c4fecc00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2856,11 +3148,15 @@
       {
         "diff": "5f5e1000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "9af8da00",
+        "timestamp": "67672102"
       }
     ]
   },
   "5wtJsYWA7rzEMGZmRqzCFc29RDewxwsLWQBbjL6zRUxP": {
-    "totalPoints": "59682f00",
+    "totalPoints": "89173700",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2878,11 +3174,15 @@
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2faf0800",
+        "timestamp": "67672102"
       }
     ]
   },
   "AkTeCENMjYw81ponhakQE83EoiJKzHmdije46HwSEEDG": {
-    "totalPoints": "0200999600",
+    "totalPoints": "02ef04be00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2900,11 +3200,15 @@
       {
         "diff": "9af8da00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "ee6b2800",
+        "timestamp": "67672102"
       }
     ]
   },
   "GhRna8VYkq5DWuYFxREieHhKwzTRw53tJcVCFbLNWrJu": {
-    "totalPoints": "0159b4fa00",
+    "totalPoints": "01e8c21200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2922,11 +3226,15 @@
       {
         "diff": "5f5e1000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "8f0d1800",
+        "timestamp": "67672102"
       }
     ]
   },
   "7LEdEmpQheYZiBtBT5DGj8m3RfJEC3tVZ1GrnJEQsxro": {
-    "totalPoints": "0277cf2a00",
+    "totalPoints": "041314cf00",
     "positionsAmount": 2,
     "points24HoursHistory": [
       {
@@ -2944,11 +3252,15 @@
       {
         "diff": "b2d05e00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "019b45a500",
+        "timestamp": "67672102"
       }
     ]
   },
   "Bb51W8bz6CHjrd7a7edxGTt5PL3XQU2YeByE3qP46B5U": {
-    "totalPoints": "e06ceac700",
+    "totalPoints": "013249e90300",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2966,11 +3278,15 @@
       {
         "diff": "32a4029f00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "51dcfe3c00",
+        "timestamp": "67672102"
       }
     ]
   },
   "3Uj2ZE41iaMs22FSfL1ekyUAENLMhF3aj6u898yXLRTS": {
-    "totalPoints": "35a4e900",
+    "totalPoints": "47868c00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -2988,11 +3304,15 @@
       {
         "diff": "0bebc200",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "11e1a300",
+        "timestamp": "67672102"
       }
     ]
   },
   "HptKKasYS1LNDeWkHzcANaS1YZwhFu6QW87uShP1C1hv": {
-    "totalPoints": "0bc208d900",
+    "totalPoints": "0fdb138900",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3010,11 +3330,15 @@
       {
         "diff": "0289b0cd00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "04190ab000",
+        "timestamp": "67672102"
       }
     ]
   },
   "DoWefagGh1bVH8NgjdRpHriAqVRauajP3eKXbLoqk8kZ": {
-    "totalPoints": "5f5e1000",
+    "totalPoints": "a6e49c00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3028,11 +3352,15 @@
       {
         "diff": "2faf0800",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "47868c00",
+        "timestamp": "67672102"
       }
     ]
   },
   "8i3UpU7CV6C8CTWFUrt67v29x7eiKH89mhvf2LsxEAQ8": {
-    "totalPoints": "050d6bb900",
+    "totalPoints": "088587ae00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3046,11 +3374,15 @@
       {
         "diff": "021e66fb00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "03781bf500",
+        "timestamp": "67672102"
       }
     ]
   },
   "CQbM3M1fr1TgBvw42YjVJU1kKfwT3PvsaSCQWuLchLSa": {
-    "totalPoints": "4b167f7900",
+    "totalPoints": "7682c3a200",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3064,11 +3396,15 @@
       {
         "diff": "1ad2748000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2b6c442900",
+        "timestamp": "67672102"
       }
     ]
   },
   "5MR6sCjbHu8TCM3AUGcBbrr6ZUrwqRYmtysXQUB8826F": {
-    "totalPoints": "c405268300",
+    "totalPoints": "012d5a4aaf00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3082,11 +3418,15 @@
       {
         "diff": "4125612e00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "6955242c00",
+        "timestamp": "67672102"
       }
     ]
   },
   "8rjrujBJtSvdtmWSZ2qDRQkVxZnyhSrijs3iLHqzxjHG": {
-    "totalPoints": "17bfac7c00",
+    "totalPoints": "3dc51cbd00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3096,11 +3436,15 @@
       {
         "diff": "177e1bd100",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2605704100",
+        "timestamp": "67672102"
       }
     ]
   },
   "BASxt3BqTxrd6Wh14cQvUbZSr2j4opzoqCy9H9B52ysB": {
-    "totalPoints": "191f575700",
+    "totalPoints": "3bb8976500",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3110,11 +3454,15 @@
       {
         "diff": "1565aab700",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2299400e00",
+        "timestamp": "67672102"
       }
     ]
   },
   "wGYfNsM8GoMha8g22W2EBYTcrpzxCyQM3f7Egsj2wqC": {
-    "totalPoints": "0153bf1900",
+    "totalPoints": "032a9f8800",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3124,11 +3472,15 @@
       {
         "diff": "011e1a3000",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "01d6e06f00",
+        "timestamp": "67672102"
       }
     ]
   },
   "C14VrCu3YuoW8An2JHSxowCPnzVtCRYiVkv5g3aVuSSM": {
-    "totalPoints": "713fb300",
+    "totalPoints": "010642ac00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3138,11 +3490,15 @@
       {
         "diff": "59682f00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "9502f900",
+        "timestamp": "67672102"
       }
     ]
   },
   "CkS4fpaGnr3jdUJKL9zqv7ukju5yfAia3DNuKiJB5kFU": {
-    "totalPoints": "29b92700",
+    "totalPoints": "59682f00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3152,11 +3508,15 @@
       {
         "diff": "1dcd6500",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "2faf0800",
+        "timestamp": "67672102"
       }
     ]
   },
   "E1kiZEKAkjBAaQXr6WsLLja7ukNkgb26NBztJBJieavt": {
-    "totalPoints": "17d78400",
+    "totalPoints": "35a4e900",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
@@ -3166,36 +3526,102 @@
       {
         "diff": "11e1a300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "1dcd6500",
+        "timestamp": "67672102"
       }
     ]
   },
   "7x8tgkr5gujWpbZxWXvJ5YJuprbsLh8ZE6hyU2ubesES": {
-    "totalPoints": "06aea73f00",
+    "totalPoints": "3787b53100",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
         "diff": "06aea73f00",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "30d90df200",
+        "timestamp": "67672102"
       }
     ]
   },
   "CXGHyhhfPUNeohuakzdFXRVbzwJ46DXYVnj5Dqu38Qnp": {
-    "totalPoints": "17d78400",
+    "totalPoints": "77359400",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
         "diff": "17d78400",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "5f5e1000",
+        "timestamp": "67672102"
       }
     ]
   },
   "BuYNYL7Y9LQehPZh7iWcWXu3ViSYJs5mo2H14vjaBStr": {
-    "totalPoints": "11e1a300",
+    "totalPoints": "3b9aca00",
     "positionsAmount": 1,
     "points24HoursHistory": [
       {
         "diff": "11e1a300",
         "timestamp": "67671c0f"
+      },
+      {
+        "diff": "29b92700",
+        "timestamp": "67672102"
+      }
+    ]
+  },
+  "C45xu7SfkR1y2p9t4ZpE9bNrqSnnHCg1Ep6NCdCXEzqH": {
+    "totalPoints": "35a4e900",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "35a4e900",
+        "timestamp": "67672102"
+      }
+    ]
+  },
+  "54uGZHTEUhaAw5kL4B8Kn7J1WR16SQEVwrdgrw7zKjJx": {
+    "totalPoints": "05f5e100",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "05f5e100",
+        "timestamp": "67672102"
+      }
+    ]
+  },
+  "5erEoCUGjn22xajw95Qhp4RHv1H5g6k9gKby2y5xgRQb": {
+    "totalPoints": "d693a400",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "d693a400",
+        "timestamp": "67672102"
+      }
+    ]
+  },
+  "7P5veEKHS1MLW3n8TfjJ52Yxuxgz7vQsZrReQRaiUqDo": {
+    "totalPoints": "0566d3e800",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "0566d3e800",
+        "timestamp": "67672102"
+      }
+    ]
+  },
+  "77TjjdEku2iPTZyeBNtS89RFm2EiVMD6y7WsZrti5vUV": {
+    "totalPoints": "05f5e100",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "05f5e100",
+        "timestamp": "67672102"
       }
     ]
   }
