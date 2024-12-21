@@ -1,12 +1,8 @@
 {
   "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s": {
-    "totalPoints": "1509d6a49800",
+    "totalPoints": "1706f81ea300",
     "positionsAmount": 2,
     "points24HoursHistory": [
-      {
-        "diff": "00",
-        "timestamp": "6764f4fa"
-      },
       {
         "diff": "00",
         "timestamp": "6764f7fd"
@@ -290,6 +286,10 @@
       {
         "diff": "027c17e3b800",
         "timestamp": "6766476c"
+      },
+      {
+        "diff": "01fd217a0b00",
+        "timestamp": "67664a7e"
       }
     ]
   },
@@ -297,10 +297,6 @@
     "totalPoints": "028992ff9b00",
     "positionsAmount": 0,
     "points24HoursHistory": [
-      {
-        "diff": "00",
-        "timestamp": "6764f4fa"
-      },
       {
         "diff": "00",
         "timestamp": "6764f7fd"
@@ -584,17 +580,17 @@
       {
         "diff": "00",
         "timestamp": "6766476c"
+      },
+      {
+        "diff": "00",
+        "timestamp": "67664a7e"
       }
     ]
   },
   "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn": {
-    "totalPoints": "03bd8f64d84500",
+    "totalPoints": "03c2b84fe04200",
     "positionsAmount": 1,
     "points24HoursHistory": [
-      {
-        "diff": "07031fcfac00",
-        "timestamp": "6764f7fd"
-      },
       {
         "diff": "0c428e9c9000",
         "timestamp": "6764fd41"
@@ -874,6 +870,10 @@
       {
         "diff": "06724db8e000",
         "timestamp": "6766476c"
+      },
+      {
+        "diff": "0528eb07fd00",
+        "timestamp": "67664a7e"
       }
     ]
   }
