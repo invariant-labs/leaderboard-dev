@@ -9,8 +9,8 @@
   {
     "address": "14NfRBBhPiKcRg9MBWvgjHfuZ2QcZf4gj1iTTYXpBDo6",
     "rank": 2,
-    "last24hPoints": "0c600e852300",
-    "points": "0c600e852300",
+    "last24hPoints": "0df00360fd00",
+    "points": "0df00360fd00",
     "positions": 3
   },
   {
@@ -23,43 +23,43 @@
   {
     "address": "GzH4Br9mHeBK7dbH8QmB3CCdNS753ctvcX6cRZQDAEYE",
     "rank": 4,
-    "last24hPoints": "052059948d00",
-    "points": "052059948d00",
+    "last24hPoints": "0660d75fb200",
+    "points": "0660d75fb200",
     "positions": 1
   },
   {
     "address": "9MGSJXZwta7rWkL5MwpEbvwznXY6pU7uQqcoJoK2n39",
     "rank": 5,
-    "last24hPoints": "042e1ce86900",
-    "points": "042e1ce86900",
-    "positions": 1
-  },
-  {
-    "address": "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK",
-    "rank": 6,
-    "last24hPoints": "03ad0817c100",
-    "points": "03ad0817c100",
+    "last24hPoints": "04f534d6f000",
+    "points": "04f534d6f000",
     "positions": 1
   },
   {
     "address": "Fo8eXAo8jSvSZoTtNhdzES9zLqDjVeLYkEGYr6ULwRD1",
-    "rank": 7,
-    "last24hPoints": "03a021fed700",
-    "points": "03a021fed700",
-    "positions": 1
-  },
-  {
-    "address": "4VW2eQa6mpes5yG4sq3FAN6JjLZeF8pkpLvmEkgGqwTf",
-    "rank": 8,
-    "last24hPoints": "033a8c7d2c00",
-    "points": "033a8c7d2c00",
+    "rank": 6,
+    "last24hPoints": "03f175e5dc00",
+    "points": "03f175e5dc00",
     "positions": 1
   },
   {
     "address": "2g2xzcMiTGysNZzv9zZcDqx7MtdRxWG1VHMVPDw3qdW9",
+    "rank": 7,
+    "last24hPoints": "03c45c7a6b00",
+    "points": "03c45c7a6b00",
+    "positions": 2
+  },
+  {
+    "address": "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK",
+    "rank": 8,
+    "last24hPoints": "03b0f1736900",
+    "points": "03b0f1736900",
+    "positions": 1
+  },
+  {
+    "address": "4VW2eQa6mpes5yG4sq3FAN6JjLZeF8pkpLvmEkgGqwTf",
     "rank": 9,
-    "last24hPoints": "03093c39a600",
-    "points": "03093c39a600",
+    "last24hPoints": "0388801fc000",
+    "points": "0388801fc000",
     "positions": 1
   },
   {
@@ -70,379 +70,435 @@
     "positions": 1
   },
   {
-    "address": "EtxtgjMf66ydeKv3vBooqKHWnp6YnjHusWLNsFaDcfD7",
+    "address": "G1xQ78d2uc7VyCWg6MVhi66UMH7hGbVBFes6NLKfyDHQ",
     "rank": 11,
-    "last24hPoints": "01eea6115d00",
-    "points": "01eea6115d00",
-    "positions": 1
+    "last24hPoints": "0222eb4f8200",
+    "points": "0222eb4f8200",
+    "positions": 2
   },
   {
-    "address": "G1xQ78d2uc7VyCWg6MVhi66UMH7hGbVBFes6NLKfyDHQ",
+    "address": "EtxtgjMf66ydeKv3vBooqKHWnp6YnjHusWLNsFaDcfD7",
     "rank": 12,
-    "last24hPoints": "01ad62e2ca00",
-    "points": "01ad62e2ca00",
+    "last24hPoints": "01ef947c8500",
+    "points": "01ef947c8500",
     "positions": 1
   },
   {
     "address": "EWDvKbRS9M3i4zSA6UYG7E8R3KV6k6JKunUi9UuMniuc",
     "rank": 13,
-    "last24hPoints": "0187fe614400",
-    "points": "0187fe614400",
+    "last24hPoints": "018ca0832b00",
+    "points": "018ca0832b00",
     "positions": 1
   },
   {
     "address": "C63WkxS9t1r8o91CNrKniDuBVocTSjFzS3brxzKLCipQ",
     "rank": 14,
-    "last24hPoints": "018155afe600",
-    "points": "018155afe600",
+    "last24hPoints": "0182978d5c00",
+    "points": "0182978d5c00",
+    "positions": 1
+  },
+  {
+    "address": "JBpEJ3xH6vfJSRGx4R4bnkoUwEFmWZVDegG6pqHV8PqM",
+    "rank": 15,
+    "last24hPoints": "012a0be7e100",
+    "points": "012a0be7e100",
     "positions": 1
   },
   {
     "address": "7KQETrPtGTwZfkG8Tqsgtiko4Dmky6p4mP6HLZ9WRmPc",
-    "rank": 15,
-    "last24hPoints": "012309ce5400",
-    "points": "012309ce5400",
-    "positions": 1
-  },
-  {
-    "address": "CUBW8bNn8DJ7UvncMcWexSD6hM5PycaYzpZz29nkeZnV",
     "rank": 16,
-    "last24hPoints": "010188b29500",
-    "points": "010188b29500",
+    "last24hPoints": "012404253e00",
+    "points": "012404253e00",
     "positions": 1
   },
   {
     "address": "4rfHwgFcS1KimwfxHcR2mAx4KAac84YfAiBz269UG3cQ",
     "rank": 17,
-    "last24hPoints": "feb77b3c00",
-    "points": "feb77b3c00",
+    "last24hPoints": "01067e46ca00",
+    "points": "01067e46ca00",
     "positions": 1
   },
   {
-    "address": "JBpEJ3xH6vfJSRGx4R4bnkoUwEFmWZVDegG6pqHV8PqM",
+    "address": "CUBW8bNn8DJ7UvncMcWexSD6hM5PycaYzpZz29nkeZnV",
     "rank": 18,
-    "last24hPoints": "ee29975500",
-    "points": "ee29975500",
+    "last24hPoints": "0102e2678f00",
+    "points": "0102e2678f00",
     "positions": 1
   },
   {
     "address": "GKrQqP1ghqrQ7S4UaXs6xqaCK19CpS9DUtzZWDyhrcVM",
     "rank": 19,
-    "last24hPoints": "be0f458300",
-    "points": "be0f458300",
+    "last24hPoints": "d256d60a00",
+    "points": "d256d60a00",
     "positions": 2
   },
   {
     "address": "GZTbayrxCDAjVmWAvczpAzMmuW5VoXGaUPSUNchSb1rJ",
     "rank": 20,
-    "last24hPoints": "b47d854800",
-    "points": "b47d854800",
+    "last24hPoints": "b53c416800",
+    "points": "b53c416800",
+    "positions": 1
+  },
+  {
+    "address": "9zMoHSrefhQdwTXfwp7uTaXZ4mkSJszvJkVDSmKaxKy2",
+    "rank": 21,
+    "last24hPoints": "9803df6100",
+    "points": "9803df6100",
     "positions": 1
   },
   {
     "address": "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF",
-    "rank": 21,
-    "last24hPoints": "7fe4d4d500",
-    "points": "7fe4d4d500",
+    "rank": 22,
+    "last24hPoints": "808bb97100",
+    "points": "808bb97100",
     "positions": 1
   },
   {
     "address": "BaUfiMAxuW6xiLrxEfxHRF9v1ScoqaqZhuAK44cVrWh5",
-    "rank": 22,
-    "last24hPoints": "4219c23700",
-    "points": "4219c23700",
-    "positions": 1
-  },
-  {
-    "address": "9uuWWiifNFCW8Tt8nHWNBypRqvZSVWgsHCUrTywLPCyD",
     "rank": 23,
-    "last24hPoints": "4042e1c800",
-    "points": "4042e1c800",
-    "positions": 1
-  },
-  {
-    "address": "4aZPrrdS5bknRVvv9qznjP64buY3j7tGYtUThWcVyTwE",
-    "rank": 24,
-    "last24hPoints": "39e7acd700",
-    "points": "39e7acd700",
+    "last24hPoints": "7fb525cd00",
+    "points": "7fb525cd00",
     "positions": 1
   },
   {
     "address": "6z8kWL7KUeAtCZjJfBb9KhLjaytRdVH5PgoDZRuq4kv2",
-    "rank": 25,
-    "last24hPoints": "371c6b5f00",
-    "points": "371c6b5f00",
+    "rank": 24,
+    "last24hPoints": "4c16cc4400",
+    "points": "4c16cc4400",
     "positions": 1
   },
   {
-    "address": "7aDtbQHJx82t9aoHQZdXcG1womHQkgKE8txM53TmttAt",
+    "address": "9uuWWiifNFCW8Tt8nHWNBypRqvZSVWgsHCUrTywLPCyD",
+    "rank": 25,
+    "last24hPoints": "4302377e00",
+    "points": "4302377e00",
+    "positions": 1
+  },
+  {
+    "address": "4aZPrrdS5bknRVvv9qznjP64buY3j7tGYtUThWcVyTwE",
     "rank": 26,
-    "last24hPoints": "35bcc08400",
-    "points": "35bcc08400",
+    "last24hPoints": "3a2f336300",
+    "points": "3a2f336300",
     "positions": 1
   },
   {
     "address": "ejDsbS4B8pswMqxP3YgF8Bq3jZp1tbPjRU8VLrEKa8n",
     "rank": 27,
-    "last24hPoints": "314a4da500",
-    "points": "314a4da500",
+    "last24hPoints": "395e95a000",
+    "points": "395e95a000",
     "positions": 1
   },
   {
-    "address": "6nNYC4r5dDEvGwASmvauDWrGAm1pMRLRsg7iGYLUMznJ",
+    "address": "7aDtbQHJx82t9aoHQZdXcG1womHQkgKE8txM53TmttAt",
     "rank": 28,
-    "last24hPoints": "224bc3a100",
-    "points": "224bc3a100",
-    "positions": 1
-  },
-  {
-    "address": "735WWiE8mp84Cv4Xh8PdQLXAPLPkG4m8WobwAvRym66E",
-    "rank": 29,
-    "last24hPoints": "1f38fb9d00",
-    "points": "1f38fb9d00",
+    "last24hPoints": "36e6c67600",
+    "points": "36e6c67600",
     "positions": 1
   },
   {
     "address": "68cZySyPjipap2TBkTF6xke13wfo85KWM6C56FQ9JsXC",
-    "rank": 30,
-    "last24hPoints": "1caf4ad000",
-    "points": "1caf4ad000",
+    "rank": 29,
+    "last24hPoints": "280609d700",
+    "points": "280609d700",
     "positions": 1
   },
   {
-    "address": "6x9wYVgUQAPin6fJVYmKeNMKpK1QFQWmhzBQKCsxha4d",
+    "address": "6nNYC4r5dDEvGwASmvauDWrGAm1pMRLRsg7iGYLUMznJ",
+    "rank": 30,
+    "last24hPoints": "25d5c13900",
+    "points": "25d5c13900",
+    "positions": 1
+  },
+  {
+    "address": "735WWiE8mp84Cv4Xh8PdQLXAPLPkG4m8WobwAvRym66E",
     "rank": 31,
-    "last24hPoints": "12a05f2000",
-    "points": "12a05f2000",
+    "last24hPoints": "1f80822900",
+    "points": "1f80822900",
+    "positions": 1
+  },
+  {
+    "address": "udeseBsAkEHGRVdbsqNe9YKFDqcjn7iD9G5CP3LnA5Y",
+    "rank": 32,
+    "last24hPoints": "1f7a8c4800",
+    "points": "1f7a8c4800",
     "positions": 1
   },
   {
     "address": "3d2Fi3eTFZG3z2u1nvsbHv5naCMojsu6kJeVL6Tu3sud",
-    "rank": 32,
-    "last24hPoints": "0d7b1be300",
-    "points": "0d7b1be300",
+    "rank": 33,
+    "last24hPoints": "161e70f600",
+    "points": "161e70f600",
+    "positions": 1
+  },
+  {
+    "address": "6x9wYVgUQAPin6fJVYmKeNMKpK1QFQWmhzBQKCsxha4d",
+    "rank": 34,
+    "last24hPoints": "14d0a7be00",
+    "points": "14d0a7be00",
     "positions": 1
   },
   {
     "address": "5gNNnw1DLJdQ62x7mbf3XmMmmwbpBdtau3dZwrVaCTPz",
-    "rank": 33,
-    "last24hPoints": "0c098f6500",
-    "points": "0c098f6500",
-    "positions": 1
-  },
-  {
-    "address": "DaCnxmE8ygbWprukoEixko3HF65VDQ9tDiPo38cc1uh3",
-    "rank": 34,
-    "last24hPoints": "08a3551300",
-    "points": "08a3551300",
+    "rank": 35,
+    "last24hPoints": "0d8707a500",
+    "points": "0d8707a500",
     "positions": 1
   },
   {
     "address": "8pYXVVMtUA9cnXezoJy6ttJBzy9Qt8keDx1diY4DngcW",
-    "rank": 35,
-    "last24hPoints": "0737be7600",
-    "points": "0737be7600",
+    "rank": 36,
+    "last24hPoints": "0902b32300",
+    "points": "0902b32300",
+    "positions": 1
+  },
+  {
+    "address": "DaCnxmE8ygbWprukoEixko3HF65VDQ9tDiPo38cc1uh3",
+    "rank": 37,
+    "last24hPoints": "08bb2c9700",
+    "points": "08bb2c9700",
     "positions": 1
   },
   {
     "address": "9tkX2E1zMEw1XB4VdH91uBCkbQpU1r5bZYq6gbKXyJVv",
-    "rank": 36,
+    "rank": 38,
     "last24hPoints": "0649534e00",
     "points": "0649534e00",
     "positions": 0
   },
   {
     "address": "28TxhZSsaQvFouJmW5NUJWQguqDgKnZQBvzrTQBX2qRv",
-    "rank": 37,
-    "last24hPoints": "05017ff700",
-    "points": "05017ff700",
-    "positions": 1
-  },
-  {
-    "address": "4MiZHFA3vpk12jc93mktPn3Pe9VxrzwSFF7EqdcktSoJ",
-    "rank": 38,
-    "last24hPoints": "0460913c00",
-    "points": "0460913c00",
-    "positions": 1
-  },
-  {
-    "address": "12DTBJ8PRaz5LJX5iAEeBWqH8Ds2SZiMepvg8EqoSdja",
     "rank": 39,
-    "last24hPoints": "0407290d00",
-    "points": "0407290d00",
-    "positions": 1
-  },
-  {
-    "address": "AQ9mY38uQMMdz8w1epiWVXqxUnWPZQF1b9Pv2GkJrkwN",
-    "rank": 40,
-    "last24hPoints": "03d1842400",
-    "points": "03d1842400",
-    "positions": 2
-  },
-  {
-    "address": "7hJNbRsGV38zXSavSPXcKM7mWXDpk6sZCZYNpKAZ9YBo",
-    "rank": 41,
-    "last24hPoints": "03663a5200",
-    "points": "03663a5200",
-    "positions": 1
-  },
-  {
-    "address": "BSRWGz4xfGQuiFdQfEGnZaP3KhcJ5Eomrwo4Hf9abpwP",
-    "rank": 42,
-    "last24hPoints": "02a1885100",
-    "points": "02a1885100",
-    "positions": 2
-  },
-  {
-    "address": "BGGzHSe41ZF7GaE985xBcTYygmjF1u1Za7h1sniqSN7R",
-    "rank": 43,
-    "last24hPoints": "0289b0cd00",
-    "points": "0289b0cd00",
-    "positions": 1
-  },
-  {
-    "address": "3qSTECLuKXC7GjqMRdjz5fHMDewkXF8qW8ha8GUZXQKs",
-    "rank": 44,
-    "last24hPoints": "01faa3b500",
-    "points": "01faa3b500",
-    "positions": 1
-  },
-  {
-    "address": "8byYFz8rBD2uGuuE4vof8RoqY4TEGKwMnnnqtoUF2oa9",
-    "rank": 45,
-    "last24hPoints": "01dcd65000",
-    "points": "01dcd65000",
-    "positions": 1
-  },
-  {
-    "address": "9Pd66Eaoi3g1eWvtVCKhmBCXkehPzfanAZtLLC6C7tZ7",
-    "rank": 46,
-    "last24hPoints": "010642ac00",
-    "points": "010642ac00",
-    "positions": 1
-  },
-  {
-    "address": "9iEVqYCUqePDJssVuyxotzotbevXNVqzccZJmMwQkniN",
-    "rank": 47,
-    "last24hPoints": "010642ac00",
-    "points": "010642ac00",
+    "last24hPoints": "050d6bb900",
+    "points": "050d6bb900",
     "positions": 1
   },
   {
     "address": "BV7hksJBzmNU7tauoMzboTF3NcYCoxnjY3f4BwCF6MdU",
+    "rank": 40,
+    "last24hPoints": "04e9a87300",
+    "points": "04e9a87300",
+    "positions": 1
+  },
+  {
+    "address": "4MiZHFA3vpk12jc93mktPn3Pe9VxrzwSFF7EqdcktSoJ",
+    "rank": 41,
+    "last24hPoints": "04cbdb0e00",
+    "points": "04cbdb0e00",
+    "positions": 1
+  },
+  {
+    "address": "12DTBJ8PRaz5LJX5iAEeBWqH8Ds2SZiMepvg8EqoSdja",
+    "rank": 42,
+    "last24hPoints": "047272df00",
+    "points": "047272df00",
+    "positions": 1
+  },
+  {
+    "address": "AQ9mY38uQMMdz8w1epiWVXqxUnWPZQF1b9Pv2GkJrkwN",
+    "rank": 43,
+    "last24hPoints": "03e365c700",
+    "points": "03e365c700",
+    "positions": 2
+  },
+  {
+    "address": "7hJNbRsGV38zXSavSPXcKM7mWXDpk6sZCZYNpKAZ9YBo",
+    "rank": 44,
+    "last24hPoints": "03d1842400",
+    "points": "03d1842400",
+    "positions": 1
+  },
+  {
+    "address": "BGGzHSe41ZF7GaE985xBcTYygmjF1u1Za7h1sniqSN7R",
+    "rank": 45,
+    "last24hPoints": "032a9f8800",
+    "points": "032a9f8800",
+    "positions": 1
+  },
+  {
+    "address": "BSRWGz4xfGQuiFdQfEGnZaP3KhcJ5Eomrwo4Hf9abpwP",
+    "rank": 46,
+    "last24hPoints": "0306dc4200",
+    "points": "0306dc4200",
+    "positions": 2
+  },
+  {
+    "address": "3qSTECLuKXC7GjqMRdjz5fHMDewkXF8qW8ha8GUZXQKs",
+    "rank": 47,
+    "last24hPoints": "023c346000",
+    "points": "023c346000",
+    "positions": 1
+  },
+  {
+    "address": "8byYFz8rBD2uGuuE4vof8RoqY4TEGKwMnnnqtoUF2oa9",
     "rank": 48,
+    "last24hPoints": "0218711a00",
+    "points": "0218711a00",
+    "positions": 1
+  },
+  {
+    "address": "Bru9f3Yfvp7TMiiJNjQW7Mj27Z7vZUnVKsczKyz7EF4p",
+    "rank": 49,
+    "last24hPoints": "019b45a500",
+    "points": "019b45a500",
+    "positions": 1
+  },
+  {
+    "address": "HmHFrfMYS9irC6Zk1ZmsPMJvzC85kLLdfgMypE8USZj4",
+    "rank": 50,
+    "last24hPoints": "0147d35700",
+    "points": "0147d35700",
+    "positions": 1
+  },
+  {
+    "address": "9iEVqYCUqePDJssVuyxotzotbevXNVqzccZJmMwQkniN",
+    "rank": 51,
+    "last24hPoints": "0135f1b400",
+    "points": "0135f1b400",
+    "positions": 1
+  },
+  {
+    "address": "9Pd66Eaoi3g1eWvtVCKhmBCXkehPzfanAZtLLC6C7tZ7",
+    "rank": 52,
+    "last24hPoints": "010c388d00",
+    "points": "010c388d00",
+    "positions": 1
+  },
+  {
+    "address": "2UuLxPm1Hgi6QGEq6aqANqU4bPHgWLYM7ci8m6ZoYXbd",
+    "rank": 53,
+    "last24hPoints": "01004ccb00",
+    "points": "01004ccb00",
+    "positions": 1
+  },
+  {
+    "address": "328i1a7mgPzKwbtUwt14up1zuP5z5FRyytgVyjR37uvJ",
+    "rank": 54,
     "last24hPoints": "f4610900",
     "points": "f4610900",
     "positions": 1
   },
   {
-    "address": "328i1a7mgPzKwbtUwt14up1zuP5z5FRyytgVyjR37uvJ",
-    "rank": 49,
-    "last24hPoints": "d693a400",
-    "points": "d693a400",
-    "positions": 1
-  },
-  {
-    "address": "Bru9f3Yfvp7TMiiJNjQW7Mj27Z7vZUnVKsczKyz7EF4p",
-    "rank": 50,
-    "last24hPoints": "d693a400",
-    "points": "d693a400",
-    "positions": 1
-  },
-  {
-    "address": "2UuLxPm1Hgi6QGEq6aqANqU4bPHgWLYM7ci8m6ZoYXbd",
-    "rank": 51,
-    "last24hPoints": "bebc2000",
-    "points": "bebc2000",
+    "address": "5wv22ed541FWJskxxEwqUe1iL8V87nyU7ifdoRVkwnDC",
+    "rank": 55,
+    "last24hPoints": "dc898500",
+    "points": "dc898500",
     "positions": 1
   },
   {
     "address": "AsHMjuB1xkRFaCJPh3g2noDQSowMZuF3sDLsnbH7zJAt",
-    "rank": 52,
-    "last24hPoints": "b8c63f00",
-    "points": "b8c63f00",
+    "rank": 56,
+    "last24hPoints": "d09dc300",
+    "points": "d09dc300",
+    "positions": 1
+  },
+  {
+    "address": "DYzgrZbedYhUAqVcxzoudnNhV5Yih8w191qT2AGo69cv",
+    "rank": 57,
+    "last24hPoints": "a6e49c00",
+    "points": "a6e49c00",
+    "positions": 1
+  },
+  {
+    "address": "3h73bGVzpkMdnT6GHpdLyz4kNHZTDZgSUw7pLQb6tjU6",
+    "rank": 58,
+    "last24hPoints": "9af8da00",
+    "points": "9af8da00",
     "positions": 1
   },
   {
     "address": "B477J9jchKzS7nqvMpMkidkU9soKKnCPbYueDo9aXici",
-    "rank": 53,
+    "rank": 59,
     "last24hPoints": "9502f900",
     "points": "9502f900",
     "positions": 1
   },
   {
-    "address": "3h73bGVzpkMdnT6GHpdLyz4kNHZTDZgSUw7pLQb6tjU6",
-    "rank": 54,
-    "last24hPoints": "89173700",
-    "points": "89173700",
-    "positions": 1
-  },
-  {
-    "address": "HmHFrfMYS9irC6Zk1ZmsPMJvzC85kLLdfgMypE8USZj4",
-    "rank": 55,
-    "last24hPoints": "89173700",
-    "points": "89173700",
-    "positions": 1
-  },
-  {
-    "address": "DYzgrZbedYhUAqVcxzoudnNhV5Yih8w191qT2AGo69cv",
-    "rank": 56,
-    "last24hPoints": "83215600",
-    "points": "83215600",
-    "positions": 1
-  },
-  {
     "address": "9gRLEbtA5EoeyNFMagCeMpCS82HS9HyohkCJGSEdwP2E",
-    "rank": 57,
-    "last24hPoints": "5f5e1000",
-    "points": "5f5e1000",
+    "rank": 60,
+    "last24hPoints": "6b49d200",
+    "points": "6b49d200",
     "positions": 1
   },
   {
     "address": "C5xURVz9DEwL6A41yVJ3KivutSLVVvjDrmbi9hUvuQVS",
-    "rank": 58,
+    "rank": 61,
     "last24hPoints": "59682f00",
     "points": "59682f00",
     "positions": 0
   },
   {
-    "address": "5wv22ed541FWJskxxEwqUe1iL8V87nyU7ifdoRVkwnDC",
-    "rank": 59,
+    "address": "DoV4nWWpet7VqP2eZtLric6ZV29zwPQuiPf8ZpnfhHHw",
+    "rank": 62,
     "last24hPoints": "53724e00",
     "points": "53724e00",
     "positions": 1
   },
   {
-    "address": "DoV4nWWpet7VqP2eZtLric6ZV29zwPQuiPf8ZpnfhHHw",
-    "rank": 60,
+    "address": "C4YM7uNY7UvF4a1mb3CgDzPwFs4RogTsQyyQVfCK9f3g",
+    "rank": 63,
     "last24hPoints": "4190ab00",
     "points": "4190ab00",
     "positions": 1
   },
   {
-    "address": "C4YM7uNY7UvF4a1mb3CgDzPwFs4RogTsQyyQVfCK9f3g",
-    "rank": 61,
-    "last24hPoints": "23c34600",
-    "points": "23c34600",
+    "address": "F8k8qYVTn5zabvAa5LQwH4pshuB9cehUagN4BCLAppLj",
+    "rank": 64,
+    "last24hPoints": "3b9aca00",
+    "points": "3b9aca00",
+    "positions": 1
+  },
+  {
+    "address": "DwnQnCiSmGmKJP6VqowLaSgcvzV5y7nh4sq6pB7LPkAN",
+    "rank": 65,
+    "last24hPoints": "29b92700",
+    "points": "29b92700",
     "positions": 1
   },
   {
     "address": "6hVFEi1fpQpzknaL875X5UbpJZCnN1ymvMjqERPbX92e",
-    "rank": 62,
+    "rank": 66,
+    "last24hPoints": "1dcd6500",
+    "points": "1dcd6500",
+    "positions": 1
+  },
+  {
+    "address": "EutRhaH3ZCWBzRsDpUmDNA4Rk3dVB6PgdY1J95jtQuFA",
+    "rank": 67,
     "last24hPoints": "17d78400",
     "points": "17d78400",
     "positions": 1
   },
   {
     "address": "DbQKnbCcy13WkQpsYLTxaQqJzZwSeVvFEz77KSUuFwUq",
-    "rank": 63,
+    "rank": 68,
     "last24hPoints": "05f5e100",
     "points": "05f5e100",
     "positions": 0
   },
   {
+    "address": "3YvMaurdkmc19ncGQjVPXQmiC5HuBvdEXsgbXcCHogAr",
+    "rank": 69,
+    "last24hPoints": "05f5e100",
+    "points": "05f5e100",
+    "positions": 1
+  },
+  {
+    "address": "EMqoGMNxSNdt698Zevv1dZXVSXku7GkAymC1sBCYh8ez",
+    "rank": 70,
+    "last24hPoints": "05f5e100",
+    "points": "05f5e100",
+    "positions": 1
+  },
+  {
     "address": "7ywaB9RrBfqVWdy26ezqr6WvCz55u4TfQEyHpPbgkSCk",
-    "rank": 64,
+    "rank": 71,
+    "last24hPoints": "00",
+    "points": "00",
+    "positions": 1
+  },
+  {
+    "address": "7MGnr8TXdC7uQ8T2jrzidsVQkzmWcmkP6Gk7HMny1u3U",
+    "rank": 72,
     "last24hPoints": "00",
     "points": "00",
     "positions": 1
