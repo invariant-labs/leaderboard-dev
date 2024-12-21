@@ -12,7 +12,7 @@
           "currentTimestamp": "6766282e",
           "secondsPerLiquidityInsideInitial": "052f38f81b71e05685"
         },
-        "points": "1da7e2b11500"
+        "points": "1e3e09ba2600"
       },
       {
         "event": {
@@ -25,7 +25,7 @@
           "currentTimestamp": "6766281b",
           "secondsPerLiquidityInsideInitial": "86d783f2ca93ae5c477c"
         },
-        "points": "46ac6e5e6800"
+        "points": "481215104900"
       },
       {
         "event": {
@@ -38,7 +38,7 @@
           "currentTimestamp": "67668c09",
           "secondsPerLiquidityInsideInitial": "19017947e2e6222c0f72"
         },
-        "points": "2be379bd00"
+        "points": "2e55530600"
       }
     ],
     "closed": [
@@ -925,7 +925,7 @@
           "currentTimestamp": "6764a372",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "048d42cfc51400"
+        "points": "04926848a6fd00"
       }
     ],
     "closed": []
