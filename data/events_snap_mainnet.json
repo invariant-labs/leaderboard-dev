@@ -1,6 +1,33 @@
 {
   "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s": {
-    "active": [],
+    "active": [
+      {
+        "event": {
+          "owner": "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "40",
+          "liquidity": "0425736061",
+          "lowerTick": -14410,
+          "upperTick": -13250,
+          "currentTimestamp": "6766282e",
+          "secondsPerLiquidityInsideInitial": "052f38f81b71e05685"
+        },
+        "points": "0b7a824d00"
+      },
+      {
+        "event": {
+          "owner": "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "3f",
+          "liquidity": "09e0400e40",
+          "lowerTick": -14070,
+          "upperTick": -13590,
+          "currentTimestamp": "6766281b",
+          "secondsPerLiquidityInsideInitial": "86d783f2ca93ae5c477c"
+        },
+        "points": "24cf7e8d00"
+      }
+    ],
     "closed": [
       {
         "events": [
@@ -885,7 +912,7 @@
           "currentTimestamp": "6764a372",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "0362fe71c3bb00"
+        "points": "038973211e2500"
       }
     ],
     "closed": []
