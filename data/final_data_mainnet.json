@@ -1,16 +1,23 @@
 [
   {
-    "address": "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn",
+    "address": "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s",
     "rank": 1,
-    "last24hPoints": "8469295700",
-    "points": "8469295700",
+    "last24hPoints": "05518c0aae00",
+    "points": "05518c0aae00",
     "positions": 1
   },
   {
-    "address": "CQmeETMuzeotHzCa66Z71CVFUuD9arzK7ePx1ZH5Un5s",
+    "address": "8kYdFcmLJWGKi3mV75g4qMXWGZBkfoKu114qStx5pAVM",
     "rank": 2,
-    "last24hPoints": "566d3e8000",
-    "points": "566d3e8000",
+    "last24hPoints": "01e01ebced00",
+    "points": "01e01ebced00",
+    "positions": 1
+  },
+  {
+    "address": "siCRpbTXfkvnmq7zqSUaPoQXPg5nYuALb2CF3qehqSn",
+    "rank": 3,
+    "last24hPoints": "01096d4b8800",
+    "points": "01096d4b8800",
     "positions": 1
   }
 ]
