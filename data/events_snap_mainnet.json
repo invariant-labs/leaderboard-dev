@@ -12,7 +12,7 @@
           "currentTimestamp": "6766ea54",
           "secondsPerLiquidityInsideInitial": "3046249cf68a64a331"
         },
-        "points": "1122104c5c00"
+        "points": "1155b49bc600"
       }
     ],
     "closed": [
@@ -88,7 +88,7 @@
           "currentTimestamp": "6766ea1f",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "0244ef8c9700"
+        "points": "024a506a9e00"
       }
     ],
     "closed": [
@@ -126,7 +126,363 @@
           "currentTimestamp": "6766eaf6",
           "secondsPerLiquidityInsideInitial": "0df047b28331d93b25"
         },
-        "points": "076fc94c8700"
+        "points": "0788c4e09800"
+      }
+    ],
+    "closed": []
+  },
+  "9tkX2E1zMEw1XB4VdH91uBCkbQpU1r5bZYq6gbKXyJVv": {
+    "active": [
+      {
+        "event": {
+          "owner": "9tkX2E1zMEw1XB4VdH91uBCkbQpU1r5bZYq6gbKXyJVv",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "56",
+          "liquidity": "06ec1a57a500",
+          "lowerTick": -26090,
+          "upperTick": 1650,
+          "currentTimestamp": "6766f997",
+          "secondsPerLiquidityInsideInitial": "01245ce22ee625b2"
+        },
+        "points": "0200999600"
+      }
+    ],
+    "closed": []
+  },
+  "DaCnxmE8ygbWprukoEixko3HF65VDQ9tDiPo38cc1uh3": {
+    "active": [
+      {
+        "event": {
+          "owner": "DaCnxmE8ygbWprukoEixko3HF65VDQ9tDiPo38cc1uh3",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "55",
+          "liquidity": "06e2765a3980",
+          "lowerTick": -26170,
+          "upperTick": 1570,
+          "currentTimestamp": "6766f949",
+          "secondsPerLiquidityInsideInitial": "02a85cee8d3d6339"
+        },
+        "points": "036c303300"
+      }
+    ],
+    "closed": []
+  },
+  "EWDvKbRS9M3i4zSA6UYG7E8R3KV6k6JKunUi9UuMniuc": {
+    "active": [
+      {
+        "event": {
+          "owner": "EWDvKbRS9M3i4zSA6UYG7E8R3KV6k6JKunUi9UuMniuc",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "54",
+          "liquidity": "01271c5cba6e40",
+          "lowerTick": -26170,
+          "upperTick": 1570,
+          "currentTimestamp": "6766f92e",
+          "secondsPerLiquidityInsideInitial": "02425883682fa93c"
+        },
+        "points": "a93e9dc500"
+      }
+    ],
+    "closed": []
+  },
+  "AQ9mY38uQMMdz8w1epiWVXqxUnWPZQF1b9Pv2GkJrkwN": {
+    "active": [
+      {
+        "event": {
+          "owner": "AQ9mY38uQMMdz8w1epiWVXqxUnWPZQF1b9Pv2GkJrkwN",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "53",
+          "liquidity": "56116f4354",
+          "lowerTick": -26170,
+          "upperTick": 1570,
+          "currentTimestamp": "6766f90d",
+          "secondsPerLiquidityInsideInitial": "0183f4c2087bbc42"
+        },
+        "points": "3b9aca00"
+      }
+    ],
+    "closed": []
+  },
+  "28TxhZSsaQvFouJmW5NUJWQguqDgKnZQBvzrTQBX2qRv": {
+    "active": [
+      {
+        "event": {
+          "owner": "28TxhZSsaQvFouJmW5NUJWQguqDgKnZQBvzrTQBX2qRv",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "52",
+          "liquidity": "0325b26a8a80",
+          "lowerTick": -26170,
+          "upperTick": 1570,
+          "currentTimestamp": "6766f8ee",
+          "secondsPerLiquidityInsideInitial": "d0ff6cda96034c"
+        },
+        "points": "02a1885100"
+      }
+    ],
+    "closed": []
+  },
+  "735WWiE8mp84Cv4Xh8PdQLXAPLPkG4m8WobwAvRym66E": {
+    "active": [
+      {
+        "event": {
+          "owner": "735WWiE8mp84Cv4Xh8PdQLXAPLPkG4m8WobwAvRym66E",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "51",
+          "liquidity": "11e45ad31a80",
+          "lowerTick": -26210,
+          "upperTick": 1530,
+          "currentTimestamp": "6766f8ca",
+          "secondsPerLiquidityInsideInitial": "05b7cbac402db940"
+        },
+        "points": "11b1f3f800"
+      }
+    ],
+    "closed": []
+  },
+  "B477J9jchKzS7nqvMpMkidkU9soKKnCPbYueDo9aXici": {
+    "active": [
+      {
+        "event": {
+          "owner": "B477J9jchKzS7nqvMpMkidkU9soKKnCPbYueDo9aXici",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "50",
+          "liquidity": "3c8b97a379",
+          "lowerTick": -26210,
+          "upperTick": 1530,
+          "currentTimestamp": "6766f824",
+          "secondsPerLiquidityInsideInitial": "01d413106fdfc051"
+        },
+        "points": "6553f100"
+      }
+    ],
+    "closed": []
+  },
+  "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF": {
+    "active": [
+      {
+        "event": {
+          "owner": "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "4f",
+          "liquidity": "2834c84e8700",
+          "lowerTick": -16830,
+          "upperTick": -7890,
+          "currentTimestamp": "6766f7d6",
+          "secondsPerLiquidityInsideInitial": "9528ef25919a71"
+        },
+        "points": "5236666b00"
+      }
+    ],
+    "closed": [
+      {
+        "events": [
+          {
+            "owner": "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF",
+            "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+            "id": "4d",
+            "liquidity": "5b3da8bb9b80",
+            "lowerTick": -14330,
+            "upperTick": -10510,
+            "currentTimestamp": "6766f798",
+            "secondsPerLiquidityInsideInitial": "f244d59955336d"
+          },
+          {
+            "owner": "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF",
+            "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+            "id": "4d",
+            "liquidity": "5b3da8bb9b80",
+            "upperTick": -10510,
+            "currentTick": -12360,
+            "lowerTick": -14330,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "e0c02e24ad22478550cc",
+            "poolSecondsPerLiquidityGlobal": "e0c02ff23ed9dd6cead1",
+            "currentTimestamp": "6766f7bf"
+          }
+        ],
+        "points": "0e69870b00"
+      },
+      {
+        "events": [
+          {
+            "owner": "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF",
+            "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+            "id": "4b",
+            "liquidity": "1143d9d388c0",
+            "lowerTick": -27080,
+            "upperTick": 660,
+            "currentTimestamp": "6766f742",
+            "secondsPerLiquidityInsideInitial": "a72924fe754a7ee9ff"
+          },
+          {
+            "owner": "AAwcymjnQEsKvDHViKNAqkTJmBbKX6jvRXvv4RRBp1AF",
+            "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+            "id": "4b",
+            "liquidity": "1143d9d388c0",
+            "upperTick": 660,
+            "currentTick": -12420,
+            "lowerTick": -27080,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "e019036d7a1b766dc04b",
+            "poolSecondsPerLiquidityGlobal": "e0c02cddf20841cf19d6",
+            "currentTimestamp": "6766f751"
+          }
+        ],
+        "points": "ee6b2800"
+      }
+    ]
+  },
+  "CUBW8bNn8DJ7UvncMcWexSD6hM5PycaYzpZz29nkeZnV": {
+    "active": [
+      {
+        "event": {
+          "owner": "CUBW8bNn8DJ7UvncMcWexSD6hM5PycaYzpZz29nkeZnV",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "4e",
+          "liquidity": "54c92b15ab00",
+          "lowerTick": -14030,
+          "upperTick": -10810,
+          "currentTimestamp": "6766f79e",
+          "secondsPerLiquidityInsideInitial": "2669e1ba10ac54"
+        },
+        "points": "c18d575900"
+      }
+    ],
+    "closed": []
+  },
+  "4aZPrrdS5bknRVvv9qznjP64buY3j7tGYtUThWcVyTwE": {
+    "active": [
+      {
+        "event": {
+          "owner": "4aZPrrdS5bknRVvv9qznjP64buY3j7tGYtUThWcVyTwE",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "4c",
+          "liquidity": "11e007e821c0",
+          "lowerTick": -26290,
+          "upperTick": 1450,
+          "currentTimestamp": "6766f779",
+          "secondsPerLiquidityInsideInitial": "0146bb1a05b636f6"
+        },
+        "points": "2c669b1300"
+      }
+    ],
+    "closed": []
+  },
+  "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK": {
+    "active": [
+      {
+        "event": {
+          "owner": "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "4a",
+          "liquidity": "f9fe8311ef00",
+          "lowerTick": -27080,
+          "upperTick": 660,
+          "currentTimestamp": "6766f6ef",
+          "secondsPerLiquidityInsideInitial": "a7288afc7f16cf1732"
+        },
+        "points": "02d172f3ca00"
+      }
+    ],
+    "closed": [
+      {
+        "events": [
+          {
+            "owner": "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK",
+            "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+            "id": "47",
+            "liquidity": "f9fe83307380",
+            "lowerTick": -27080,
+            "upperTick": 660,
+            "currentTimestamp": "6766f642",
+            "secondsPerLiquidityInsideInitial": "a726b60557e4651d8e"
+          },
+          {
+            "owner": "63CQPyL9xzCSy4ejNuqxxqfjRpAGVKa1KbJUvXfRSKZK",
+            "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+            "id": "47",
+            "liquidity": "f9fe83307380",
+            "upperTick": 660,
+            "currentTick": -13210,
+            "lowerTick": -27080,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "e019036d7a1b766dc04b",
+            "poolSecondsPerLiquidityGlobal": "e0c02acf032e8559496c",
+            "currentTimestamp": "6766f666"
+          }
+        ],
+        "points": "1edf936e00"
+      }
+    ]
+  },
+  "GZTbayrxCDAjVmWAvczpAzMmuW5VoXGaUPSUNchSb1rJ": {
+    "active": [
+      {
+        "event": {
+          "owner": "GZTbayrxCDAjVmWAvczpAzMmuW5VoXGaUPSUNchSb1rJ",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "49",
+          "liquidity": "2eff63543080",
+          "lowerTick": -27080,
+          "upperTick": 660,
+          "currentTimestamp": "6766f66f",
+          "secondsPerLiquidityInsideInitial": "a72775ab35a624f77c"
+        },
+        "points": "9101c5d400"
+      }
+    ],
+    "closed": []
+  },
+  "EtxtgjMf66ydeKv3vBooqKHWnp6YnjHusWLNsFaDcfD7": {
+    "active": [
+      {
+        "event": {
+          "owner": "EtxtgjMf66ydeKv3vBooqKHWnp6YnjHusWLNsFaDcfD7",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "48",
+          "liquidity": "05413db9688ac0",
+          "lowerTick": -13360,
+          "upperTick": -13060,
+          "currentTimestamp": "6766f650",
+          "secondsPerLiquidityInsideInitial": "818f9db44cf250"
+        },
+        "points": "01eabcb5b500"
+      }
+    ],
+    "closed": []
+  },
+  "C63WkxS9t1r8o91CNrKniDuBVocTSjFzS3brxzKLCipQ": {
+    "active": [
+      {
+        "event": {
+          "owner": "C63WkxS9t1r8o91CNrKniDuBVocTSjFzS3brxzKLCipQ",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "46",
+          "liquidity": "4ebbdbf33500",
+          "lowerTick": -27080,
+          "upperTick": 660,
+          "currentTimestamp": "6766f61b",
+          "secondsPerLiquidityInsideInitial": "a721bf27d821d1f781"
+        },
+        "points": "0145ea94ee00"
+      }
+    ],
+    "closed": []
+  },
+  "7KQETrPtGTwZfkG8Tqsgtiko4Dmky6p4mP6HLZ9WRmPc": {
+    "active": [
+      {
+        "event": {
+          "owner": "7KQETrPtGTwZfkG8Tqsgtiko4Dmky6p4mP6HLZ9WRmPc",
+          "pool": "HRgVv1pyBLXdsAddq4ubSqo8xdQWRrYbvmXqEDtectce",
+          "id": "45",
+          "liquidity": "139b3b9cf240",
+          "lowerTick": -27080,
+          "upperTick": 660,
+          "currentTimestamp": "6766f5c5",
+          "secondsPerLiquidityInsideInitial": "a6ec99512003c32a5c"
+        },
+        "points": "01115dd03d00"
       }
     ],
     "closed": []
