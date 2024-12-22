@@ -121,7 +121,7 @@ export const getTimestampInSeconds = (): BN => {
 
 const wrappingSub = (a: BN, b: BN): BN => {
   if (b.gt(a)) {
-    return MAX_U128.sub(b.sub(a)).add(1);
+    return MAX_U128.sub(b.sub(a)).add(new BN(1));
   } else {
     return a.sub(b);
   }
@@ -129,7 +129,7 @@ const wrappingSub = (a: BN, b: BN): BN => {
 
 const wrappingAdd = (a: BN, b: BN): BN => {
   if (b.gt(MAX_U128.sub(a))) {
-    return b.sub(MAX_U128.sub(a)).sub(1);
+    return b.sub(MAX_U128.sub(a)).sub(new BN(1));
   } else {
     return a.add(b);
   }
