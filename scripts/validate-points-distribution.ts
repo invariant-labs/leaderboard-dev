@@ -34,7 +34,9 @@ import {
 } from "../src/utils";
 
 const validatePointsDistribution = async () => {
-  const provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
+  const provider = AnchorProvider.local(
+    "https://testnet.dev2.eclipsenetwork.xyz"
+  );
   const connection = provider.connection;
   const programId = new PublicKey(getMarketAddress(Network.TEST));
 
