@@ -18,7 +18,7 @@ import {
   RemovePositionEvent,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import {
-  FULL_SNAP_START_TX_HASH,
+  FULL_SNAP_START_TX_HASH_TESTNET,
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
 } from "../src/consts";
@@ -36,7 +36,7 @@ import {
 const validatePointsDistribution = async () => {
   const provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
   const connection = provider.connection;
-  const programId = new PublicKey(getMarketAddress(Network.MAIN));
+  const programId = new PublicKey(getMarketAddress(Network.TEST));
 
   const market = Market.build(
     Network.TEST,
@@ -52,7 +52,7 @@ const validatePointsDistribution = async () => {
   const sigArraysFullSnap = await Promise.all(
     refAddresses.map((refAddr) =>
       retryOperation(
-        fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
+        fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH_TESTNET)
       )
     )
   );

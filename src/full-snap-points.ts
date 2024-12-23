@@ -11,7 +11,8 @@ import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
 import {
-  FULL_SNAP_START_TX_HASH,
+  FULL_SNAP_START_TX_HASH_MAINNET,
+  FULL_SNAP_START_TX_HASH_TESTNET,
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
@@ -38,7 +39,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
   let provider: AnchorProvider;
   let eventsSnapFilename: string;
   let PROMOTED_POOLS: PublicKey[];
-
+  let FULL_SNAP_START_TX_HASH: string;
   switch (network) {
     case Network.MAIN:
       provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
@@ -47,6 +48,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_mainnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -57,6 +59,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_testnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_TESTNET;
       break;
     default:
       throw new Error("Unknown network");
