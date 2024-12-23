@@ -11,7 +11,8 @@ import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
 import {
-  FULL_SNAP_START_TX_HASH,
+  FULL_SNAP_START_TX_HASH_MAINNET,
+  FULL_SNAP_START_TX_HASH_TESTNET,
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
@@ -22,6 +23,7 @@ import {
   isPromotedPool,
   processNewOpen,
   processNewOpenClosed,
+  retryOperation,
 } from "./utils";
 import { IPoolAndTicks, IPositions } from "./types";
 import {
@@ -37,7 +39,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
   let provider: AnchorProvider;
   let eventsSnapFilename: string;
   let PROMOTED_POOLS: PublicKey[];
-
+  let FULL_SNAP_START_TX_HASH: string;
   switch (network) {
     case Network.MAIN:
       provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
@@ -46,6 +48,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_mainnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -56,6 +59,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_testnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_TESTNET;
       break;
     default:
       throw new Error("Unknown network");
@@ -71,13 +75,18 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     programId
   );
 
-  const refAddress = market.getEventOptAccount(PROMOTED_POOLS[0]).address;
-
-  const sigs = await fetchAllSignatures(
-    connection,
-    refAddress,
-    FULL_SNAP_START_TX_HASH
+  const refAddresses = PROMOTED_POOLS.map(
+    (pool) => market.getEventOptAccount(pool).address
   );
+
+  const sigArrays = await Promise.all(
+    refAddresses.map((refAddr) =>
+      retryOperation(
+        fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
+      )
+    )
+  );
+  const sigs = sigArrays.flat();
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -111,8 +120,10 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
         if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
-        const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
-          item[1].id.eq(event.id)
+        const correspondingItemIndex = acc.newOpenClosed.findIndex(
+          (item) =>
+            item[1].id.eq(event.id) &&
+            item[1].pool.toString() === event.pool.toString()
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpenClosed[correspondingItemIndex];
@@ -125,8 +136,10 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
         if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
-        const correspondingItemIndex = acc.newOpen.findIndex((item) =>
-          item.id.eq(event.id)
+        const correspondingItemIndex = acc.newOpen.findIndex(
+          (item) =>
+            item.id.eq(event.id) &&
+            item.pool.toString() === event.pool.toString()
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpen[correspondingItemIndex];
@@ -191,14 +204,14 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
 };
 
-// createFullSnapshotForNetwork(Network.TEST).then(
-//   () => {
-//     console.log("Eclipse: Testnet snapshot done!");
-//   },
-//   (err) => {
-//     console.log(err);
-//   }
-// );
+createFullSnapshotForNetwork(Network.TEST).then(
+  () => {
+    console.log("Eclipse: Testnet snapshot done!");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
 
 createFullSnapshotForNetwork(Network.MAIN).then(
   () => {

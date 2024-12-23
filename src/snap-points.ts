@@ -98,10 +98,18 @@ export const createSnapshotForNetwork = async (network: Network) => {
   );
 
   const { lastTxHash } = previousConfig;
-  const refAddress = market.getEventOptAccount(PROMOTED_POOLS[0]).address;
-  const sigs = await retryOperation(
-    fetchAllSignatures(connection, refAddress, lastTxHash)
+
+  const refAddresses = PROMOTED_POOLS.map(
+    (pool) => market.getEventOptAccount(pool).address
   );
+
+  const sigArrays = await Promise.all(
+    refAddresses.map((refAddr) =>
+      retryOperation(fetchAllSignatures(connection, refAddr, lastTxHash))
+    )
+  );
+
+  const sigs = sigArrays.flat();
 
   const txLogs = await retryOperation(
     fetchTransactionLogs(connection, sigs, MAX_SIGNATURES_PER_CALL)
@@ -138,8 +146,10 @@ export const createSnapshotForNetwork = async (network: Network) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
         if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
-        const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
-          item[1].id.eq(event.id)
+        const correspondingItemIndex = acc.newOpenClosed.findIndex(
+          (item) =>
+            item[1].id.eq(event.id) &&
+            item[1].pool.toString() === event.pool.toString()
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpenClosed[correspondingItemIndex];
@@ -157,8 +167,10 @@ export const createSnapshotForNetwork = async (network: Network) => {
           active: [],
           closed: [],
         };
-        const correspondingItemIndex = acc.newOpen.findIndex((item) =>
-          item.id.eq(event.id)
+        const correspondingItemIndex = acc.newOpen.findIndex(
+          (item) =>
+            item.id.eq(event.id) &&
+            item.pool.toString() === event.pool.toString()
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpen[correspondingItemIndex];
@@ -167,7 +179,9 @@ export const createSnapshotForNetwork = async (network: Network) => {
           return acc;
         }
         const correspondingItemIndexPreviousData = ownerData.active.findIndex(
-          (item) => new BN(item.event.id, "hex").eq(event.id)
+          (item) =>
+            new BN(item.event.id, "hex").eq(event.id) &&
+            item.event.pool.toString() === event.pool.toString()
         );
 
         if (correspondingItemIndexPreviousData >= 0) {
@@ -208,8 +222,11 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   Object.values(eventsObject).forEach((positions) =>
     positions.active.forEach((activeEntry) => {
-      const hasBeenClosed = newClosed.some((newClosedEntry) =>
-        newClosedEntry[0].event.id.eq(new BN(activeEntry.event.id, "hex"))
+      const hasBeenClosed = newClosed.some(
+        (newClosedEntry) =>
+          newClosedEntry[0].event.id.eq(new BN(activeEntry.event.id, "hex")) &&
+          newClosedEntry[0].event.pool.toString() ===
+            activeEntry.event.pool.toString()
       );
       if (!hasBeenClosed) {
         stillOpen.push({
@@ -369,14 +386,14 @@ export const createSnapshotForNetwork = async (network: Network) => {
   fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));
 };
 
-// createSnapshotForNetwork(Network.TEST).then(
-//   () => {
-//     console.log("Eclipse: Testnet snapshot done!");
-//   },
-//   (err) => {
-//     console.log(err);
-//   }
-// );
+createSnapshotForNetwork(Network.TEST).then(
+  () => {
+    console.log("Eclipse: Testnet snapshot done!");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
 
 createSnapshotForNetwork(Network.MAIN).then(
   () => {
