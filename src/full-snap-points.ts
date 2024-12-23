@@ -22,6 +22,7 @@ import {
   isPromotedPool,
   processNewOpen,
   processNewOpenClosed,
+  retryOperation,
 } from "./utils";
 import { IPoolAndTicks, IPositions } from "./types";
 import {
@@ -71,13 +72,18 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     programId
   );
 
-  const refAddress = market.getEventOptAccount(PROMOTED_POOLS[0]).address;
-
-  const sigs = await fetchAllSignatures(
-    connection,
-    refAddress,
-    FULL_SNAP_START_TX_HASH
+  const refAddresses = PROMOTED_POOLS.map(
+    (pool) => market.getEventOptAccount(pool).address
   );
+
+  const sigArrays = await Promise.all(
+    refAddresses.map((refAddr) =>
+      retryOperation(
+        fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
+      )
+    )
+  );
+  const sigs = sigArrays.flat();
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -111,8 +117,10 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
         if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
-        const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
-          item[1].id.eq(event.id)
+        const correspondingItemIndex = acc.newOpenClosed.findIndex(
+          (item) =>
+            item[1].id.eq(event.id) &&
+            item[1].pool.toString() === event.pool.toString()
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpenClosed[correspondingItemIndex];
@@ -125,8 +133,10 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
         if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
-        const correspondingItemIndex = acc.newOpen.findIndex((item) =>
-          item.id.eq(event.id)
+        const correspondingItemIndex = acc.newOpen.findIndex(
+          (item) =>
+            item.id.eq(event.id) &&
+            item.pool.toString() === event.pool.toString()
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpen[correspondingItemIndex];
