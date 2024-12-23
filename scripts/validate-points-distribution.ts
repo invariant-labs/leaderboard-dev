@@ -6,7 +6,7 @@ import {
   Network,
   parseEvent,
 } from "@invariant-labs/sdk-eclipse";
-import { IActive, IConfig, IPoolAndTicks, IPositions } from "../src/types";
+import { IActive, IPoolAndTicks, IPositions } from "../src/types";
 import * as fs from "fs";
 import path from "path";
 import { AnchorProvider, BN } from "@coral-xyz/anchor";
@@ -18,14 +18,14 @@ import {
   RemovePositionEvent,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import {
-  FULL_SNAP_START_TX_HASH_TESTNET,
   MAX_SIGNATURES_PER_CALL,
+  PROMOTED_POOLS_MAINNET,
   PROMOTED_POOLS_TESTNET,
+  START_COUNT_TIMESTAMP,
 } from "../src/consts";
 import {
   fetchAllSignatures,
   fetchTransactionLogs,
-  isPromotedPool,
   processNewClosed,
   processNewOpen,
   processNewOpenClosed,
@@ -33,33 +33,65 @@ import {
   retryOperation,
 } from "../src/utils";
 
-const validatePointsDistribution = async () => {
-  const provider = AnchorProvider.local(
-    "https://testnet.dev2.eclipsenetwork.xyz"
-  );
+const validatePointsDistribution = async (network: Network) => {
+  let provider: AnchorProvider;
+  let eventsSnapFilename: string;
+  let pointsFileName: string;
+  let PROMOTED_POOLS: PublicKey[];
+  let poolsFileName: string;
+  switch (network) {
+    case Network.MAIN:
+      provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
+      eventsSnapFilename = path.join(
+        __dirname,
+        "../data/events_snap_mainnet.json"
+      );
+      pointsFileName = path.join(__dirname, "../data/points_mainnet.json");
+      poolsFileName = path.join(
+        __dirname,
+        "../data/pools_last_tx_hashes_mainnet.json"
+      );
+      PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
+      break;
+    case Network.TEST:
+      provider = AnchorProvider.local(
+        "https://testnet.dev2.eclipsenetwork.xyz"
+      );
+      eventsSnapFilename = path.join(
+        __dirname,
+        "../data/events_snap_testnet.json"
+      );
+      pointsFileName = path.join(__dirname, "../data/points_testnet.json");
+      poolsFileName = path.join(
+        __dirname,
+        "../data/pools_last_tx_hashes_testnet.json"
+      );
+      PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
+      break;
+    default:
+      throw new Error("Unknown network");
+  }
+
   const connection = provider.connection;
-  const programId = new PublicKey(getMarketAddress(Network.TEST));
+  const programId = new PublicKey(getMarketAddress(network));
 
   const market = Market.build(
-    Network.TEST,
+    network,
     provider.wallet as IWallet,
     connection,
     programId
   );
 
-  const refAddresses = PROMOTED_POOLS_TESTNET.map(
-    (pool) => market.getEventOptAccount(pool).address
-  );
-
-  const sigArraysFullSnap = await Promise.all(
-    refAddresses.map((refAddr) =>
-      retryOperation(
-        fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH_TESTNET)
-      )
+  const sigsFullSnap = (
+    await Promise.all(
+      PROMOTED_POOLS.map((pool) => {
+        const refAddr = market.getEventOptAccount(pool).address;
+        return retryOperation(
+          fetchAllSignatures(connection, refAddr, undefined)
+        );
+      })
     )
-  );
-
-  const sigsFullSnap = sigArraysFullSnap.flat();
+  ).flat();
 
   const txLogsFullSnap = await fetchTransactionLogs(
     connection,
@@ -94,7 +126,7 @@ const validatePointsDistribution = async () => {
       (acc, curr) => {
         if (curr.name === InvariantEventNames.CreatePositionEvent) {
           const event = parseEvent(curr) as CreatePositionEvent;
-          if (!isPromotedPool(PROMOTED_POOLS_TESTNET, event.pool)) return acc;
+          if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
           const correspondingItemIndex = acc.newOpenClosed.findIndex(
             (item) =>
               item[1].id.eq(event.id) &&
@@ -110,7 +142,7 @@ const validatePointsDistribution = async () => {
           return acc;
         } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
           const event = parseEvent(curr) as RemovePositionEvent;
-          if (!isPromotedPool(PROMOTED_POOLS_TESTNET, event.pool)) return acc;
+          if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
           const correspondingItemIndex = acc.newOpen.findIndex(
             (item) =>
               item.id.eq(event.id) &&
@@ -131,20 +163,21 @@ const validatePointsDistribution = async () => {
       { newOpen: [], newOpenClosed: [] }
     );
 
-  const previousConfig: IConfig = JSON.parse(
-    fs.readFileSync(
-      path.join(__dirname, "../data/previous_config_testnet.json"),
-      "utf-8"
-    )
+  const previousPools: Record<string, string | undefined> = JSON.parse(
+    fs.readFileSync(poolsFileName, "utf-8")
   );
 
-  const { lastTxHash } = previousConfig;
-  const sigArrays = await Promise.all(
-    refAddresses.map((refAddr) =>
-      retryOperation(fetchAllSignatures(connection, refAddr, lastTxHash))
+  const sigs = (
+    await Promise.all(
+      PROMOTED_POOLS.map((pool) => {
+        const refAddr = market.getEventOptAccount(pool).address;
+        const previousTxHash = previousPools[pool.toString()] ?? undefined;
+        return retryOperation(
+          fetchAllSignatures(connection, refAddr, previousTxHash)
+        );
+      })
     )
-  );
-  const sigs = sigArrays.flat();
+  ).flat();
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -153,10 +186,7 @@ const validatePointsDistribution = async () => {
 
   const finalLogs = txLogs.flat();
   const eventsObject: Record<string, IPositions> = JSON.parse(
-    fs.readFileSync(
-      path.join(__dirname, "../data/events_snap_testnet.json"),
-      "utf-8"
-    )
+    fs.readFileSync(eventsSnapFilename, "utf-8")
   );
 
   const eventLogs: string[] = [];
@@ -183,7 +213,7 @@ const validatePointsDistribution = async () => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (!isPromotedPool(PROMOTED_POOLS_TESTNET, event.pool)) return acc;
+        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex(
           (item) =>
             item[1].id.eq(event.id) &&
@@ -199,7 +229,7 @@ const validatePointsDistribution = async () => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (!isPromotedPool(PROMOTED_POOLS_TESTNET, event.pool)) return acc;
+        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const ownerKey = event.owner.toString();
         const ownerData = eventsObject[ownerKey] || {
           active: [],
@@ -287,7 +317,7 @@ const validatePointsDistribution = async () => {
   );
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
-    PROMOTED_POOLS_TESTNET.map(async (pool) => {
+    PROMOTED_POOLS.map(async (pool) => {
       const ticksUsed = Array.from(
         new Set([
           ...stillOpen.flatMap((entry) =>
@@ -442,4 +472,20 @@ const validatePointsDistribution = async () => {
   console.log("Actual points distributed:", pointsFromSnapshot.toNumber());
 };
 
-validatePointsDistribution();
+validatePointsDistribution(Network.TEST).then(
+  () => {
+    console.log("Validation over");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
+
+// validatePointsDistribution(Network.MAIN).then(
+//   () => {
+//     console.log("Validation over");
+//   },
+//   (err) => {
+//     console.log(err);
+//   }
+// );

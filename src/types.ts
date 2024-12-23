@@ -19,9 +19,7 @@ export interface IPositions {
   active: IActive[];
   closed: IClosed[];
 }
-export interface IConfig {
-  lastTxHash: string;
-}
+
 export interface IPoolAndTicks {
   pool: PublicKey;
   poolStructure: PoolStructure;

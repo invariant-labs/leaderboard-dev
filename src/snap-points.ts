@@ -15,11 +15,11 @@ import {
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
+  START_COUNT_TIMESTAMP,
 } from "./consts";
 import {
   fetchAllSignatures,
   fetchTransactionLogs,
-  isPromotedPool,
   processStillOpen,
   processNewOpen,
   processNewClosed,
@@ -28,7 +28,6 @@ import {
 } from "./utils";
 import {
   IActive,
-  IConfig,
   IPoints,
   IPointsJson,
   IPoolAndTicks,
@@ -45,38 +44,37 @@ require("dotenv").config();
 
 export const createSnapshotForNetwork = async (network: Network) => {
   let provider: AnchorProvider;
-  let configFileName: string;
   let eventsSnapFilename: string;
   let pointsFileName: string;
   let PROMOTED_POOLS: PublicKey[];
-
+  let poolsFileName: string;
   switch (network) {
     case Network.MAIN:
       provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
-      configFileName = path.join(
-        __dirname,
-        "../data/previous_config_mainnet.json"
-      );
       eventsSnapFilename = path.join(
         __dirname,
         "../data/events_snap_mainnet.json"
       );
       pointsFileName = path.join(__dirname, "../data/points_mainnet.json");
+      poolsFileName = path.join(
+        __dirname,
+        "../data/pools_last_tx_hashes_mainnet.json"
+      );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
         "https://testnet.dev2.eclipsenetwork.xyz"
       );
-      configFileName = path.join(
-        __dirname,
-        "../data/previous_config_testnet.json"
-      );
       eventsSnapFilename = path.join(
         __dirname,
         "../data/events_snap_testnet.json"
       );
       pointsFileName = path.join(__dirname, "../data/points_testnet.json");
+      poolsFileName = path.join(
+        __dirname,
+        "../data/pools_last_tx_hashes_testnet.json"
+      );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
       break;
     default:
@@ -93,33 +91,39 @@ export const createSnapshotForNetwork = async (network: Network) => {
     programId
   );
 
-  const previousConfig: IConfig = JSON.parse(
-    fs.readFileSync(configFileName, "utf-8")
+  const previousPools: Record<string, string | undefined> = JSON.parse(
+    fs.readFileSync(poolsFileName, "utf-8")
   );
 
-  const { lastTxHash } = previousConfig;
-
-  const refAddresses = PROMOTED_POOLS.map(
-    (pool) => market.getEventOptAccount(pool).address
+  const eventsObject: Record<string, IPositions> = JSON.parse(
+    fs.readFileSync(eventsSnapFilename, "utf-8")
   );
 
-  const sigArrays = await Promise.all(
-    refAddresses.map((refAddr) =>
-      retryOperation(fetchAllSignatures(connection, refAddr, lastTxHash))
+  const newPoolsFile = {};
+  const sigs = (
+    await Promise.all(
+      PROMOTED_POOLS.map((pool) => {
+        const refAddr = market.getEventOptAccount(pool).address;
+        const previousTxHash = previousPools[pool.toString()] ?? undefined;
+        return retryOperation(
+          fetchAllSignatures(connection, refAddr, previousTxHash)
+        ).then((signatures) => {
+          if (signatures.length > 0) {
+            newPoolsFile[pool.toString()] = signatures[0];
+          } else {
+            newPoolsFile[pool.toString()] = previousTxHash;
+          }
+          return signatures;
+        });
+      })
     )
-  );
-
-  const sigs = sigArrays.flat();
+  ).flat();
 
   const txLogs = await retryOperation(
     fetchTransactionLogs(connection, sigs, MAX_SIGNATURES_PER_CALL)
   );
 
   const finalLogs = txLogs.flat();
-
-  const eventsObject: Record<string, IPositions> = JSON.parse(
-    fs.readFileSync(eventsSnapFilename, "utf-8")
-  );
 
   const eventLogs: string[] = [];
 
@@ -145,7 +149,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
+        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex(
           (item) =>
             item[1].id.eq(event.id) &&
@@ -161,7 +165,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
+        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const ownerKey = event.owner.toString();
         const ownerData = eventsObject[ownerKey] || {
           active: [],
@@ -327,10 +331,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
     eventsObject[ownerKey].closed.push(entry);
   });
 
-  const config = {
-    lastTxHash: sigs[0] ?? lastTxHash,
-  };
-
   const previousPoints: Record<string, IPointsJson> = JSON.parse(
     fs.readFileSync(pointsFileName, "utf-8")
   );
@@ -381,7 +381,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
     {}
   );
 
-  fs.writeFileSync(configFileName, JSON.stringify(config, null, 2));
+  fs.writeFileSync(poolsFileName, JSON.stringify(newPoolsFile, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
   fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));
 };
@@ -395,11 +395,11 @@ createSnapshotForNetwork(Network.TEST).then(
   }
 );
 
-createSnapshotForNetwork(Network.MAIN).then(
-  () => {
-    console.log("Eclipse: Mainnet snapshot done!");
-  },
-  (err) => {
-    console.log(err);
-  }
-);
+// createSnapshotForNetwork(Network.MAIN).then(
+//   () => {
+//     console.log("Eclipse: Mainnet snapshot done!");
+//   },
+//   (err) => {
+//     console.log(err);
+//   }
+// );

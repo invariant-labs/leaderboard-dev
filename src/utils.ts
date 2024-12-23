@@ -106,11 +106,6 @@ export const fetchTransactionLogs = async (
   ).flat();
 };
 
-export const isPromotedPool = (promotedPools: PublicKey[], pool: PublicKey) =>
-  promotedPools.some(
-    (promotedPool) => promotedPool.toString() === pool.toString()
-  );
-
 export const processStillOpen = (
   stillOpen: IActive[],
   poolsWithTicks: IPoolAndTicks[],
