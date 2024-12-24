@@ -34,16 +34,13 @@ import {
   IPointsJson,
   IPoolAndTicks,
   IPositions,
+  IPromotedPool,
 } from "./types";
 import {
   CreatePositionEvent,
   RemovePositionEvent,
 } from "@invariant-labs/sdk-eclipse/lib/market";
-import {
-  getTimestampInSeconds,
-  POINTS_DENOMINATOR,
-  POINTS_PER_SECOND,
-} from "./math";
+import { getTimestampInSeconds, POINTS_DENOMINATOR } from "./math";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -52,7 +49,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
   let provider: AnchorProvider;
   let eventsSnapFilename: string;
   let pointsFileName: string;
-  let PROMOTED_POOLS: PublicKey[];
+  let PROMOTED_POOLS: IPromotedPool[];
   let poolsFileName: string;
   let lastSnapDataFile: string;
   let FULL_SNAP_START_TX_HASH: string;
@@ -120,17 +117,17 @@ export const createSnapshotForNetwork = async (network: Network) => {
   const newPoolsFile = {};
   const sigs = (
     await Promise.all(
-      PROMOTED_POOLS.map((pool) => {
-        const refAddr = market.getEventOptAccount(pool).address;
+      PROMOTED_POOLS.map(({ address }) => {
+        const refAddr = market.getEventOptAccount(address).address;
         const previousTxHash =
-          previousPools[pool.toString()] ?? FULL_SNAP_START_TX_HASH;
+          previousPools[address.toString()] ?? FULL_SNAP_START_TX_HASH;
         return retryOperation(
           fetchAllSignatures(connection, refAddr, previousTxHash)
         ).then((signatures) => {
           if (signatures.length > 0) {
-            newPoolsFile[pool.toString()] = signatures[0];
+            newPoolsFile[address.toString()] = signatures[0];
           } else {
-            newPoolsFile[pool.toString()] = previousTxHash;
+            newPoolsFile[address.toString()] = previousTxHash;
           }
           return signatures;
         });
@@ -270,31 +267,36 @@ export const createSnapshotForNetwork = async (network: Network) => {
   );
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
-    PROMOTED_POOLS.map(async (pool) => {
+    PROMOTED_POOLS.map(async ({ address, pointsPerSecond }) => {
       const ticksUsed = Array.from(
         new Set([
           ...stillOpen.flatMap((entry) =>
-            entry.event.pool.toString() === pool.toString()
+            entry.event.pool.toString() === address.toString()
               ? [entry.event.lowerTick, entry.event.upperTick]
               : []
           ),
           ...newOpen.flatMap((entry) =>
-            entry.pool.toString() === pool.toString()
+            entry.pool.toString() === address.toString()
               ? [entry.lowerTick, entry.upperTick]
               : []
           ),
         ])
       );
       const [poolStructure, ticks] = await Promise.all([
-        retryOperation(market.getPoolByAddress(pool)),
+        retryOperation(market.getPoolByAddress(address)),
         Promise.all(
           ticksUsed.map((tick) =>
-            retryOperation(market.getTickByPool(pool, tick))
+            retryOperation(market.getTickByPool(address, tick))
           )
         ),
       ]);
 
-      return { pool, poolStructure: poolStructure, ticks };
+      return {
+        pool: address,
+        poolStructure: poolStructure,
+        ticks,
+        pointsPerSecond,
+      };
     })
   );
 
@@ -312,9 +314,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
     currentTimestamp
   );
 
-  const updatedNewClosed = processNewClosed(newClosed);
+  const updatedNewClosed = processNewClosed(newClosed, poolsWithTicks);
 
-  const updatedNewOpenClosed = processNewOpenClosed(newOpenClosed);
+  const updatedNewOpenClosed = processNewOpenClosed(
+    newOpenClosed,
+    poolsWithTicks
+  );
 
   Object.keys(eventsObject).forEach((key) => {
     eventsObject[key].active = [];
@@ -408,9 +413,24 @@ export const createSnapshotForNetwork = async (network: Network) => {
     new BN(lastSnapTimestamp, "hex")
   );
 
-  const lastPointsThatShouldHaveBeenDistrubuted = snapTimeDifference
-    .mul(POINTS_PER_SECOND)
-    .muln(PROMOTED_POOLS.length);
+  const areActivePositionsInPools = PROMOTED_POOLS.map((pool) => {
+    return {
+      pointsPerSecond: pool.pointsPerSecond,
+      hasActiveEntry: Object.keys(eventsObject).some((key) =>
+        eventsObject[key].active.some(
+          (entry) => entry.event.pool.toString() === pool.address.toString()
+        )
+      ),
+    };
+  });
+
+  const lastPointsThatShouldHaveBeenDistributed: BN =
+    areActivePositionsInPools.reduce((acc, curr) => {
+      if (curr.hasActiveEntry) {
+        return acc.add(snapTimeDifference.mul(curr.pointsPerSecond));
+      }
+      return acc;
+    }, new BN(0));
 
   const lastPointsDistributed = Object.keys(points)
     .reduce((acc, curr) => {
@@ -424,7 +444,7 @@ export const createSnapshotForNetwork = async (network: Network) => {
   const snapData = {
     lastSnapTimestamp: currentTimestamp,
     lastPointsDistributed,
-    lastPointsThatShouldHaveBeenDistrubuted,
+    lastPointsThatShouldHaveBeenDistributed,
   };
 
   fs.writeFileSync(lastSnapDataFile, JSON.stringify(snapData, null, 2));

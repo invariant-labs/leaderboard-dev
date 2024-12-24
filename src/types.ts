@@ -24,6 +24,7 @@ export interface IPoolAndTicks {
   pool: PublicKey;
   poolStructure: PoolStructure;
   ticks: Tick[];
+  pointsPerSecond: BN;
 }
 export interface IPointsHistory {
   diff: BN;
@@ -48,5 +49,9 @@ export interface IPointsJson {
 export interface ILastSnapData {
   lastSnapTimestamp: string;
   lastPointsDistributed: string;
-  lastPointsThatShouldHaveBeenDistrubuted: string;
+  lastPointsThatShouldHaveBeenDistributed: string;
+}
+export interface IPromotedPool {
+  address: PublicKey;
+  pointsPerSecond: BN;
 }

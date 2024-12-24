@@ -6,7 +6,12 @@ import {
   Network,
   parseEvent,
 } from "@invariant-labs/sdk-eclipse";
-import { IActive, IPoolAndTicks, IPositions } from "../src/types";
+import {
+  IActive,
+  IPoolAndTicks,
+  IPositions,
+  IPromotedPool,
+} from "../src/types";
 import * as fs from "fs";
 import path from "path";
 import { AnchorProvider, BN } from "@coral-xyz/anchor";
@@ -38,7 +43,7 @@ const validatePointsDistribution = async (network: Network) => {
   let provider: AnchorProvider;
   let eventsSnapFilename: string;
   let pointsFileName: string;
-  let PROMOTED_POOLS: PublicKey[];
+  let PROMOTED_POOLS: IPromotedPool[];
   let poolsFileName: string;
   let FULL_SNAP_START_TX_HASH: string;
   switch (network) {
@@ -88,8 +93,8 @@ const validatePointsDistribution = async (network: Network) => {
 
   const sigsFullSnap = (
     await Promise.all(
-      PROMOTED_POOLS.map((pool) => {
-        const refAddr = market.getEventOptAccount(pool).address;
+      PROMOTED_POOLS.map(({ address }) => {
+        const refAddr = market.getEventOptAccount(address).address;
         return retryOperation(
           fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
         );
@@ -171,10 +176,10 @@ const validatePointsDistribution = async (network: Network) => {
 
   const sigs = (
     await Promise.all(
-      PROMOTED_POOLS.map((pool) => {
-        const refAddr = market.getEventOptAccount(pool).address;
+      PROMOTED_POOLS.map(({ address }) => {
+        const refAddr = market.getEventOptAccount(address).address;
         const previousTxHash =
-          previousPools[pool.toString()] ?? FULL_SNAP_START_TX_HASH;
+          previousPools[address.toString()] ?? FULL_SNAP_START_TX_HASH;
         return retryOperation(
           fetchAllSignatures(connection, refAddr, previousTxHash)
         );
@@ -318,32 +323,39 @@ const validatePointsDistribution = async (network: Network) => {
   );
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
-    PROMOTED_POOLS.map(async (pool) => {
+    PROMOTED_POOLS.map(async ({ address, pointsPerSecond }) => {
       const ticksUsed = Array.from(
         new Set([
           ...stillOpen.flatMap((entry) =>
-            entry.event.pool.toString() === pool.toString()
+            entry.event.pool.toString() === address.toString()
               ? [entry.event.lowerTick, entry.event.upperTick]
               : []
           ),
           ...newOpen.flatMap((entry) =>
-            entry.pool.toString() === pool.toString()
+            entry.pool.toString() === address.toString()
               ? [entry.lowerTick, entry.upperTick]
               : []
           ),
           ...newOpenFullSnap.flatMap((entry) =>
-            entry.pool.toString() === pool.toString()
+            entry.pool.toString() === address.toString()
               ? [entry.lowerTick, entry.upperTick]
               : []
           ),
         ])
       );
       const [poolStructure, ticks] = await Promise.all([
-        market.getPoolByAddress(pool),
-        Promise.all(ticksUsed.map((tick) => market.getTickByPool(pool, tick))),
+        market.getPoolByAddress(address),
+        Promise.all(
+          ticksUsed.map((tick) => market.getTickByPool(address, tick))
+        ),
       ]);
 
-      return { pool, poolStructure: poolStructure, ticks };
+      return {
+        pool: address,
+        poolStructure: poolStructure,
+        ticks,
+        pointsPerSecond,
+      };
     })
   );
 
@@ -361,9 +373,12 @@ const validatePointsDistribution = async (network: Network) => {
     currentTimestamp
   );
 
-  const updatedNewClosed = processNewClosed(newClosed);
+  const updatedNewClosed = processNewClosed(newClosed, poolsWithTicks);
 
-  const updatedNewOpenClosed = processNewOpenClosed(newOpenClosed);
+  const updatedNewOpenClosed = processNewOpenClosed(
+    newOpenClosed,
+    poolsWithTicks
+  );
 
   Object.keys(eventsObject).forEach((key) => {
     eventsObject[key].active = [];
@@ -404,7 +419,8 @@ const validatePointsDistribution = async (network: Network) => {
   );
 
   const updatedNewOpenClosedFullSnap = processNewOpenClosed(
-    newOpenClosedFullSnap
+    newOpenClosedFullSnap,
+    poolsWithTicks
   );
 
   updatedNewOpenFullSnap.forEach((entry) => {
