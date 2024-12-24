@@ -15,7 +15,8 @@ import {
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
-  START_COUNT_TIMESTAMP,
+  FULL_SNAP_START_TX_HASH_MAINNET,
+  FULL_SNAP_START_TX_HASH_TESTNET,
 } from "./consts";
 import {
   fetchAllSignatures,
@@ -28,6 +29,7 @@ import {
 } from "./utils";
 import {
   IActive,
+  ILastSnapData,
   IPoints,
   IPointsJson,
   IPoolAndTicks,
@@ -37,7 +39,11 @@ import {
   CreatePositionEvent,
   RemovePositionEvent,
 } from "@invariant-labs/sdk-eclipse/lib/market";
-import { getTimestampInSeconds } from "./math";
+import {
+  getTimestampInSeconds,
+  POINTS_DENOMINATOR,
+  POINTS_PER_SECOND,
+} from "./math";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -48,6 +54,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
   let pointsFileName: string;
   let PROMOTED_POOLS: PublicKey[];
   let poolsFileName: string;
+  let lastSnapDataFile: string;
+  let FULL_SNAP_START_TX_HASH: string;
   switch (network) {
     case Network.MAIN:
       provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
@@ -60,7 +68,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
         __dirname,
         "../data/pools_last_tx_hashes_mainnet.json"
       );
+      lastSnapDataFile = path.join(
+        __dirname,
+        "../data/last_snap_data_mainnet.json"
+      );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -75,7 +88,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
         __dirname,
         "../data/pools_last_tx_hashes_testnet.json"
       );
+      lastSnapDataFile = path.join(
+        __dirname,
+        "../data/last_snap_data_testnet.json"
+      );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_TESTNET;
       break;
     default:
       throw new Error("Unknown network");
@@ -104,7 +122,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
     await Promise.all(
       PROMOTED_POOLS.map((pool) => {
         const refAddr = market.getEventOptAccount(pool).address;
-        const previousTxHash = previousPools[pool.toString()] ?? undefined;
+        const previousTxHash =
+          previousPools[pool.toString()] ?? FULL_SNAP_START_TX_HASH;
         return retryOperation(
           fetchAllSignatures(connection, refAddr, previousTxHash)
         ).then((signatures) => {
@@ -149,7 +168,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex(
           (item) =>
             item[1].id.eq(event.id) &&
@@ -165,7 +183,6 @@ export const createSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const ownerKey = event.owner.toString();
         const ownerData = eventsObject[ownerKey] || {
           active: [],
@@ -381,6 +398,36 @@ export const createSnapshotForNetwork = async (network: Network) => {
     {}
   );
 
+  const lastSnapData: ILastSnapData = JSON.parse(
+    fs.readFileSync(lastSnapDataFile, "utf-8")
+  );
+
+  const { lastSnapTimestamp } = lastSnapData;
+
+  const snapTimeDifference: BN = currentTimestamp.sub(
+    new BN(lastSnapTimestamp, "hex")
+  );
+
+  const lastPointsThatShouldHaveBeenDistrubuted = snapTimeDifference
+    .mul(POINTS_PER_SECOND)
+    .muln(PROMOTED_POOLS.length);
+
+  const lastPointsDistributed = Object.keys(points)
+    .reduce((acc, curr) => {
+      const pointsToAdd = points[curr].points24HoursHistory.find(
+        (item) => item.timestamp === currentTimestamp
+      )!.diff;
+      return acc.add(pointsToAdd);
+    }, new BN(0))
+    .div(POINTS_DENOMINATOR);
+
+  const snapData = {
+    lastSnapTimestamp: currentTimestamp,
+    lastPointsDistributed,
+    lastPointsThatShouldHaveBeenDistrubuted,
+  };
+
+  fs.writeFileSync(lastSnapDataFile, JSON.stringify(snapData, null, 2));
   fs.writeFileSync(poolsFileName, JSON.stringify(newPoolsFile, null, 2));
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
   fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));

@@ -45,3 +45,8 @@ export interface IPointsJson {
   positionsAmount: number;
   points24HoursHistory: IPointsHistoryJson[];
 }
+export interface ILastSnapData {
+  lastSnapTimestamp: string;
+  lastPointsDistributed: string;
+  lastPointsThatShouldHaveBeenDistrubuted: string;
+}
