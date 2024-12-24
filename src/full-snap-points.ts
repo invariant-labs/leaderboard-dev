@@ -14,7 +14,8 @@ import {
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
-  START_COUNT_TIMESTAMP,
+  FULL_SNAP_START_TX_HASH_TESTNET,
+  FULL_SNAP_START_TX_HASH_MAINNET,
 } from "./consts";
 import {
   fetchAllSignatures,
@@ -46,6 +47,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_mainnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -56,6 +58,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_testnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
+      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_TESTNET;
       break;
     default:
       throw new Error("Unknown network");
@@ -76,7 +79,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
       PROMOTED_POOLS.map((pool) => {
         const refAddr = market.getEventOptAccount(pool).address;
         return retryOperation(
-          fetchAllSignatures(connection, refAddr, undefined)
+          fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
         );
       })
     )
@@ -114,7 +117,6 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex(
           (item) =>
             item[1].id.eq(event.id) &&
@@ -130,7 +132,6 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (event.currentTimestamp.lt(START_COUNT_TIMESTAMP)) return acc;
         const correspondingItemIndex = acc.newOpen.findIndex(
           (item) =>
             item.id.eq(event.id) &&
