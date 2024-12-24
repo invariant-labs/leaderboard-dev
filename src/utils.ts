@@ -4,7 +4,7 @@ import {
   ConfirmedSignatureInfo,
   ParsedTransactionWithMeta,
 } from "@solana/web3.js";
-import { MAX_RETIRES } from "./consts";
+import { MAX_RETIRES, RETRY_DELAY } from "./consts";
 import { BN } from "@coral-xyz/anchor";
 import { IActive, IClosed, IPoolAndTicks } from "./types";
 import {
@@ -23,7 +23,7 @@ export const retryOperation = async (fn: Promise<any>, retires: number = 0) => {
     return await fn;
   } catch (error) {
     if (retires < MAX_RETIRES) {
-      await delay(400);
+      await delay(RETRY_DELAY);
       return retryOperation(fn, retires + 1);
     } else {
       throw new Error("Failed to retry operation");
