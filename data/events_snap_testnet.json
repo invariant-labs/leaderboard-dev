@@ -12,7 +12,20 @@
           "currentTimestamp": "67693fdf",
           "secondsPerLiquidityInsideInitial": "0c15476a16b43a61"
         },
-        "points": "03dfd5d38700"
+        "points": "016e3bf0df4300"
+      },
+      {
+        "event": {
+          "owner": "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR",
+          "pool": "3YnSG9bS5tp7Bp8QZK6xZKKmfrNJJK8TE8UyZq99nhxH",
+          "id": "00",
+          "liquidity": "038d82326dce54",
+          "lowerTick": -221815,
+          "upperTick": 221815,
+          "currentTimestamp": "67697879",
+          "secondsPerLiquidityInsideInitial": "00"
+        },
+        "points": "0258af4dba5700"
       }
     ],
     "closed": []
@@ -30,7 +43,7 @@
           "currentTimestamp": "67693c0e",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "0cc29d2a8c00"
+        "points": "01771f47436000"
       },
       {
         "event": {
@@ -43,7 +56,7 @@
           "currentTimestamp": "67693f65",
           "secondsPerLiquidityInsideInitial": "08cfd8748efc19a7"
         },
-        "points": "042b874bda00"
+        "points": "016e8878eb3a00"
       },
       {
         "event": {
@@ -56,7 +69,7 @@
           "currentTimestamp": "67693c93",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "0aa66c6e0b00"
+        "points": "0175023ff33b00"
       }
     ],
     "closed": [

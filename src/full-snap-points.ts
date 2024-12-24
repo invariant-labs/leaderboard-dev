@@ -11,16 +11,15 @@ import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
 import {
-  FULL_SNAP_START_TX_HASH_MAINNET,
-  FULL_SNAP_START_TX_HASH_TESTNET,
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
+  FULL_SNAP_START_TX_HASH_TESTNET,
+  FULL_SNAP_START_TX_HASH_MAINNET,
 } from "./consts";
 import {
   fetchAllSignatures,
   fetchTransactionLogs,
-  isPromotedPool,
   processNewOpen,
   processNewOpenClosed,
   retryOperation,
@@ -75,18 +74,17 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     programId
   );
 
-  const refAddresses = PROMOTED_POOLS.map(
-    (pool) => market.getEventOptAccount(pool).address
-  );
-
-  const sigArrays = await Promise.all(
-    refAddresses.map((refAddr) =>
-      retryOperation(
-        fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
-      )
+  const sigs = (
+    await Promise.all(
+      PROMOTED_POOLS.map((pool) => {
+        const refAddr = market.getEventOptAccount(pool).address;
+        return retryOperation(
+          fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
+        );
+      })
     )
-  );
-  const sigs = sigArrays.flat();
+  ).flat();
+
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -119,7 +117,6 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex(
           (item) =>
             item[1].id.eq(event.id) &&
@@ -135,7 +132,6 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
         const correspondingItemIndex = acc.newOpen.findIndex(
           (item) =>
             item.id.eq(event.id) &&
