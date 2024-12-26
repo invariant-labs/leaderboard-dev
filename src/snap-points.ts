@@ -5,6 +5,7 @@ import {
   IWallet,
   InvariantEventNames,
   parseEvent,
+  Pair,
 } from "@invariant-labs/sdk-eclipse";
 import { AnchorProvider, BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
@@ -38,7 +39,9 @@ import {
 } from "./types";
 import {
   CreatePositionEvent,
+  PoolStructure,
   RemovePositionEvent,
+  Tick,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import { getTimestampInSeconds, POINTS_DENOMINATOR } from "./math";
 
@@ -268,28 +271,17 @@ export const createSnapshotForNetwork = async (network: Network) => {
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
     PROMOTED_POOLS.map(async ({ address, pointsPerSecond }) => {
-      const ticksUsed = Array.from(
-        new Set([
-          ...stillOpen.flatMap((entry) =>
-            entry.event.pool.toString() === address.toString()
-              ? [entry.event.lowerTick, entry.event.upperTick]
-              : []
-          ),
-          ...newOpen.flatMap((entry) =>
-            entry.pool.toString() === address.toString()
-              ? [entry.lowerTick, entry.upperTick]
-              : []
-          ),
-        ])
+      const poolStructure: PoolStructure = await retryOperation(
+        market.getPoolByAddress(address)
       );
-      const [poolStructure, ticks] = await Promise.all([
-        retryOperation(market.getPoolByAddress(address)),
-        Promise.all(
-          ticksUsed.map((tick) =>
-            retryOperation(market.getTickByPool(address, tick))
-          )
-        ),
-      ]);
+      const ticks: Tick[] = await retryOperation(
+        market.getAllTicks(
+          new Pair(poolStructure.tokenX, poolStructure.tokenY, {
+            fee: poolStructure.fee,
+            tickSpacing: poolStructure.tickSpacing,
+          })
+        )
+      );
 
       return {
         pool: address,

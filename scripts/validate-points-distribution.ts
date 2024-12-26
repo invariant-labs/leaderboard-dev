@@ -4,6 +4,7 @@ import {
   IWallet,
   Market,
   Network,
+  Pair,
   parseEvent,
 } from "@invariant-labs/sdk-eclipse";
 import {
@@ -20,7 +21,9 @@ import { getTimestampInSeconds } from "../src/math";
 import { PublicKey } from "@solana/web3.js";
 import {
   CreatePositionEvent,
+  PoolStructure,
   RemovePositionEvent,
+  Tick,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import {
   FULL_SNAP_START_TX_HASH_MAINNET,
@@ -324,31 +327,17 @@ const validatePointsDistribution = async (network: Network) => {
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
     PROMOTED_POOLS.map(async ({ address, pointsPerSecond }) => {
-      const ticksUsed = Array.from(
-        new Set([
-          ...stillOpen.flatMap((entry) =>
-            entry.event.pool.toString() === address.toString()
-              ? [entry.event.lowerTick, entry.event.upperTick]
-              : []
-          ),
-          ...newOpen.flatMap((entry) =>
-            entry.pool.toString() === address.toString()
-              ? [entry.lowerTick, entry.upperTick]
-              : []
-          ),
-          ...newOpenFullSnap.flatMap((entry) =>
-            entry.pool.toString() === address.toString()
-              ? [entry.lowerTick, entry.upperTick]
-              : []
-          ),
-        ])
+      const poolStructure: PoolStructure = await retryOperation(
+        market.getPoolByAddress(address)
       );
-      const [poolStructure, ticks] = await Promise.all([
-        market.getPoolByAddress(address),
-        Promise.all(
-          ticksUsed.map((tick) => market.getTickByPool(address, tick))
-        ),
-      ]);
+      const ticks: Tick[] = await retryOperation(
+        market.getAllTicks(
+          new Pair(poolStructure.tokenX, poolStructure.tokenY, {
+            fee: poolStructure.fee,
+            tickSpacing: poolStructure.tickSpacing,
+          })
+        )
+      );
 
       return {
         pool: address,

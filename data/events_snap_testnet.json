@@ -12,7 +12,7 @@
           "currentTimestamp": "67693fdf",
           "secondsPerLiquidityInsideInitial": "0c15476a16b43a61"
         },
-        "points": "019cad6a18dc00"
+        "points": "01b8511d4a9700"
       },
       {
         "event": {
@@ -25,7 +25,7 @@
           "currentTimestamp": "67697879",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "02b5924c194b00"
+        "points": "02ecd9be688300"
       }
     ],
     "closed": []
@@ -43,7 +43,7 @@
           "currentTimestamp": "67693c0e",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "01a590cc68bb00"
+        "points": "01c1348b863800"
       },
       {
         "event": {
@@ -56,7 +56,7 @@
           "currentTimestamp": "67693f65",
           "secondsPerLiquidityInsideInitial": "08cfd8748efc19a7"
         },
-        "points": "019cfa09fc5700"
+        "points": "01b89dcf0fb500"
       },
       {
         "event": {
@@ -69,7 +69,7 @@
           "currentTimestamp": "67693c93",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "01a373ad411200"
+        "points": "01bf175a7cec00"
       }
     ],
     "closed": [
