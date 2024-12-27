@@ -53,16 +53,7 @@ export const prepareFinalData = async (network: Network) => {
   fs.writeFileSync(finalDataFile, JSON.stringify(finalData, null, 2));
 };
 
-prepareFinalData(Network.TEST).then(
-  () => {
-    console.log("Eclipse: Final data prepared!");
-  },
-  (err) => {
-    console.log(err);
-  }
-);
-
-// prepareFinalData(Network.MAIN).then(
+// prepareFinalData(Network.TEST).then(
 //   () => {
 //     console.log("Eclipse: Final data prepared!");
 //   },
@@ -70,3 +61,12 @@ prepareFinalData(Network.TEST).then(
 //     console.log(err);
 //   }
 // );
+
+prepareFinalData(Network.MAIN).then(
+  () => {
+    console.log("Eclipse: Final data prepared!");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
