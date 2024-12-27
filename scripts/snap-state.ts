@@ -65,6 +65,7 @@ const main = async () => {
     path.join(__dirname, `../pool_data/${POOL}/timestamp.json`),
     JSON.stringify(timestamp, null, 2)
   );
+  console.log("Associated transaction hash to state", recentTxHash);
 };
 
 const getLatestTxHash = async (programId: PublicKey) => {
