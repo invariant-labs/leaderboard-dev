@@ -17,7 +17,7 @@ const provider = AnchorProvider.local(
 
 const connection = provider.connection;
 
-const POOL = new PublicKey("3DvAH5NwZikhZpsTMbZvZVjHsf6AjfXW3H5gZAfmejyG");
+const POOL = new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm");
 
 const main = async () => {
   const market = Market.build(

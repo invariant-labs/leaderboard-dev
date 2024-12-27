@@ -10,10 +10,10 @@ export const PROMOTED_POOLS_TESTNET: IPromotedPool[] = [
   //   address: new PublicKey("GTVKQs8o9D52y9SdwfAXCQSDrrCLosvsP19HgHKugpfw"),
   //   pointsPerSecond: new BN(100),
   // }, // USDC/V2 0.01%
-  // {
-  //   address: new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm"),
-  //   pointsPerSecond: new BN(100),
-  // }, // USDC/TTS 0.01%
+  {
+    address: new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm"),
+    pointsPerSecond: new BN(100),
+  }, // USDC/TTS 0.01%
   {
     address: new PublicKey("3YnSG9bS5tp7Bp8QZK6xZKKmfrNJJK8TE8UyZq99nhxH"),
     pointsPerSecond: new BN(100),

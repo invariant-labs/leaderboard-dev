@@ -1,1 +1,30 @@
-{}
+{
+  "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR": {
+    "totalPoints": "0c1189043fa700",
+    "positionsAmount": 1,
+    "points24HoursHistory": [
+      {
+        "diff": "0c10c7c464bb00",
+        "timestamp": "676ea718"
+      },
+      {
+        "diff": "c13fdaec00",
+        "timestamp": "676ea76b"
+      }
+    ]
+  },
+  "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1": {
+    "totalPoints": "02f25916af00",
+    "positionsAmount": 2,
+    "points24HoursHistory": [
+      {
+        "diff": "0231193bc300",
+        "timestamp": "676ea718"
+      },
+      {
+        "diff": "c13fdaec00",
+        "timestamp": "676ea76b"
+      }
+    ]
+  }
+}

@@ -113,6 +113,6 @@ export const insertPreviousPositionsFromPool = async (
 };
 
 insertPreviousPositionsFromPool(
-  new PublicKey("3DvAH5NwZikhZpsTMbZvZVjHsf6AjfXW3H5gZAfmejyG"),
+  new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm"),
   Network.TEST
 );
