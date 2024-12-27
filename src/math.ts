@@ -1,18 +1,16 @@
 import { BN } from "@coral-xyz/anchor";
 
+export const POINTS_PER_SECOND = new BN(100);
 const MAX_U128 = new BN("340282366920938463463374607431768211455");
 const SECONDS_PER_LIQUIDITY_DECIMAL = 24;
 const LIQUIDITY_DECIMAL = 6;
 export const POINTS_DECIMAL = 8;
-const SECONDS_INSIDE_DECIMAL = 2;
 const LIQUIDITY_DENOMINATOR = new BN(10).pow(new BN(LIQUIDITY_DECIMAL));
 const SECONDS_PER_LIQUIDITY_DENOMINATOR = new BN(10).pow(
   new BN(SECONDS_PER_LIQUIDITY_DECIMAL)
 );
 export const POINTS_DENOMINATOR = new BN(10).pow(new BN(POINTS_DECIMAL));
-const SECONDS_INSIDE_DENOMINATOR = new BN(10).pow(
-  new BN(SECONDS_INSIDE_DECIMAL)
-);
+const SECONDS_INSIDE_DENOMINATOR = POINTS_PER_SECOND;
 
 export const calculateReward = (
   liquidity: BN,
@@ -53,10 +51,9 @@ export const calculateSecondsInside = (
 
 export const calculatePointsToDistribute = (
   lastSnapTimestamp: BN,
-  currentTimestamp: BN,
-  pointsPerSecond: BN
+  currentTimestamp: BN
 ) => {
-  return pointsPerSecond.mul(currentTimestamp.sub(lastSnapTimestamp));
+  return POINTS_PER_SECOND.mul(currentTimestamp.sub(lastSnapTimestamp));
 };
 
 export const calculateSecondsPerLiquidityGlobal = (

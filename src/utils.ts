@@ -4,7 +4,7 @@ import {
   ConfirmedSignatureInfo,
   ParsedTransactionWithMeta,
 } from "@solana/web3.js";
-import { MAX_RETIRES, RETRY_DELAY } from "./consts";
+import { MAX_RETIRES } from "./consts";
 import { BN } from "@coral-xyz/anchor";
 import { IActive, IClosed, IPoolAndTicks } from "./types";
 import {
@@ -23,7 +23,7 @@ export const retryOperation = async (fn: Promise<any>, retires: number = 0) => {
     return await fn;
   } catch (error) {
     if (retires < MAX_RETIRES) {
-      await delay(RETRY_DELAY);
+      await delay(400);
       return retryOperation(fn, retires + 1);
     } else {
       throw new Error("Failed to retry operation");
@@ -106,6 +106,11 @@ export const fetchTransactionLogs = async (
   ).flat();
 };
 
+export const isPromotedPool = (promotedPools: PublicKey[], pool: PublicKey) =>
+  promotedPools.some(
+    (promotedPool) => promotedPool.toString() === pool.toString()
+  );
+
 export const processStillOpen = (
   stillOpen: IActive[],
   poolsWithTicks: IPoolAndTicks[],
@@ -124,7 +129,6 @@ export const processStillOpen = (
     const lowerTick = desiredPoolWithTicks.ticks.find(
       (tick) => tick.index === entry.event.lowerTick
     )!;
-    const pointsPerSecond = desiredPoolWithTicks.pointsPerSecond;
     const poolStructure = desiredPoolWithTicks.poolStructure;
     const secondsPerLiquidityInside = calculateSecondsPerLiquidityInside(
       upperTick.index,
@@ -148,8 +152,7 @@ export const processStillOpen = (
         secondsPerLiquidityInside,
         calculatePointsToDistribute(
           entry.event.currentTimestamp,
-          currentTimestamp,
-          pointsPerSecond
+          currentTimestamp
         ),
         currentTimestamp.sub(entry.event.currentTimestamp)
       ),
@@ -178,7 +181,6 @@ export const processNewOpen = (
     )!;
 
     const poolStructure = desiredPoolWithTicks.poolStructure;
-    const pointsPerSecond = desiredPoolWithTicks.pointsPerSecond;
 
     const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
       poolStructure.secondsPerLiquidityGlobal,
@@ -201,11 +203,7 @@ export const processNewOpen = (
         entry.liquidity,
         entry.secondsPerLiquidityInsideInitial,
         secondsPerLiquidityInside,
-        calculatePointsToDistribute(
-          entry.currentTimestamp,
-          currentTimestamp,
-          pointsPerSecond
-        ),
+        calculatePointsToDistribute(entry.currentTimestamp, currentTimestamp),
         currentTimestamp.sub(entry.currentTimestamp)
       ),
     });
@@ -215,18 +213,11 @@ export const processNewOpen = (
 };
 
 export const processNewClosed = (
-  newClosed: [IActive, RemovePositionEvent][],
-  poolsWithTicks: IPoolAndTicks[]
+  newClosed: [IActive, RemovePositionEvent][]
 ) => {
   const updatedNewClosed: IClosed[] = [];
 
   newClosed.forEach((entry) => {
-    const desiredPoolWithTicks = poolsWithTicks.find(
-      (poolWithTicks) =>
-        poolWithTicks.pool.toString() === entry[0].event.pool.toString()
-    )!;
-    const pointsPerSecond = desiredPoolWithTicks.pointsPerSecond;
-
     updatedNewClosed.push({
       events: [entry[0].event, entry[1]],
       points: calculateReward(
@@ -242,8 +233,7 @@ export const processNewClosed = (
         ),
         calculatePointsToDistribute(
           entry[0].event.currentTimestamp,
-          entry[1].currentTimestamp,
-          pointsPerSecond
+          entry[1].currentTimestamp
         ),
         entry[1].currentTimestamp.sub(entry[0].event.currentTimestamp)
       ),
@@ -254,17 +244,11 @@ export const processNewClosed = (
 };
 
 export const processNewOpenClosed = (
-  newOpenClosed: [CreatePositionEvent | null, RemovePositionEvent][],
-  poolsWithTicks: IPoolAndTicks[]
+  newOpenClosed: [CreatePositionEvent | null, RemovePositionEvent][]
 ) => {
   const updatedNewOpenClosed: IClosed[] = [];
 
   newOpenClosed.forEach((entry) => {
-    const desiredPoolWithTicks = poolsWithTicks.find(
-      (poolWithTicks) =>
-        poolWithTicks.pool.toString() === entry[1].pool.toString()
-    )!;
-    const pointsPerSecond = desiredPoolWithTicks.pointsPerSecond;
     updatedNewOpenClosed.push({
       events: [entry[0], entry[1]],
       points: !entry[0]
@@ -282,8 +266,7 @@ export const processNewOpenClosed = (
             ),
             calculatePointsToDistribute(
               entry[0].currentTimestamp,
-              entry[1].currentTimestamp,
-              pointsPerSecond
+              entry[1].currentTimestamp
             ),
             entry[1].currentTimestamp.sub(entry[0].currentTimestamp)
           ),

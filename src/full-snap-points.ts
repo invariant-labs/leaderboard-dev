@@ -5,32 +5,28 @@ import {
   IWallet,
   InvariantEventNames,
   parseEvent,
-  Pair,
 } from "@invariant-labs/sdk-eclipse";
 import { AnchorProvider, BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
 import {
+  FULL_SNAP_START_TX_HASH,
   MAX_SIGNATURES_PER_CALL,
   PROMOTED_POOLS_TESTNET,
   PROMOTED_POOLS_MAINNET,
-  FULL_SNAP_START_TX_HASH_TESTNET,
-  FULL_SNAP_START_TX_HASH_MAINNET,
 } from "./consts";
 import {
   fetchAllSignatures,
   fetchTransactionLogs,
+  isPromotedPool,
   processNewOpen,
   processNewOpenClosed,
-  retryOperation,
 } from "./utils";
-import { IPoolAndTicks, IPositions, IPromotedPool } from "./types";
+import { IPoolAndTicks, IPositions } from "./types";
 import {
   CreatePositionEvent,
-  PoolStructure,
   RemovePositionEvent,
-  Tick,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import { getTimestampInSeconds } from "./math";
 
@@ -40,8 +36,8 @@ require("dotenv").config();
 export const createFullSnapshotForNetwork = async (network: Network) => {
   let provider: AnchorProvider;
   let eventsSnapFilename: string;
-  let PROMOTED_POOLS: IPromotedPool[];
-  let FULL_SNAP_START_TX_HASH: string;
+  let PROMOTED_POOLS: PublicKey[];
+
   switch (network) {
     case Network.MAIN:
       provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
@@ -50,7 +46,6 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_mainnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
-      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_MAINNET;
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -61,7 +56,6 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         "../data/events_full_snap_testnet.json"
       );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
-      FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_TESTNET;
       break;
     default:
       throw new Error("Unknown network");
@@ -77,17 +71,13 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     programId
   );
 
-  const sigs = (
-    await Promise.all(
-      PROMOTED_POOLS.map(({ address }) => {
-        const refAddr = market.getEventOptAccount(address).address;
-        return retryOperation(
-          fetchAllSignatures(connection, refAddr, FULL_SNAP_START_TX_HASH)
-        );
-      })
-    )
-  ).flat();
+  const refAddress = market.getEventOptAccount(PROMOTED_POOLS[0]).address;
 
+  const sigs = await fetchAllSignatures(
+    connection,
+    refAddress,
+    FULL_SNAP_START_TX_HASH
+  );
   const txLogs = await fetchTransactionLogs(
     connection,
     sigs,
@@ -120,10 +110,9 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
-        const correspondingItemIndex = acc.newOpenClosed.findIndex(
-          (item) =>
-            item[1].id.eq(event.id) &&
-            item[1].pool.toString() === event.pool.toString()
+        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
+        const correspondingItemIndex = acc.newOpenClosed.findIndex((item) =>
+          item[1].id.eq(event.id)
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpenClosed[correspondingItemIndex];
@@ -135,10 +124,9 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
         return acc;
       } else if (curr.name === InvariantEventNames.RemovePositionEvent) {
         const event = parseEvent(curr) as RemovePositionEvent;
-        const correspondingItemIndex = acc.newOpen.findIndex(
-          (item) =>
-            item.id.eq(event.id) &&
-            item.pool.toString() === event.pool.toString()
+        if (!isPromotedPool(PROMOTED_POOLS, event.pool)) return acc;
+        const correspondingItemIndex = acc.newOpen.findIndex((item) =>
+          item.id.eq(event.id)
         );
         if (correspondingItemIndex >= 0) {
           const correspondingItem = acc.newOpen[correspondingItemIndex];
@@ -156,25 +144,22 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
   );
 
   const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
-    PROMOTED_POOLS.map(async ({ address, pointsPerSecond }) => {
-      const poolStructure: PoolStructure = await retryOperation(
-        market.getPoolByAddress(address)
+    PROMOTED_POOLS.map(async (pool) => {
+      const ticksUsed = Array.from(
+        new Set([
+          ...newOpen.flatMap((entry) =>
+            entry.pool.toString() === pool.toString()
+              ? [entry.lowerTick, entry.upperTick]
+              : []
+          ),
+        ])
       );
-      const ticks: Tick[] = await retryOperation(
-        market.getAllTicks(
-          new Pair(poolStructure.tokenX, poolStructure.tokenY, {
-            fee: poolStructure.fee,
-            tickSpacing: poolStructure.tickSpacing,
-          })
-        )
-      );
+      const [poolStructure, ticks] = await Promise.all([
+        market.getPoolByAddress(pool),
+        Promise.all(ticksUsed.map((tick) => market.getTickByPool(pool, tick))),
+      ]);
 
-      return {
-        pool: address,
-        poolStructure: poolStructure,
-        ticks,
-        pointsPerSecond,
-      };
+      return { pool, poolStructure: poolStructure, ticks };
     })
   );
 
@@ -186,10 +171,7 @@ export const createFullSnapshotForNetwork = async (network: Network) => {
     currentTimestamp
   );
 
-  const updatedNewOpenClosed = processNewOpenClosed(
-    newOpenClosed,
-    poolsWithTicks
-  );
+  const updatedNewOpenClosed = processNewOpenClosed(newOpenClosed);
 
   updatedNewOpen.forEach((entry) => {
     const ownerKey = entry.event.owner.toString();
