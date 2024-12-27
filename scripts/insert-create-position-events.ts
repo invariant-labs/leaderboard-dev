@@ -17,6 +17,9 @@ import { Network } from "@invariant-labs/sdk-eclipse";
 
 require("dotenv").config();
 
+const POOL = new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm");
+const NETWORK = Network.TEST;
+
 export const insertPreviousPositionsFromPool = async (
   pool: PublicKey,
   network: Network
@@ -112,7 +115,4 @@ export const insertPreviousPositionsFromPool = async (
   fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
 };
 
-insertPreviousPositionsFromPool(
-  new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm"),
-  Network.TEST
-);
+insertPreviousPositionsFromPool(POOL, NETWORK);
