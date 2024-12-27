@@ -62,6 +62,12 @@ export const insertPreviousPositionsFromPool = async (
     fs.readFileSync(timestampFilePath, "utf-8")
   );
 
+  const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
+    new BN(poolState.secondsPerLiquidityGlobal, "hex"),
+    new BN(poolState.liquidity, "hex"),
+    new BN(poolState.lastTimestamp, "hex"),
+    new BN(timestamp, "hex")
+  );
   const events: IActive[] = positions.map((position) => {
     const upperTick: Tick = ticks.find(
       (tick) => tick.index === position.upperTickIndex
@@ -69,12 +75,6 @@ export const insertPreviousPositionsFromPool = async (
     const lowerTick: Tick = ticks.find(
       (tick) => tick.index === position.lowerTickIndex
     )!;
-    const secondsPerLiquidityGlobal = calculateSecondsPerLiquidityGlobal(
-      new BN(poolState.secondsPerLiquidityGlobal, "hex"),
-      new BN(poolState.liquidity, "hex"),
-      new BN(poolState.lastTimestamp, "hex"),
-      new BN(timestamp, "hex")
-    );
     const secondsPerLiquidityInsideInitial: BN =
       calculateSecondsPerLiquidityInside(
         position.upperTickIndex,
@@ -113,6 +113,6 @@ export const insertPreviousPositionsFromPool = async (
 };
 
 insertPreviousPositionsFromPool(
-  new PublicKey("FvVsbwsbGVo6PVfimkkPhpcRfBrRitiV946nMNNuz7f9"),
+  new PublicKey("3DvAH5NwZikhZpsTMbZvZVjHsf6AjfXW3H5gZAfmejyG"),
   Network.TEST
 );

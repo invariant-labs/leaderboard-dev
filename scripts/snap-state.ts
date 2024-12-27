@@ -8,13 +8,16 @@ import { PoolStructure } from "@invariant-labs/sdk-eclipse/lib/market";
 
 require("dotenv").config();
 
-const provider = AnchorProvider.local("https://eclipse.helius-rpc.com", {
-  commitment: "confirmed",
-});
+const provider = AnchorProvider.local(
+  "https://testnet.dev2.eclipsenetwork.xyz",
+  {
+    commitment: "confirmed",
+  }
+);
 
 const connection = provider.connection;
 
-const POOL = new PublicKey("FvVsbwsbGVo6PVfimkkPhpcRfBrRitiV946nMNNuz7f9"); // ETH/tETH 0.01%
+const POOL = new PublicKey("3DvAH5NwZikhZpsTMbZvZVjHsf6AjfXW3H5gZAfmejyG");
 
 const main = async () => {
   const market = Market.build(
@@ -48,19 +51,19 @@ const main = async () => {
   });
   fs.writeFileSync(
     path.join(__dirname, `../pool_data/${POOL}/pool.json`),
-    JSON.stringify(poolState)
+    JSON.stringify(poolState, null, 2)
   );
   fs.writeFileSync(
     path.join(__dirname, `../pool_data/${POOL}/position.json`),
-    JSON.stringify(allPositions)
+    JSON.stringify(allPositions, null, 2)
   );
   fs.writeFileSync(
     path.join(__dirname, `../pool_data/${POOL}/ticks.json`),
-    JSON.stringify(allTicks)
+    JSON.stringify(allTicks, null, 2)
   );
   fs.writeFileSync(
     path.join(__dirname, `../pool_data/${POOL}/timestamp.json`),
-    JSON.stringify(timestamp)
+    JSON.stringify(timestamp, null, 2)
   );
 };
 
