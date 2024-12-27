@@ -29,7 +29,7 @@ const main = async () => {
   const latestTxHash = await getLatestTxHash(market.program.programId);
 
   const [allPositions, allTicks] = await Promise.all([
-    market.getAllPositions(),
+    market.getPositionsForPool(POOL),
     market.getAllTicks(pair),
   ]);
 
