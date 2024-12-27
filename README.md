@@ -9,6 +9,7 @@ Add a pool configuration to the `PROMOTED_POOLS_MAINNET` variable in `consts.ts`
 3. Setup desired pool and network in `insert-create-position-events.ts`
 4. Run script `ts-node ./scripts/insert-create-position-events.ts`
 5. Add recent tx hash to file `pools_last_tx_hashes_mainnet.json` as `"pool" : "txHash"`
+6. Add pool to promoted pools in `consts.ts`
 
 ## Cleanup previous points
 
