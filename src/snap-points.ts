@@ -168,6 +168,16 @@ export const createSnapshotForNetwork = async (network: Network) => {
     (acc, curr) => {
       if (curr.name === InvariantEventNames.CreatePositionEvent) {
         const event = parseEvent(curr) as CreatePositionEvent;
+        const owner = event.owner.toString();
+        if (
+          !!eventsObject[owner] &&
+          eventsObject[owner].active.some(
+            (entry) =>
+              entry.event.pool.toString() === event.pool.toString() &&
+              new BN(entry.event.id, "hex").eq(event.id)
+          )
+        )
+          return acc;
         const correspondingItemIndex = acc.newOpenClosed.findIndex(
           (item) =>
             item[1].id.eq(event.id) &&

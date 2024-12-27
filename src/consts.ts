@@ -6,10 +6,10 @@ export const MAX_SIGNATURES_PER_CALL = 100;
 export const PROMOTED_POOLS_TESTNET: IPromotedPool[] = [
   // new PublicKey("7AdV5E8NznuVjNTT8rNm1MBGn8MNuFN9y9poQVSQ6gjD"), // usdc/tts 1%
   //new PublicKey("4xLSZJwLdkQHGqgyx1E9KHvdMnj7QVKa9Pwcnp1x2mDc"), // USDC/TTS 0.05%
-  {
-    address: new PublicKey("GTVKQs8o9D52y9SdwfAXCQSDrrCLosvsP19HgHKugpfw"),
-    pointsPerSecond: new BN(100),
-  }, // USDC/V2 0.01%
+  // {
+  //   address: new PublicKey("GTVKQs8o9D52y9SdwfAXCQSDrrCLosvsP19HgHKugpfw"),
+  //   pointsPerSecond: new BN(100),
+  // }, // USDC/V2 0.01%
   {
     address: new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm"),
     pointsPerSecond: new BN(100),

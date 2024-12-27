@@ -1,109 +1,29 @@
 {
   "FA62Nzqaz2EEBFLdYK7QYCxqz8dgNCzPnHJmfb9zQNmR": {
-    "totalPoints": "04a52adbb31a00",
-    "positionsAmount": 2,
+    "totalPoints": "0c1189043fa700",
+    "positionsAmount": 1,
     "points24HoursHistory": [
       {
-        "diff": "3f6439dc0500",
-        "timestamp": "67697653"
+        "diff": "0c10c7c464bb00",
+        "timestamp": "676ea718"
       },
       {
-        "diff": "030f73ab5100",
-        "timestamp": "676978a2"
-      },
-      {
-        "diff": "02fcd9421200",
-        "timestamp": "6769797d"
-      },
-      {
-        "diff": "45f8cd62a500",
-        "timestamp": "67698d86"
-      },
-      {
-        "diff": "fb75043000",
-        "timestamp": "67698dce"
-      },
-      {
-        "diff": "033a8675695d00",
-        "timestamp": "676a7a77"
-      },
-      {
-        "diff": "3f498534ea00",
-        "timestamp": "676a8c96"
-      },
-      {
-        "diff": "019c1642c300",
-        "timestamp": "676a8d0c"
-      },
-      {
-        "diff": "0121dfc86200",
-        "timestamp": "676a8d5f"
-      },
-      {
-        "diff": "494cfc587e00",
-        "timestamp": "676aa25c"
-      },
-      {
-        "diff": "4e8a11239d00",
-        "timestamp": "676ab8d9"
-      },
-      {
-        "diff": "0461145d5600",
-        "timestamp": "676aba1a"
+        "diff": "c13fdaec00",
+        "timestamp": "676ea76b"
       }
     ]
   },
   "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1": {
-    "totalPoints": "0539848a299300",
-    "positionsAmount": 3,
+    "totalPoints": "02f25916af00",
+    "positionsAmount": 2,
     "points24HoursHistory": [
       {
-        "diff": "cebcc1c3ad00",
-        "timestamp": "67697653"
+        "diff": "0231193bc300",
+        "timestamp": "676ea718"
       },
       {
-        "diff": "08100b2d0a00",
-        "timestamp": "676978a2"
-      },
-      {
-        "diff": "02fcd9421200",
-        "timestamp": "6769797d"
-      },
-      {
-        "diff": "45f8d94e6700",
-        "timestamp": "67698d86"
-      },
-      {
-        "diff": "fb75043000",
-        "timestamp": "67698dce"
-      },
-      {
-        "diff": "033a86e0b32f00",
-        "timestamp": "676a7a77"
-      },
-      {
-        "diff": "3f498534ea00",
-        "timestamp": "676a8c96"
-      },
-      {
-        "diff": "019c222e8500",
-        "timestamp": "676a8d0c"
-      },
-      {
-        "diff": "0121dfc86200",
-        "timestamp": "676a8d5f"
-      },
-      {
-        "diff": "494cfc587e00",
-        "timestamp": "676aa25c"
-      },
-      {
-        "diff": "4e8a1d0f5f00",
-        "timestamp": "676ab8d9"
-      },
-      {
-        "diff": "0461145d5600",
-        "timestamp": "676aba1a"
+        "diff": "c13fdaec00",
+        "timestamp": "676ea76b"
       }
     ]
   }
