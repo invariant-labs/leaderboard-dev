@@ -12,26 +12,13 @@
           "currentTimestamp": "67697879",
           "secondsPerLiquidityInsideInitial": "00"
         },
-        "points": "0c1189043fa700"
+        "points": "0c51745aaef700"
       }
     ],
     "closed": []
   },
   "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1": {
     "active": [
-      {
-        "event": {
-          "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
-          "pool": "G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm",
-          "id": "02",
-          "liquidity": "03fc90ef5c6b01",
-          "upperTick": 44361,
-          "lowerTick": -44362,
-          "currentTimestamp": "676ea627",
-          "secondsPerLiquidityInsideInitial": "08956b98195356c944"
-        },
-        "points": "01792f864800"
-      },
       {
         "event": {
           "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
@@ -43,9 +30,38 @@
           "currentTimestamp": "676ea627",
           "secondsPerLiquidityInsideInitial": "08956b98195356c944"
         },
-        "points": "017929906700"
+        "points": "2f0e9c665600"
       }
     ],
-    "closed": []
+    "closed": [
+      {
+        "events": [
+          {
+            "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
+            "pool": "G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm",
+            "id": "02",
+            "liquidity": "03fc90ef5c6b01",
+            "upperTick": 44361,
+            "lowerTick": -44362,
+            "currentTimestamp": "676ea627",
+            "secondsPerLiquidityInsideInitial": "08956b98195356c944"
+          },
+          {
+            "owner": "3ZB2UBvE4QUTKNexk55TW4UwE85WNaVdmjqTenuGADV1",
+            "pool": "G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm",
+            "id": "02",
+            "liquidity": "03fc90ef5c6b01",
+            "upperTick": 44361,
+            "currentTick": -1,
+            "lowerTick": -44362,
+            "upperTickSecondsPerLiquidityOutside": "00",
+            "lowerTickSecondsPerLiquidityOutside": "00",
+            "poolSecondsPerLiquidityGlobal": "08b05b50f1cc5cec2d",
+            "currentTimestamp": "676eb72b"
+          }
+        ],
+        "points": "13cf131fa900"
+      }
+    ]
   }
 }
