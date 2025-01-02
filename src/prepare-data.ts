@@ -15,11 +15,11 @@ export const prepareFinalData = async (network: Network) => {
   switch (network) {
     case Network.MAIN:
       finalDataFile = path.join(__dirname, "../data/final_data_mainnet.json");
-      data = ECLIPSE_MAINNET_POINTS;
+      data = ECLIPSE_MAINNET_POINTS as Record<string, IPointsJson>;
       break;
     case Network.TEST:
       finalDataFile = path.join(__dirname, "../data/final_data_testnet.json");
-      data = ECLIPSE_TESTNET_POINTS;
+      data = ECLIPSE_TESTNET_POINTS as Record<string, IPointsJson>;
       break;
     default:
       throw new Error("Unknown network");
@@ -53,14 +53,14 @@ export const prepareFinalData = async (network: Network) => {
   fs.writeFileSync(finalDataFile, JSON.stringify(finalData, null, 2));
 };
 
-// prepareFinalData(Network.TEST).then(
-//   () => {
-//     console.log("Eclipse: Final data prepared!");
-//   },
-//   (err) => {
-//     console.log(err);
-//   }
-// );
+prepareFinalData(Network.TEST).then(
+  () => {
+    console.log("Eclipse: Final data prepared!");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
 
 prepareFinalData(Network.MAIN).then(
   () => {
