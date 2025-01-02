@@ -89,7 +89,7 @@ jobs:
           git add .gitattributes
           git add ./data/
           git commit -m "Snapshot of points done!"
-          git lfs push origin HEAD:master --all
+          git lfs push origin master --all
           git push origin master --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
