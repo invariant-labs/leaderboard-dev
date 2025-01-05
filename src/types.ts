@@ -46,12 +46,8 @@ export interface IPointsJson {
   positionsAmount: number;
   points24HoursHistory: IPointsHistoryJson[];
 }
-export interface ILastSnapData {
-  lastSnapTimestamp: string;
-  lastPointsDistributed: string;
-  lastPointsThatShouldHaveBeenDistributed: string;
-}
 export interface IPromotedPool {
   address: PublicKey;
   pointsPerSecond: BN;
+  startCountTimestamp: BN;
 }

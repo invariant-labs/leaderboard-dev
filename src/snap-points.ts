@@ -5,7 +5,6 @@ import {
   IWallet,
   InvariantEventNames,
   parseEvent,
-  Pair,
 } from "@invariant-labs/sdk-eclipse";
 import { AnchorProvider, BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
@@ -27,10 +26,10 @@ import {
   processNewClosed,
   processNewOpenClosed,
   retryOperation,
+  fetchPoolsWithTicks,
 } from "./utils";
 import {
   IActive,
-  ILastSnapData,
   IPoints,
   IPointsJson,
   IPoolAndTicks,
@@ -39,11 +38,10 @@ import {
 } from "./types";
 import {
   CreatePositionEvent,
-  PoolStructure,
   RemovePositionEvent,
-  Tick,
 } from "@invariant-labs/sdk-eclipse/lib/market";
 import { getTimestampInSeconds, POINTS_DENOMINATOR } from "./math";
+import { PointsBinaryConverter } from "./conversion";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -54,8 +52,8 @@ export const createSnapshotForNetwork = async (network: Network) => {
   let pointsFileName: string;
   let PROMOTED_POOLS: IPromotedPool[];
   let poolsFileName: string;
-  let lastSnapDataFile: string;
   let FULL_SNAP_START_TX_HASH: string;
+  let lastSnapTimestampFileName: string;
   switch (network) {
     case Network.MAIN:
       provider = AnchorProvider.local("https://eclipse.helius-rpc.com");
@@ -63,17 +61,17 @@ export const createSnapshotForNetwork = async (network: Network) => {
         __dirname,
         "../data/events_snap_mainnet.json"
       );
-      pointsFileName = path.join(__dirname, "../data/points_mainnet.json");
+      pointsFileName = path.join(__dirname, "../data/points_mainnet.bin");
       poolsFileName = path.join(
         __dirname,
         "../data/pools_last_tx_hashes_mainnet.json"
       );
-      lastSnapDataFile = path.join(
-        __dirname,
-        "../data/last_snap_data_mainnet.json"
-      );
       PROMOTED_POOLS = PROMOTED_POOLS_MAINNET;
       FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_MAINNET;
+      lastSnapTimestampFileName = path.join(
+        __dirname,
+        "../data/last_snap_timestamp_mainnet.json"
+      );
       break;
     case Network.TEST:
       provider = AnchorProvider.local(
@@ -88,12 +86,12 @@ export const createSnapshotForNetwork = async (network: Network) => {
         __dirname,
         "../data/pools_last_tx_hashes_testnet.json"
       );
-      lastSnapDataFile = path.join(
-        __dirname,
-        "../data/last_snap_data_testnet.json"
-      );
       PROMOTED_POOLS = PROMOTED_POOLS_TESTNET;
       FULL_SNAP_START_TX_HASH = FULL_SNAP_START_TX_HASH_TESTNET;
+      lastSnapTimestampFileName = path.join(
+        __dirname,
+        "../data/last_snap_timestamp_testnet.json"
+      );
       break;
     default:
       throw new Error("Unknown network");
@@ -278,29 +276,17 @@ export const createSnapshotForNetwork = async (network: Network) => {
       }
     })
   );
-
-  const poolsWithTicks: IPoolAndTicks[] = await Promise.all(
-    PROMOTED_POOLS.map(async ({ address, pointsPerSecond }) => {
-      const poolStructure: PoolStructure = await retryOperation(
-        market.getPoolByAddress(address)
-      );
-      const ticks: Tick[] = await retryOperation(
-        market.getAllTicks(
-          new Pair(poolStructure.tokenX, poolStructure.tokenY, {
-            fee: poolStructure.fee,
-            tickSpacing: poolStructure.tickSpacing,
-          })
-        )
-      );
-
-      return {
-        pool: address,
-        poolStructure: poolStructure,
-        ticks,
-        pointsPerSecond,
-      };
-    })
+  const poolsWithTicks: IPoolAndTicks[] | null = await fetchPoolsWithTicks(
+    0,
+    market,
+    connection,
+    PROMOTED_POOLS
   );
+
+  if (!poolsWithTicks)
+    throw new Error(
+      "Failed to fetch pools with ticks due to state inconsistency"
+    );
 
   const currentTimestamp = getTimestampInSeconds();
 
@@ -355,9 +341,14 @@ export const createSnapshotForNetwork = async (network: Network) => {
     eventsObject[ownerKey].closed.push(entry);
   });
 
-  const previousPoints: Record<string, IPointsJson> = JSON.parse(
-    fs.readFileSync(pointsFileName, "utf-8")
-  );
+  let previousPoints: Record<string, IPointsJson> = {};
+
+  if (pointsFileName.endsWith(".bin")) {
+    previousPoints = PointsBinaryConverter.readBinaryFile(pointsFileName);
+  } else {
+    previousPoints = JSON.parse(fs.readFileSync(pointsFileName, "utf-8"));
+  }
+
   const points: Record<string, IPoints> = Object.keys(eventsObject).reduce(
     (acc, curr) => {
       const prev24HoursHistory = previousPoints[curr]?.points24HoursHistory;
@@ -368,8 +359,9 @@ export const createSnapshotForNetwork = async (network: Network) => {
           }
         });
       }
+      // TODO: change to decimal after switching to binary file
       const previousTotalPoints: BN =
-        new BN(previousPoints[curr]?.totalPoints, "hex") ?? new BN(0);
+        new BN(previousPoints[curr]?.totalPoints) ?? new BN(0);
 
       const pointsForOpen: BN[] = eventsObject[curr].active.map(
         (entry) => entry.points
@@ -404,55 +396,47 @@ export const createSnapshotForNetwork = async (network: Network) => {
     },
     {}
   );
+  // const { lastSnapTimestamp } = JSON.parse(
+  //   fs.readFileSync(lastSnapTimestampFileName, "utf-8")
+  // );
 
-  const lastSnapData: ILastSnapData = JSON.parse(
-    fs.readFileSync(lastSnapDataFile, "utf-8")
-  );
+  // const snapTimeDifference: BN = currentTimestamp.sub(
+  //   new BN(lastSnapTimestamp, "hex")
+  // );
 
-  const { lastSnapTimestamp } = lastSnapData;
+  // const lastPointsThatShouldHaveBeenDistrubuted = PROMOTED_POOLS.reduce(
+  //   (acc, curr) => {
+  //     return acc.add(curr.pointsPerSecond.mul(snapTimeDifference));
+  //   },
+  //   new BN(0)
+  // );
 
-  const snapTimeDifference: BN = currentTimestamp.sub(
-    new BN(lastSnapTimestamp, "hex")
-  );
+  // const lastPointsDistributed = Object.keys(points)
+  //   .reduce((acc, curr) => {
+  //     const pointsToAdd = points[curr].points24HoursHistory.find(
+  //       (item) => item.timestamp === currentTimestamp
+  //     )!.diff;
+  //     return acc.add(pointsToAdd);
+  //   }, new BN(0))
+  //   .div(POINTS_DENOMINATOR);
 
-  const areActivePositionsInPools = PROMOTED_POOLS.map((pool) => {
-    return {
-      pointsPerSecond: pool.pointsPerSecond,
-      hasActiveEntry: Object.keys(eventsObject).some((key) =>
-        eventsObject[key].active.some(
-          (entry) => entry.event.pool.toString() === pool.address.toString()
-        )
-      ),
-    };
-  });
+  //if (lastPointsDistributed.gt(lastPointsThatShouldHaveBeenDistrubuted)) return;
 
-  const lastPointsThatShouldHaveBeenDistributed: BN =
-    areActivePositionsInPools.reduce((acc, curr) => {
-      if (curr.hasActiveEntry) {
-        return acc.add(snapTimeDifference.mul(curr.pointsPerSecond));
-      }
-      return acc;
-    }, new BN(0));
-
-  const lastPointsDistributed = Object.keys(points)
-    .reduce((acc, curr) => {
-      const pointsToAdd = points[curr].points24HoursHistory.find(
-        (item) => item.timestamp === currentTimestamp
-      )!.diff;
-      return acc.add(pointsToAdd);
-    }, new BN(0))
-    .div(POINTS_DENOMINATOR);
-
-  const snapData = {
+  const currentSnapTimestampData = {
     lastSnapTimestamp: currentTimestamp,
-    lastPointsDistributed,
-    lastPointsThatShouldHaveBeenDistributed,
   };
 
-  fs.writeFileSync(lastSnapDataFile, JSON.stringify(snapData, null, 2));
-  fs.writeFileSync(poolsFileName, JSON.stringify(newPoolsFile, null, 2));
-  fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject, null, 2));
-  fs.writeFileSync(pointsFileName, JSON.stringify(points, null, 2));
+  fs.writeFileSync(
+    lastSnapTimestampFileName,
+    JSON.stringify(currentSnapTimestampData)
+  );
+  fs.writeFileSync(poolsFileName, JSON.stringify(newPoolsFile));
+  fs.writeFileSync(eventsSnapFilename, JSON.stringify(eventsObject));
+  if (pointsFileName.endsWith(".bin")) {
+    PointsBinaryConverter.writeBinaryFile(pointsFileName, points);
+  } else {
+    fs.writeFileSync(pointsFileName, JSON.stringify(points));
+  }
 };
 
 // createSnapshotForNetwork(Network.TEST).then(

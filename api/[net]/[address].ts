@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import ECLIPSE_TESTNET_DATA from "../../data/final_data_testnet.json";
+// import ECLIPSE_TESTNET_DATA from "../../data/final_data_testnet.json";
 import ECLIPSE_MAINNET_DATA from "../../data/final_data_mainnet.json";
 
 interface IData {
@@ -48,7 +48,8 @@ export default function (req: VercelRequest, res: VercelResponse) {
   let currentData: ICachedData[];
 
   if (net === "eclipse-testnet") {
-    currentData = ECLIPSE_TESTNET_DATA as ICachedData[];
+    // currentData = ECLIPSE_TESTNET_DATA as ICachedData[];
+    currentData = ECLIPSE_MAINNET_DATA as ICachedData[];
   } else if (net === "eclipse-mainnet") {
     currentData = ECLIPSE_MAINNET_DATA as ICachedData[];
   } else {

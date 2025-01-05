@@ -5,19 +5,17 @@ import fs from "fs";
 import path from "path";
 import { getTimestampInSeconds } from "../src/math";
 import { PoolStructure } from "@invariant-labs/sdk-eclipse/lib/market";
+import { getLatestTxHash } from "../src/utils";
 
 require("dotenv").config();
 
-const provider = AnchorProvider.local(
-  "https://testnet.dev2.eclipsenetwork.xyz",
-  {
-    commitment: "confirmed",
-  }
-);
+const provider = AnchorProvider.local("https://eclipse.helius-rpc.com", {
+  commitment: "confirmed",
+});
 
 const connection = provider.connection;
 
-const POOL = new PublicKey("G28wnbasJuXihJ76KgFxynsA8WCj4yJZujq9ZhTbBLQm");
+const POOL = new PublicKey("FvVsbwsbGVo6PVfimkkPhpcRfBrRitiV946nMNNuz7f9");
 
 const main = async () => {
   const market = Market.build(
@@ -26,7 +24,10 @@ const main = async () => {
     connection
   );
 
-  const latestTxHash = await getLatestTxHash(market.program.programId);
+  const latestTxHash = await getLatestTxHash(
+    market.program.programId,
+    connection
+  );
 
   const poolState: PoolStructure = await market.getPoolByAddress(POOL);
   const pair = new Pair(poolState.tokenX, poolState.tokenY, {
@@ -40,7 +41,10 @@ const main = async () => {
     getTimestampInSeconds(),
   ]);
 
-  const recentTxHash = await getLatestTxHash(market.program.programId);
+  const recentTxHash = await getLatestTxHash(
+    market.program.programId,
+    connection
+  );
 
   if (recentTxHash !== latestTxHash) {
     console.log("State inconsistency, please try again");
@@ -65,14 +69,9 @@ const main = async () => {
     path.join(__dirname, `../pool_data/${POOL}/timestamp.json`),
     JSON.stringify(timestamp, null, 2)
   );
+
+  console.log("Transaction hash", recentTxHash);
+  console.log("Timestamp taken", timestamp.toString());
 };
 
-const getLatestTxHash = async (programId: PublicKey) => {
-  const [signature] = await connection.getSignaturesForAddress(
-    programId,
-    { limit: 1 },
-    "confirmed"
-  );
-  return signature.signature;
-};
 main();
